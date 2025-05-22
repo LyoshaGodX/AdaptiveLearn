@@ -1,0 +1,21 @@
+{
+    "python.linting.enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyArgs": [
+        "--config-file=mypy.ini"
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportGeneralTypeIssues": "none",
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalSubscript": "none",
+        "reportAttributeAccessIssue": "none",
+        "reportOptionalOperand": "none",
+        "reportOptionalIterable": "none",
+        "reportOptionalCall": "none",
+        "reportIncompatibleMethodOverride": "none",
+        "reportIncompatibleVariableOverride": "none",
+        "reportMissingTypeArgument": "none"
+    },
+    "python.analysis.diagnosticMode": "workspace"
+}

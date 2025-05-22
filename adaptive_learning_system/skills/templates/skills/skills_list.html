@@ -1,0 +1,247 @@
+<!-- filepath: c:\Users\AKlem\Documents\Python projects\AdaptiveLearn\adaptive_learning_system\skills\templates\skills\skills_list.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навыки - Адаптивное обучение</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Vis.js библиотеки -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="https://unpkg.com/vis-data/standalone/umd/vis-data.min.js"></script>    {% load static %}
+    <!-- Единый файл стилей -->
+    <link rel="stylesheet" href="{% static 'skills/styles.css' %}">
+    
+    <!-- Дополнительные стили Tailwind -->
+    <style type="text/tailwindcss">
+        @layer components {
+            .skill-node {
+                @apply bg-gray-600 text-white font-bold rounded-lg shadow-md;
+            }
+            .base-node {
+                @apply bg-blue-600;
+            }
+            .regular-node {
+                @apply bg-green-600;
+            }
+            .card {
+                @apply bg-white rounded-lg shadow-md overflow-hidden border border-gray-200;
+            }
+            .card-header {
+                @apply px-4 py-3 bg-gray-50 border-b border-gray-200 font-semibold;
+            }
+            .card-body {
+                @apply p-4;
+            }
+            .card-footer {
+                @apply px-4 py-3 bg-gray-50 border-t border-gray-200;
+            }
+            .badge {
+                @apply px-2 py-1 rounded-full text-xs font-semibold text-white;
+            }
+            .btn {
+                @apply px-3 py-1 rounded-md font-medium transition-colors duration-200;
+            }
+            .btn-primary {
+                @apply bg-blue-600 text-white hover:bg-blue-700;
+            }
+            .btn-outline-primary {
+                @apply border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white;
+            }
+            .btn-sm {
+                @apply px-2 py-1 text-sm;
+            }
+        }
+    </style>
+    
+    <!-- Добавляем обработчик для предзагрузки данных -->
+    <script>
+        // Проверка валидности JSON данных графа перед загрузкой
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const rawData = document.getElementById('graph-data').textContent;
+                if (rawData && rawData.trim() !== '') {
+                    // Пробуем распарсить JSON
+                    JSON.parse(rawData);
+                }
+            } catch (e) {
+                console.error('Ошибка парсинга данных графа:', e);
+                
+                // Показываем сообщение об ошибке
+                const container = document.getElementById('network-container');
+                if (container) {
+                    container.innerHTML = '<div class="p-4 text-center text-red-600"><i class="fas fa-exclamation-triangle text-3xl mb-2"></i><p>Произошла ошибка при загрузке данных графа. Попробуйте обновить страницу или свяжитесь с администратором.</p></div>';
+                }
+                
+                // Скрываем индикатор загрузки
+                const loadingIndicator = document.getElementById('loading-indicator');
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</head>
+<body class="bg-gray-100 pt-6">
+    <div class="container mx-auto px-4 max-w-7xl">
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Система адаптивного обучения</h1>
+            <nav class="bg-white shadow-sm rounded-lg p-3 mb-6">
+                <div class="container mx-auto flex items-center justify-between">
+                    <a href="/" class="text-xl font-semibold text-gray-800">Адаптивное обучение</a>
+                    <ul class="flex space-x-4">
+                        <li><a href="/" class="text-blue-600 font-medium">Навыки</a></li>
+                        <li><a href="/edit/" class="font-medium">Редактирование навыков</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Фильтр по курсу: без автоматической отправки формы при изменении -->
+            <form method="get" class="mb-4 flex flex-wrap gap-2 items-center" id="course-filter-form">
+                <label for="course" class="font-medium">Курс:</label>
+                <select name="course" id="course" class="border rounded px-2 py-1">
+                    <option value="" {% if not selected_course_id %}selected{% endif %}>Все курсы (полный граф)</option>
+                    {% for course in courses %}
+                        <option value="{{ course.id }}" {% if course.id == selected_course_id %}selected{% endif %}>{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+
+                {% if selected_skill %}
+                <div class="ml-4 pl-4 border-l flex items-center">
+                    <span class="mr-2 text-sm font-medium">Просмотр навыка:</span>
+                    <span class="badge bg-blue-600 text-white text-sm px-3 py-1 flex items-center">
+                        {{ selected_skill.name }}
+                        <button type="button" id="clear-skill-filter" class="ml-2 text-white opacity-80 hover:opacity-100" title="Сбросить фильтр по навыку">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </span>
+                </div>
+                {% endif %}
+                
+                <!-- Скрытое поле для навыка (только если он выбран) -->
+                {% if selected_skill_id %}
+                <input type="hidden" name="skill" id="selected-skill-input" value="{{ selected_skill_id }}">
+                {% endif %}
+                
+                <!-- Кнопка сброса всех фильтров -->
+                <a href="/" class="ml-auto text-sm text-blue-600 hover:underline">
+                    <i class="fas fa-times mr-1"></i> Сбросить все фильтры
+                </a>
+            </form>
+
+            <!-- Интерактивный граф в верхней части страницы -->
+            <div class="mb-8">
+                <div class="card relative">
+                    <div class="bg-blue-600 text-white px-4 py-3 flex justify-between items-center">
+                        <h4 class="text-xl font-bold m-0">Карта связей между навыками</h4>
+                        {% if selected_skill_id %}
+                        <!-- Добавляем информацию о выбранном навыке -->
+                        <div class="text-sm">
+                            <span class="font-medium">Просмотр навыка:</span> 
+                            <span class="font-bold">{{ selected_skill.name }}</span>
+                            <a href="?{% if selected_course_id %}course={{ selected_course_id }}{% endif %}" class="ml-2 text-white opacity-80 hover:opacity-100">
+                                <i class="fas fa-times-circle"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="p-0 relative">
+                        <div id="network-container" class="w-full h-[550px] border-b border-gray-200"></div>
+                        
+                        <!-- Индикатор загрузки -->
+                        <div id="loading-indicator" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white bg-opacity-90 px-6 py-4 rounded-lg shadow-lg text-center z-50" style="display: none;">
+                            <i class="fas fa-circle-notch fa-spin text-blue-600 text-3xl mb-3"></i>
+                            <p id="loading-text" class="text-gray-700 font-medium">Расположение узлов оптимизируется...</p>
+                        </div>
+                        
+                        <!-- Кнопки управления графом -->
+                        <div class="absolute top-4 right-4 z-50 flex gap-2">
+                            <button id="export-png-btn" type="button" class="btn btn-sm btn-outline-primary" title="Экспорт графа в изображение">
+                                <i class="fas fa-download mr-1"></i> Экспорт
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-footer flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                        <div class="text-sm text-gray-600">
+                            <i class="fas fa-info-circle mr-1"></i> 
+                            Нажмите на навык, чтобы просмотреть его дерево зависимостей.
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="badge bg-blue-600">Базовые навыки</span>
+                            <span class="badge bg-green-600">Прикладные навыки</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Новый список всех навыков с зависимостями -->
+            <div class="mb-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="text-lg font-semibold m-0">Все навыки и зависимости</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="divide-y divide-gray-200">
+                            {% for skill in all_skills %}
+                            <li class="py-3 flex flex-col md:flex-row md:items-center gap-2 relative hover:bg-gray-50 transition-colors duration-150">
+                                <div class="flex-1 min-w-0">
+                                    <a href="?skill={{ skill.id }}&course={{ selected_course_id }}" class="font-medium {% if skill.is_base %}text-blue-600{% endif %}">
+                                        {{ skill.name }}
+                                    </a>
+                                    <span class="text-xs text-gray-400 ml-2">ID: {{ skill.id }}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1 items-center md:justify-end md:ml-4 w-full md:w-auto mt-2 md:mt-0">
+                                    {% if skill.prerequisites.all %}
+                                        <span class="text-xs text-gray-500">Зависит от:</span>
+                                        {% for prereq in skill.prerequisites.all %}
+                                            <a href="?skill={{ prereq.id }}&course={{ selected_course_id }}" class="hover:opacity-80" title="Просмотреть навык {{ prereq.name }}">
+                                                <span class="badge bg-gray-500 transition-colors duration-200 hover:bg-gray-600">{{ prereq.name }}</span>
+                                            </a>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="text-xs text-gray-400">Нет зависимостей</span>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-12 text-center text-gray-500">
+            <p>© 2023 Система адаптивного обучения</p>
+        </footer>
+    </div>
+    
+    <!-- Добавляем информационную панель для отображения деталей навыка -->
+    <div id="skill-info-panel" class="skill-info-panel">
+        <h4 id="skill-info-title" class="font-bold text-lg mb-2"></h4>
+        <div id="skill-info-type" class="text-sm mb-1"></div>
+        <div class="text-sm mb-2">
+            <strong>Зависимости:</strong> <span id="skill-info-deps"></span>
+        </div>
+        <div class="text-sm">
+            <strong>Навыки, зависящие от этого:</strong> <span id="skill-info-dependent"></span>
+        </div>
+    </div>
+    
+    <!-- Передача данных в JavaScript -->
+    <script type="application/json" id="graph-data">{{ cytoscape_data|safe }}</script>
+    <script type="text/plain" id="selected-skill-id">{{ selected_skill_id|default:'' }}</script>
+    
+    <!-- Подключение скрипта графа -->
+    <script src="{% static 'skills/skills_graph.js' %}"></script>
+    <!-- Подключение скрипта для обработки селектора курсов -->
+    <script src="{% static 'skills/skills_course_selector.js' %}"></script>
+</body>
+</html>
