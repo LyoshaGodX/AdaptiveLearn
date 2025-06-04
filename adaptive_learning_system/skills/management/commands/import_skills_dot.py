@@ -1,4 +1,4 @@
-﻿import re
+import re
 import os
 from django.core.management.base import BaseCommand
 from skills.models import Skill, Course
