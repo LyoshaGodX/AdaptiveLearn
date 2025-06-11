@@ -5,10 +5,12 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib.auth.decorators import login_required
 from .models import Skill, Course
 import json
 import datetime
 
+@login_required
 def skills_list(request):
     """
     Отображает список всех навыков с группировкой по курсам, поддерживает фильтрацию графа по курсу
@@ -264,6 +266,7 @@ def generate_cytoscape_data(skills_queryset=None, selected_skill_id=None):
         return json.dumps(empty_graph)
     
     
+@login_required
 def skills_edit(request):
     """
     Страница для редактирования навыков и связей между ними
@@ -494,15 +497,62 @@ def api_skill_details(request, skill_id):
 
 @require_POST
 def api_add_prerequisite(request):
+    """
+    API для добавления предварительного требования к навыку
+    """
     skill_id = request.POST.get('skill_id')
     prereq_id = request.POST.get('prereq_id')
+    
     if not skill_id or not prereq_id:
         return JsonResponse({'error': 'Не переданы параметры'}, status=400)
+        
+    if skill_id == prereq_id:
+        return JsonResponse({'error': 'Навык не может быть предпосылкой для самого себя'}, status=400)
+    
     try:
         skill = Skill.objects.get(id=skill_id)
         prereq = Skill.objects.get(id=prereq_id)
+        
+        # Проверяем, не является ли уже предпосылкой
+        if prereq in skill.prerequisites.all():
+            return JsonResponse({'error': 'Этот навык уже является предпосылкой'}, status=400)
+        
+        # Проверяем на циклические зависимости
+        def would_create_cycle(skill_obj, new_prereq):
+            """
+            Проверяет, создаст ли добавление new_prereq к skill циклическую зависимость
+            """
+            visited = set()
+            
+            def has_path_to_skill(current_skill, target_skill):
+                if current_skill.id == target_skill.id:
+                    return True
+                if current_skill.id in visited:
+                    return False
+                visited.add(current_skill.id)
+                
+                # Проверяем все предпосылки текущего навыка
+                for prereq in current_skill.prerequisites.all():
+                    if has_path_to_skill(prereq, target_skill):
+                        return True
+                return False
+            
+            # Проверяем, есть ли путь от new_prereq к skill
+            return has_path_to_skill(new_prereq, skill_obj)
+        
+        if would_create_cycle(skill, prereq):
+            return JsonResponse({
+                'error': f'Добавление навыка "{prereq.name}" как предпосылки для "{skill.name}" создаст циклическую зависимость'
+            }, status=400)
+        
+        # Добавляем предпосылку
         skill.prerequisites.add(prereq)
-        return JsonResponse({'success': True})
+        
+        return JsonResponse({
+            'success': True, 
+            'message': f'Навык "{prereq.name}" успешно добавлен как предпосылка для "{skill.name}"'
+        })
+        
     except Skill.DoesNotExist:
         return JsonResponse({'error': 'Навык не найден'}, status=404)
     except Exception as e:
@@ -519,6 +569,31 @@ def api_remove_prerequisite(request):
         skill = Skill.objects.get(id=skill_id)
         prereq = Skill.objects.get(id=prereq_id)
         skill.prerequisites.remove(prereq)
+        return JsonResponse({'success': True})
+    except Skill.DoesNotExist:
+        return JsonResponse({'error': 'Навык не найден'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@require_POST
+def api_remove_dependent(request):
+    """
+    API для удаления зависимого навыка (убирает связь dependent -> skill)
+    """
+    skill_id = request.POST.get('skill_id')
+    dependent_id = request.POST.get('dependent_id')
+    
+    if not skill_id or not dependent_id:
+        return JsonResponse({'error': 'Не переданы параметры'}, status=400)
+    
+    try:
+        skill = Skill.objects.get(id=skill_id)
+        dependent_skill = Skill.objects.get(id=dependent_id)
+        
+        # Убираем связь: dependent_skill больше не зависит от skill
+        dependent_skill.prerequisites.remove(skill)
+        
         return JsonResponse({'success': True})
     except Skill.DoesNotExist:
         return JsonResponse({'error': 'Навык не найден'}, status=404)

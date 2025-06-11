@@ -55,11 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             return cookieValue;
-        }
-        const csrftoken = getCookie('csrftoken');
+        }        const csrftoken = getCookie('csrftoken');
         confirmBtn.disabled = true;
         confirmBtn.textContent = 'Удаление...';
-        fetch('/api/remove_prerequisite/', {
+        fetch('/skills/api/remove_prerequisite/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

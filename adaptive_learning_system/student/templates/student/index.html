@@ -1,6 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'student/base.html' %}
 {% block title %}Личный кабинет{% endblock %}
 {% block content %}
-<h1>Добро пожаловать, пользователь!</h1>
-<p>Это стартовая страница студента.</p>
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white">
+        <h4>Добро пожаловать, {{ user.username }}!</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">Это стартовая страница студента. Здесь вы можете видеть свой прогресс обучения и доступные курсы.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Мои курсы</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Здесь будет список ваших курсов</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Прогресс обучения</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Здесь будет отображаться ваш прогресс</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

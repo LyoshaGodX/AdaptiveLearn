@@ -1,0 +1,54 @@
+{% extends 'methodist/base.html' %}
+
+{% block title %}Отладка данных - Методист{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h1>Отладка данных для формы заданий</h1>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Навыки ({{ skills|length }})</h5>
+                </div>
+                <div class="card-body">
+                    {% for skill in skills %}
+                    <div class="mb-2">
+                        <strong>{{ skill.name }}</strong>
+                        {% if skill.courses.all %}
+                            - Курсы: 
+                            {% for course in skill.courses.all %}
+                                {{ course.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            - <em>без курса</em>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <div class="alert alert-warning">Навыки не найдены</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Курсы ({{ courses|length }})</h5>
+                </div>
+                <div class="card-body">
+                    {% for course in courses %}
+                    <div class="mb-2">
+                        <strong>{{ course.name }}</strong>
+                        {% if course.description %}
+                            - {{ course.description }}
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <div class="alert alert-warning">Курсы не найдены</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

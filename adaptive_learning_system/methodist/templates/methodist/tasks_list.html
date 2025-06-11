@@ -1,0 +1,197 @@
+{% extends 'methodist/base.html' %}
+{% load static %}
+
+{% block title %}Управление заданиями - Методист{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'methodist/css/tasks.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- Заголовок и кнопка создания -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-tasks me-2 text-primary"></i>
+                    Управление заданиями
+                </h1>
+                <a href="{% url 'methodist_task_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Создать задание
+                </a>
+            </div>
+
+            <!-- Фильтры -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-3">
+                            <label for="search" class="form-label">Поиск</label>
+                            <input type="text" class="form-control" id="search" name="search" 
+                                   value="{{ search_query }}" placeholder="Название или текст задания">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="course" class="form-label">Курс</label>
+                            <select class="form-select" id="course" name="course">
+                                <option value="">Все курсы</option>
+                                {% for course in courses %}
+                                <option value="{{ course.id }}" {% if course.id == selected_course_id %}selected{% endif %}>
+                                    {{ course.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="difficulty" class="form-label">Сложность</label>
+                            <select class="form-select" id="difficulty" name="difficulty">
+                                <option value="">Все уровни</option>
+                                {% for value, label in difficulty_choices %}
+                                <option value="{{ value }}" {% if value == selected_difficulty %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="skill" class="form-label">Навык</label>
+                            <select class="form-select" id="skill" name="skill">
+                                <option value="">Все навыки</option>
+                                {% for skill in skills %}
+                                <option value="{{ skill.id }}" {% if skill.id|stringformat:"s" == selected_skill_id %}selected{% endif %}>
+                                    {{ skill.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-outline-primary me-2">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <a href="{% url 'methodist_tasks' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Статистика -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">Всего заданий</h6>
+                                    <h3 class="mb-0">{{ tasks.count }}</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-tasks fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Список заданий -->
+            <div class="row">
+                {% for task in tasks %}
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="card task-card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 text-truncate">{{ task.title }}</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" 
+                                        data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'methodist_task_edit' task.id %}">
+                                            <i class="fas fa-edit me-2"></i>Редактировать
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form method="post" action="{% url 'methodist_task_delete' task.id %}" 
+                                              onsubmit="return confirm('Вы уверены, что хотите удалить это задание?')">
+                                            {% csrf_token %}
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="fas fa-trash me-2"></i>Удалить
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Тип и сложность -->
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-info">{{ task.get_task_type_display }}</span>
+                                <span class="badge bg-secondary">{{ task.get_difficulty_display }}</span>
+                            </div>
+                            
+                            <!-- Текст задания -->
+                            <p class="card-text text-muted small">
+                                {{ task.question_text|truncatechars:100 }}
+                            </p>
+                            
+                            <!-- Связанные навыки -->
+                            <div class="mb-2">
+                                <small class="text-muted">Навыки:</small>
+                                <div class="mt-1">
+                                    {% for skill in task.skills.all %}
+                                    <span class="badge bg-success me-1">{{ skill.name }}</span>
+                                    {% empty %}
+                                    <span class="text-muted small">Не указаны</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <!-- Связанные курсы -->
+                            <div class="mb-2">
+                                <small class="text-muted">Курсы:</small>
+                                <div class="mt-1">
+                                    {% for course in task.courses.all %}
+                                    <span class="badge bg-warning text-dark me-1">{{ course.name }}</span>
+                                    {% empty %}
+                                    <span class="text-muted small">Не указаны</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted small">
+                            <div class="d-flex justify-content-between">
+                                <span>Создано: {{ task.created_at|date:"d.m.Y" }}</span>
+                                {% if task.image %}
+                                <i class="fas fa-image" title="Есть изображение"></i>
+                                {% endif %}
+                                {% if task.video_url %}
+                                <i class="fas fa-video" title="Есть видео"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-tasks fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Заданий не найдено</h5>
+                        <p class="text-muted">Попробуйте изменить критерии поиска или создайте новое задание</p>
+                        <a href="{% url 'methodist_task_create' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Создать первое задание
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'methodist/js/tasks.js' %}"></script>
+{% endblock %}

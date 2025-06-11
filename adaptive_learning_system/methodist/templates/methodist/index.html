@@ -1,0 +1,46 @@
+{% extends 'methodist/base.html' %}
+{% block title %}Панель методиста{% endblock %}
+{% block content %}
+<div class="card mt-4">
+    <div class="card-header bg-danger text-white">
+        <h4>Добро пожаловать, {{ user.username }}!</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">Это панель управления методиста. Здесь вы можете управлять структурой учебных курсов и навыков.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Навигация</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="/methodist/" class="text-decoration-none">
+                                    <i class="fas fa-network-wired me-2"></i>График навыков
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="/edit/" class="text-decoration-none">
+                                    <i class="fas fa-edit me-2"></i>Редактор навыков
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Статистика</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Здесь будет отображаться статистика по навыкам и курсам</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

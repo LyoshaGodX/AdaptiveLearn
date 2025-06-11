@@ -19,18 +19,21 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from methodist import views as methodist_views
+from . import views as core_views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("methodist/", include('methodist.urls')),
+    path("admin/", admin.site.urls),    path("methodist/", include('methodist.urls')),
     path("student/", include('student.urls')),
     path("expert/", include('expert.urls')),
     path("skills/", include('skills.urls')),
-    path("", include('student.urls')),
-    path("login/", auth_views.LoginView.as_view(), name='login'),
-    path("logout/", auth_views.LogoutView.as_view(), name='logout'),
+    path("", core_views.home_redirect, name='home'),
+    path("login/", core_views.RoleBasedLoginView.as_view(), name='login'),
+    path("logout/", core_views.CustomLogoutView.as_view(), name='logout'),
+    path("edit/", methodist_views.edit_skills, name='edit_skills'),
 ]
 
 # Добавляем обработку статических файлов в режиме отладки
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

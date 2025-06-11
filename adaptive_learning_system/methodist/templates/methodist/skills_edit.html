@@ -1,0 +1,954 @@
+{% extends 'methodist/base.html' %}
+{% load static %}
+
+{% block title %}Редактирование навыков - Адаптивное обучение{% endblock %}
+
+{% block extra_css %}
+<!-- Стили приложения -->
+<link rel="stylesheet" href="{% static 'methodist/styles.css' %}">
+
+<style>
+    :root {
+        --primary-color: #dc3545;
+        --primary-hover: #c82333;
+        --secondary-color: #6c757d;
+        --success-color: #28a745;
+        --info-color: #17a2b8;
+        --warning-color: #ffc107;
+        --danger-color: #dc3545;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+        --border-radius: 12px;
+        --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateX(-20px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes highlight {
+        0% { background-color: rgba(220, 53, 69, 0.1); }
+        100% { background-color: transparent; }
+    }
+
+    .modern-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        border: none;
+        overflow: hidden;
+        transition: var(--transition);
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .modern-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .gradient-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #e73c4e 100%);
+        color: white;
+        padding: 1.5rem;
+        border-bottom: none;
+    }
+
+    .search-container {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--box-shadow);
+        margin-bottom: 2rem;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .skill-list-item {
+        transition: var(--transition);
+        border-left: 4px solid transparent;
+    }
+
+    .skill-list-item:hover {
+        background-color: rgba(220, 53, 69, 0.05) !important;
+        border-left-color: var(--primary-color);
+        transform: translateX(5px);
+    }
+
+    .skill-list-item.active {
+        background-color: rgba(220, 53, 69, 0.1) !important;
+        border-left-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .modern-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modern-modal.show {
+        display: flex;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideIn 0.3s ease-out;
+    }
+
+    .filter-badge {
+        background: linear-gradient(135deg, var(--primary-color), #e73c4e);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+    }
+
+    .prerequisite-badge {
+        background: linear-gradient(135deg, var(--secondary-color), #7a8a99);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+        transition: var(--transition);
+    }
+
+    .prerequisite-badge:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+    }
+
+    .dependent-badge {
+        background: linear-gradient(135deg, var(--info-color), #20c997);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+    }
+
+    .highlight {
+        animation: highlight 2s ease-out;
+    }
+
+    .modern-form {
+        padding: 0;
+    }
+
+    .modern-form .form-control, .modern-form .form-select {
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+        transition: var(--transition);
+    }
+
+    .modern-form .form-control:focus, .modern-form .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    .modern-btn {
+        border-radius: 8px;
+        font-weight: 500;
+        transition: var(--transition);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .modern-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }    .network-container {
+        position: relative;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        background: linear-gradient(45deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 300px;
+    }
+
+    .card-header {
+        padding: 1rem 1.5rem;
+        overflow: hidden;
+    }
+
+    .card-header h4, .card-header h5 {
+        display: flex;
+        align-items: center;
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    .card-header h4 i, .card-header h5 i {
+        flex-shrink: 0;
+        width: 1.2em;
+        text-align: center;
+    }
+
+    .card-body .p-4 h5 {
+        display: flex;
+        align-items: center;
+        word-wrap: break-word;
+        overflow: hidden;
+    }    .card-body .p-4 h5 i {
+        flex-shrink: 0;
+        width: 1.2em;
+        text-align: center;
+    }
+
+    /* Дополнительные стили для предотвращения переполнения */
+    .card-header h4, .card-body h5 {
+        line-height: 1.4;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .d-flex.justify-content-between.align-items-center {
+        min-height: 2.5rem;
+    }
+
+    .btn.btn-outline-primary.modern-btn.btn-sm {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    /* Улучшение отображения значков зависимостей */
+    .prerequisite-badge, .dependent-badge {
+        word-break: break-word;
+        max-width: 100%;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: var(--secondary-color);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }    @media (max-width: 768px) {
+        .search-container {
+            padding: 1rem;
+        }
+        .modern-card {
+            margin-bottom: 1rem;
+        }
+        .skill-list-item:hover {
+            transform: none;
+        }
+        .modal-content {
+            width: 95%;
+        }
+        .card-header h4, .card-header h5 {
+            font-size: 1.1rem;
+        }
+        .card-header {
+            padding: 0.75rem 1rem;
+        }
+        .card-body .p-4 {
+            padding: 1rem !important;
+        }
+        .d-flex.justify-content-between.align-items-center {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 0.5rem;
+        }
+        .card-header .d-flex.justify-content-between.align-items-center {
+            flex-direction: row;
+            align-items: center !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Панель поиска и фильтрации -->
+<div class="search-container">
+    <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center mb-3">
+        <!-- Форма поиска -->
+        <div class="flex-grow-1">
+            <form method="get" class="modern-form" id="search-form">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Поиск навыков..." 
+                           name="search" value="{{ search_query }}">
+                    <button class="btn btn-outline-primary modern-btn" type="submit">
+                        <i class="fas fa-search me-1"></i> Поиск
+                    </button>
+                </div>
+                
+                {% if selected_course_id %}
+                <input type="hidden" name="course" value="{{ selected_course_id }}">
+                {% endif %}
+                {% if selected_skill_id %}
+                <input type="hidden" name="skill" value="{{ selected_skill_id }}">
+                {% endif %}
+            </form>
+        </div>
+        
+        <!-- Фильтр по курсу -->
+        <div class="flex-shrink-0">
+            <form method="get" id="course-filter-form">
+                <select name="course" id="course-filter" class="form-select" onchange="this.form.submit()">
+                    <option value="">Все курсы</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}" {% if course.id == selected_course_id %}selected{% endif %}>
+                        {{ course.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                
+                {% if search_query %}
+                <input type="hidden" name="search" value="{{ search_query }}">
+                {% endif %}
+                {% if selected_skill_id %}
+                <input type="hidden" name="skill" value="{{ selected_skill_id }}">
+                {% endif %}
+            </form>
+        </div>
+        
+        <!-- Кнопка создания нового навыка -->
+        <div class="flex-shrink-0">
+            <button id="new-skill-btn" class="btn btn-primary modern-btn">
+                <i class="fas fa-plus me-2"></i> Новый навык
+            </button>
+        </div>
+    </div>
+    
+    <!-- Активные фильтры -->
+    {% if search_query or selected_course_id or selected_skill_id %}
+    <div class="d-flex flex-wrap gap-2">
+        {% if search_query %}
+        <div class="filter-badge">
+            <i class="fas fa-search me-2"></i>
+            <span class="me-2">{{ search_query }}</span>
+            <a href="?{% if selected_course_id %}course={{ selected_course_id }}{% endif %}{% if selected_skill_id %}&skill={{ selected_skill_id }}{% endif %}" 
+               class="text-white opacity-75 hover:opacity-100">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        {% endif %}
+        
+        {% if selected_course_id %}
+        <div class="filter-badge">
+            <i class="fas fa-book me-2"></i>
+            <span class="me-2">Курс: {{ selected_course_id }}</span>
+            <a href="?{% if search_query %}search={{ search_query }}{% endif %}{% if selected_skill_id %}&skill={{ selected_skill_id }}{% endif %}" 
+               class="text-white opacity-75 hover:opacity-100">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        {% endif %}
+        
+        {% if selected_skill_id %}
+        <div class="filter-badge">
+            <i class="fas fa-focus me-2"></i>
+            <span class="me-2">{{ selected_skill.name }}</span>
+            <a href="?{% if search_query %}search={{ search_query }}{% endif %}{% if selected_course_id %}&course={{ selected_course_id }}{% endif %}" 
+               class="text-white opacity-75 hover:opacity-100">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<!-- Основной контент -->
+<div class="row g-4">
+    <!-- Левая колонка: список навыков -->
+    <div class="col-lg-5">
+        <div class="modern-card h-100">
+            <div class="gradient-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="fas fa-list me-2"></i>
+                        Список навыков
+                    </h3>
+                    <span class="badge bg-white text-primary">{{ filtered_skills.count }} навыков</span>
+                </div>
+            </div>
+            <div class="list-group list-group-flush">
+                {% for skill in filtered_skills %}
+                <a href="?skill={{ skill.id }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_course_id %}&course={{ selected_course_id }}{% endif %}" 
+                   class="list-group-item list-group-item-action skill-list-item border-0 py-3 {% if selected_skill and selected_skill.id == skill.id %}active{% endif %}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="d-flex align-items-center gap-2">
+                                {% if skill.is_base %}
+                                    <i class="fas fa-star text-primary"></i>
+                                {% else %}
+                                    <i class="fas fa-puzzle-piece text-success"></i>
+                                {% endif %}
+                                <span class="fw-semibold">{{ skill.name }}</span>
+                            </div>
+                            {% if skill.is_base %}
+                            <small class="text-muted">Базовый навык</small>
+                            {% endif %}
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-secondary">{{ skill.prerequisites.count }}</span>
+                            <small class="text-muted d-block">зависимостей</small>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-search"></i>
+                    <h5 class="fw-bold">Навыки не найдены</h5>
+                    <p class="text-muted">Попробуйте изменить критерии поиска</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Правая колонка: редактор навыка -->
+    <div class="col-lg-7">
+        {% if selected_skill %}
+        <!-- Форма редактирования -->
+        <div class="modern-card mb-4">
+            <div class="gradient-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="fas fa-edit me-2"></i>
+                        Редактирование навыка
+                    </h3>
+                    <button id="delete-skill-btn" class="btn btn-outline-light modern-btn" 
+                            data-skill-id="{{ selected_skill.id }}" data-skill-name="{{ selected_skill.name }}">
+                        <i class="fas fa-trash-alt me-1"></i> Удалить
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form action="{% url 'methodist_edit_skill' %}" method="post" id="edit-skill-form" class="modern-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="skill_id" value="{{ selected_skill.id }}">
+                    
+                    <div class="mb-4">
+                        <label for="skill-name" class="form-label fw-semibold">Название навыка</label>
+                        <input type="text" class="form-control" id="skill-name" name="name" 
+                               value="{{ selected_skill.name }}" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="is-base" name="is_base" 
+                                   {% if selected_skill.is_base %}checked{% endif %}>
+                            <label class="form-check-label fw-semibold" for="is-base">
+                                <i class="fas fa-star text-warning me-1"></i>
+                                Это базовый навык
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary modern-btn">
+                            <i class="fas fa-save me-1"></i> Сохранить изменения
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary modern-btn" id="assign-course-btn">
+                            <i class="fas fa-book me-1"></i> Присвоить курсу
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Визуализация зависимостей -->
+        <div class="modern-card mb-4">
+            <div class="card-header bg-white border-bottom">
+                <h4 class="mb-0 fw-semibold text-dark">
+                    <i class="fas fa-project-diagram me-2 text-primary"></i>
+                    Граф зависимостей
+                </h4>
+            </div>
+            <div class="network-container">
+                <div id="skill-network" style="height: 300px;"></div>
+            </div>
+        </div>
+        
+        <!-- Управление зависимостями -->
+        <div class="modern-card">
+            <div class="card-header bg-white border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-semibold text-dark">
+                        <i class="fas fa-link me-2 text-primary"></i>
+                        Управление зависимостями
+                    </h4>
+                    <button class="btn btn-outline-primary modern-btn btn-sm" id="add-prerequisite-btn">
+                        <i class="fas fa-plus me-1"></i> Добавить зависимость
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <!-- Список предпосылок -->
+                <div class="p-4 border-bottom">
+                    <h5 class="fw-semibold mb-3">
+                        <i class="fas fa-arrow-left me-2 text-primary"></i>
+                        Этот навык зависит от:
+                    </h5>
+                    <div id="prerequisites-list" class="d-flex flex-wrap gap-2">
+                        {% if selected_skill.prerequisites.all %}
+                            {% for prereq in selected_skill.prerequisites.all %}
+                            <div class="prerequisite-badge" data-skill-id="{{ prereq.id }}">
+                                <span>{{ prereq.name }}</span>
+                                <button type="button" class="ms-2 btn-close btn-close-white remove-prerequisite-btn" 
+                                        aria-label="Удалить" data-skill-id="{{ selected_skill.id }}" data-prereq-id="{{ prereq.id }}">
+                                </button>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-leaf me-1"></i>
+                                У этого навыка нет зависимостей
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                  <!-- Список зависимых навыков -->
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-semibold mb-0">
+                            <i class="fas fa-arrow-right me-2 text-success"></i>
+                            От этого навыка зависят:
+                        </h5>
+                        <button class="btn btn-outline-success modern-btn btn-sm" id="add-dependent-btn">
+                            <i class="fas fa-plus me-1"></i> Добавить предпосылку
+                        </button>
+                    </div>                    <div id="dependents-list" class="d-flex flex-wrap gap-2">
+                        {% if dependent_skills %}
+                            {% for dep in dependent_skills %}
+                            <div class="dependent-badge" data-skill-id="{{ dep.id }}">
+                                <span>{{ dep.name }}</span>
+                                <button type="button" class="ms-2 btn-close btn-close-white remove-dependent-btn" 
+                                        aria-label="Удалить" data-skill-id="{{ selected_skill.id }}" data-dependent-id="{{ dep.id }}">
+                                </button>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Нет навыков, зависящих от этого
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Пустое состояние -->
+        <div class="modern-card h-100 d-flex align-items-center justify-content-center">
+            <div class="empty-state">
+                <i class="fas fa-arrow-left"></i>
+                <h3 class="fw-bold">Выберите навык</h3>
+                <p class="text-muted mb-4">Выберите навык из списка слева для редактирования или создайте новый</p>
+                <button id="new-skill-btn-empty" class="btn btn-primary modern-btn">
+                    <i class="fas fa-plus me-2"></i> Создать новый навык
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+    <!-- Модальные окна -->
+
+<!-- Модальное окно для создания нового навыка -->
+<div class="modern-modal" id="new-skill-modal">
+    <div class="modal-content">
+        <div class="gradient-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">
+                    <i class="fas fa-plus me-2"></i>
+                    Создание нового навыка
+                </h5>
+                <button type="button" class="btn-close btn-close-white" id="new-skill-close"></button>
+            </div>
+        </div>
+        <form action="{% url 'methodist_edit_skill' %}" method="post" id="new-skill-form" class="modern-form">
+            {% csrf_token %}
+            <div class="p-4">
+                <div class="mb-3">
+                    <label for="new-skill-name" class="form-label fw-semibold">Название навыка</label>
+                    <input type="text" class="form-control" id="new-skill-name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="new-is-base" name="is_base">
+                        <label class="form-check-label fw-semibold" for="new-is-base">
+                            <i class="fas fa-star text-warning me-1"></i>
+                            Это базовый навык
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="new-skill-courses" class="form-label fw-semibold">Добавить в курсы</label>
+                    <select class="form-select" id="new-skill-courses" name="courses" multiple>
+                        {% for course in courses %}
+                        <option value="{{ course.id }}">{{ course.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text">Удерживайте Ctrl для выбора нескольких курсов</div>
+                </div>
+            </div>
+            <div class="p-4 border-top d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary modern-btn" id="new-skill-cancel">Отмена</button>
+                <button type="submit" class="btn btn-primary modern-btn">
+                    <i class="fas fa-plus me-1"></i> Создать
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно для добавления зависимости -->
+<div class="modern-modal" id="add-prereq-modal">
+    <div class="modal-content">
+        <div class="gradient-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">
+                    <i class="fas fa-link me-2"></i>
+                    Добавить зависимость
+                </h5>
+                <button type="button" class="btn-close btn-close-white" id="add-prereq-close"></button>
+            </div>
+        </div>
+        <div class="p-4">
+            <div class="mb-3">
+                <label for="prereq-search" class="form-label fw-semibold">Поиск навыка</label>
+                <input type="text" class="form-control" id="prereq-search" placeholder="Введите название навыка...">
+            </div>
+            <div class="mt-3" id="prereq-results">
+                <div class="list-group" id="prereq-list">
+                    <!-- Результаты поиска будут добавлены здесь -->
+                </div>
+                <div class="empty-state" id="prereq-empty-message">
+                    <i class="fas fa-search"></i>
+                    <p class="text-muted">Введите название навыка для поиска</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-top d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary modern-btn" id="add-prereq-cancel">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для присвоения курсов -->
+<div class="modern-modal" id="assign-course-modal">
+    <div class="modal-content">
+        <div class="gradient-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">
+                    <i class="fas fa-book me-2"></i>
+                    Присвоить навык курсам
+                </h5>
+                <button type="button" class="btn-close btn-close-white" id="assign-course-close"></button>
+            </div>
+        </div>
+        <form action="{% url 'methodist_update_skill_courses' %}" method="post" id="assign-course-form" class="modern-form">
+            {% csrf_token %}
+            <input type="hidden" name="skill_id" value="{{ selected_skill.id }}">
+            <input type="hidden" name="update_courses" value="true">
+            <div class="p-4">
+                <div class="mb-3">
+                    <label for="assign-courses" class="form-label fw-semibold">Выберите курсы</label>
+                    <select class="form-select" id="assign-courses" name="courses" multiple>
+                        {% for course in courses %}
+                        <option value="{{ course.id }}" {% if selected_skill and course in selected_skill.courses.all %}selected{% endif %}>
+                            {{ course.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text">Удерживайте Ctrl для выбора нескольких курсов</div>
+                </div>
+            </div>
+            <div class="p-4 border-top d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary modern-btn" id="assign-course-cancel">Отмена</button>
+                <button type="submit" class="btn btn-primary modern-btn">
+                    <i class="fas fa-save me-1"></i> Сохранить
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно для подтверждения удаления -->
+<div class="modern-modal" id="delete-confirm-modal">
+    <div class="modal-content">
+        <div class="card-header bg-danger text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Подтверждение удаления
+                </h5>
+                <button type="button" class="btn-close btn-close-white" id="delete-confirm-close"></button>
+            </div>
+        </div>
+        <div class="p-4">
+            <div class="text-center mb-4">
+                <i class="fas fa-trash-alt text-danger fs-1 mb-3"></i>
+                <p class="mb-2">Вы уверены, что хотите удалить навык</p>
+                <p class="fw-bold fs-5" id="delete-skill-name"></p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Это действие нельзя отменить!
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-top d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary modern-btn" id="delete-confirm-cancel">Отмена</button>
+            <form action="{% url 'methodist_delete_skill' %}" method="post" id="delete-skill-form" class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="skill_id" id="delete-skill-id">
+                <button type="submit" class="btn btn-danger modern-btn">
+                    <i class="fas fa-trash-alt me-1"></i> Удалить
+                </button>
+            </form>
+        </div>    </div>
+</div>
+
+<!-- Модальное окно для подтверждения удаления зависимости -->
+<div class="modern-modal" id="remove-prereq-modal">
+    <div class="modal-content">
+        <div class="card-header bg-warning text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">
+                    <i class="fas fa-unlink me-2"></i>
+                    Удаление зависимости
+                </h5>
+                <button type="button" class="btn-close btn-close-white" id="remove-prereq-close"></button>
+            </div>
+        </div>
+        <div class="p-4">
+            <div class="text-center mb-4">
+                <i class="fas fa-unlink text-warning fs-1 mb-3"></i>
+                <p class="mb-2">Вы уверены, что хотите удалить зависимость</p>
+                <p class="fw-bold fs-5" id="remove-prereq-name"></p>
+                <p class="text-muted">у навыка <span class="fw-bold" id="remove-prereq-skill-name"></span>?</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Это действие можно отменить, добавив зависимость заново
+                </div>
+            </div>        </div>
+        <div class="p-4 border-top d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary modern-btn" id="remove-prereq-cancel">Отмена</button>
+            <button type="button" class="btn btn-warning modern-btn" id="remove-prereq-confirm">
+                <i class="fas fa-unlink me-1"></i> Удалить зависимость
+            </button>
+        </div>    </div>
+</div>
+
+<!-- Модальное окно для удаления зависимого навыка -->
+<div class="modern-modal" id="remove-dependent-modal">
+    <div class="modal-content">
+        <div class="card-header bg-warning text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">
+                    <i class="fas fa-unlink me-2"></i>
+                    Удаление зависимого навыка
+                </h5>
+                <button type="button" class="btn-close btn-close-white" id="remove-dependent-close"></button>
+            </div>
+        </div>
+        <div class="p-4">
+            <div class="text-center mb-4">
+                <i class="fas fa-unlink text-warning fs-1 mb-3"></i>
+                <p class="mb-2">Вы уверены, что хотите убрать зависимость навыка</p>
+                <p class="fw-bold fs-5" id="remove-dependent-name"></p>
+                <p class="text-muted">от навыка <span class="fw-bold" id="remove-dependent-skill-name"></span>?</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Это действие можно отменить, добавив зависимость заново
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-top d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary modern-btn" id="remove-dependent-cancel">Отмена</button>
+            <button type="button" class="btn btn-warning modern-btn" id="remove-dependent-confirm">
+                <i class="fas fa-unlink me-1"></i> Убрать зависимость
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для добавления предпосылки (зависимого навыка) -->
+<div class="modern-modal" id="add-dependent-modal">
+    <div class="modal-content">
+        <div class="gradient-header" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">
+                    <i class="fas fa-share me-2"></i>
+                    Добавить предпосылку
+                </h5>
+                <button type="button" class="btn-close btn-close-white" id="add-dependent-close"></button>
+            </div>
+        </div>
+        <div class="p-4">
+            <div class="mb-3">
+                <label for="dependent-search" class="form-label fw-semibold">Поиск навыка</label>
+                <input type="text" class="form-control" id="dependent-search" placeholder="Введите название навыка...">
+                <small class="text-muted">Выберите навык, который будет зависеть от текущего</small>
+            </div>
+            <div class="mt-3" id="dependent-results">
+                <div class="list-group" id="dependent-list">
+                    <!-- Результаты поиска будут добавлены здесь -->
+                </div>
+                <div class="empty-state" id="dependent-empty-message">
+                    <i class="fas fa-search"></i>
+                    <p class="text-muted">Введите название навыка для поиска</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-top d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary modern-btn" id="add-dependent-cancel">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- Передача данных в JavaScript -->
+<script type="application/json" id="graph-data">{{ cytoscape_data|safe }}</script>
+<script type="application/json" id="courses-data">{{ courses_json|safe }}</script>
+<script type="application/json" id="skills-data">{{ skills_json|safe }}</script>
+<script type="text/plain" id="selected-skill-id">{% if selected_skill %}{{ selected_skill.id }}{% endif %}</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {    // Обработчики модальных окон
+    const modals = {
+        'new-skill': document.getElementById('new-skill-modal'),
+        'add-prereq': document.getElementById('add-prereq-modal'),
+        'assign-course': document.getElementById('assign-course-modal'),
+        'delete-confirm': document.getElementById('delete-confirm-modal'),
+        'remove-prereq': document.getElementById('remove-prereq-modal'),
+        'add-dependent': document.getElementById('add-dependent-modal')
+    };
+
+    // Показать модальное окно
+    function showModal(modalName) {
+        if (modals[modalName]) {
+            modals[modalName].classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    // Скрыть модальное окно
+    function hideModal(modalName) {
+        if (modals[modalName]) {
+            modals[modalName].classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }    // Обработчики кнопок
+    const buttons = {
+        // Новый навык
+        'new-skill-btn': () => showModal('new-skill'),
+        'new-skill-btn-empty': () => showModal('new-skill'),
+        'new-skill-close': () => hideModal('new-skill'),
+        'new-skill-cancel': () => hideModal('new-skill'),
+          // Присвоить курс
+        'assign-course-btn': () => showModal('assign-course'),
+        'assign-course-close': () => hideModal('assign-course'),
+        'assign-course-cancel': () => hideModal('assign-course'),
+        
+        // Удаление навыка
+        'delete-confirm-close': () => hideModal('delete-confirm'),
+        'delete-confirm-cancel': () => hideModal('delete-confirm'),
+          // Удаление зависимости
+        'remove-prereq-close': () => hideModal('remove-prereq'),
+        'remove-prereq-cancel': () => hideModal('remove-prereq'),
+        
+        // Добавление предпосылки (зависимого навыка)
+        'add-dependent-close': () => hideModal('add-dependent'),
+        'add-dependent-cancel': () => hideModal('add-dependent')
+    };
+
+    // Привязка обработчиков
+    Object.keys(buttons).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('click', buttons[id]);
+        }
+    });
+
+    // Обработчик кнопки удаления
+    const deleteBtn = document.getElementById('delete-skill-btn');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', function() {
+            const skillId = this.getAttribute('data-skill-id');
+            const skillName = this.getAttribute('data-skill-name');
+            
+            document.getElementById('delete-skill-name').textContent = skillName;
+            document.getElementById('delete-skill-id').value = skillId;
+            
+            showModal('delete-confirm');
+        });
+    }
+
+    // Закрытие модальных окон при клике вне области контента
+    Object.values(modals).forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                const modalName = Object.keys(modals).find(key => modals[key] === modal);
+                hideModal(modalName);
+            }
+        });
+    });
+
+    // Закрытие модальных окон по Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            Object.keys(modals).forEach(modalName => {
+                if (modals[modalName].classList.contains('show')) {
+                    hideModal(modalName);
+                }
+            });
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Vis.js библиотеки -->
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<script src="https://unpkg.com/vis-data/standalone/umd/vis-data.min.js"></script>
+<!-- Сначала загружаем модуль для работы с графом -->
+<script src="{% static 'methodist/js/network.js' %}"></script>
+<!-- Затем основной скрипт страницы -->
+<script src="{% static 'methodist/skills_edit.js' %}?v=3"></script>
+<!-- Вспомогательные скрипты -->
+<script src="{% static 'methodist/js/skill-modal.js' %}?v=3"></script>
+<script src="{% static 'methodist/js/add-prerequisite.js' %}?v=3"></script>
+<script src="{% static 'methodist/js/remove-prerequisite.js' %}?v=3"></script>
+<script src="{% static 'methodist/js/add-dependent.js' %}?v=3"></script>
+<script src="{% static 'methodist/js/remove-dependent.js' %}?v=1"></script>
+<script src="{% static 'methodist/js/delete-modal.js' %}?v=3"></script>
+{% endblock %}

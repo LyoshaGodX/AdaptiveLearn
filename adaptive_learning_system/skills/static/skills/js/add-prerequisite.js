@@ -45,32 +45,26 @@ function openAddPrerequisiteModal(selectedSkillId, allSkills, courses) {
                 collectAllDependents(s.id, visited);
             }
         });
-    }
-
-    // --- Формируем forbiddenIds и причины ---
+    }    // --- Формируем forbiddenIds и причины ---
     const forbiddenIds = new Set();
     const forbiddenReasons = {};
-    // Сам выбранный навык
+    
+    // 1. Сам выбранный навык
     forbiddenIds.add(Number(selectedSkillId));
     forbiddenReasons[Number(selectedSkillId)] = 'Сам выбранный навык';
 
-    // Все id, от которых выбранный навык зависит (вверх)
-    const allPrereqs = new Set();
-    collectAllPrerequisites(selectedSkillId, allPrereqs);
-    allPrereqs.forEach(id => {
-        forbiddenIds.add(Number(id));
-        forbiddenReasons[Number(id)] = 'Входит в цепочку предпосылок (вверх)';
-    });
-
-    // Все id, которые зависят от выбранного навыка (вниз)
+    // 2. Все навыки, которые зависят от выбранного навыка (потомки)
+    // Если мы добавим выбранный навык как предпосылку к любому из этих навыков, получим цикл
     const allDependents = new Set();
     collectAllDependents(selectedSkillId, allDependents);
     allDependents.forEach(id => {
-        forbiddenIds.add(Number(id));
-        forbiddenReasons[Number(id)] = 'Входит в цепочку зависимых (вниз)';
+        if (Number(id) !== Number(selectedSkillId)) { // Исключаем сам навык, он уже добавлен
+            forbiddenIds.add(Number(id));
+            forbiddenReasons[Number(id)] = 'Зависит от выбранного навыка (создаст цикл)';
+        }
     });
 
-    // Уже связанные предпосылки
+    // 3. Уже связанные предпосылки (для избежания дублирования)
     const alreadyPrereqIds = selectedSkill ? selectedSkill.prerequisites.map(Number) : [];
     alreadyPrereqIds.forEach(id => {
         forbiddenIds.add(Number(id));
@@ -169,8 +163,7 @@ function openAddPrerequisiteModal(selectedSkillId, allSkills, courses) {
         }
         const csrftoken = getCookie('csrftoken');
         saveBtn.disabled = true;
-        saveBtn.textContent = 'Добавление...';
-        fetch('/api/add_prerequisite/', {
+        saveBtn.textContent = 'Добавление...';        fetch('/skills/api/add_prerequisite/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

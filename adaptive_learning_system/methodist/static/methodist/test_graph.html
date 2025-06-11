@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест графа навыков</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="https://unpkg.com/vis-data/standalone/umd/vis-data.min.js"></script>
+    <style>
+        #skill-network {
+            width: 800px;
+            height: 400px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест графа навыков</h1>
+    <div id="skill-network"></div>
+    
+    <!-- Тестовые данные -->
+    <script type="application/json" id="graph-data">
+    {
+        "nodes": [
+            {
+                "data": {
+                    "id": "skill_1",
+                    "name": "Базовая математика",
+                    "is_base": true,
+                    "skill_id": 1
+                }
+            },
+            {
+                "data": {
+                    "id": "skill_2", 
+                    "name": "Алгебра",
+                    "is_base": false,
+                    "skill_id": 2
+                }
+            },
+            {
+                "data": {
+                    "id": "skill_3",
+                    "name": "Геометрия", 
+                    "is_base": false,
+                    "skill_id": 3
+                }
+            }
+        ],
+        "edges": [
+            {
+                "data": {
+                    "id": "edge_1_2",
+                    "source": "skill_1",
+                    "target": "skill_2"
+                }
+            },
+            {
+                "data": {
+                    "id": "edge_1_3", 
+                    "source": "skill_1",
+                    "target": "skill_3"
+                }
+            }
+        ]
+    }
+    </script>
+    
+    <script type="text/plain" id="selected-skill-id">2</script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM загружен');
+            
+            // Проверяем наличие библиотек
+            if (typeof vis === 'undefined') {
+                console.error('Vis.js не загружен!');
+                return;
+            }
+            console.log('Vis.js загружен:', vis);
+            
+            // Получаем данные
+            let graphData;
+            try {
+                const rawData = document.getElementById('graph-data').textContent;
+                console.log('Сырые данные:', rawData);
+                graphData = JSON.parse(rawData);
+                console.log('Данные графа:', graphData);
+            } catch (e) {
+                console.error('Ошибка парсинга данных:', e);
+                return;
+            }
+            
+            // Получаем выбранный навык
+            const selectedSkillId = parseInt(document.getElementById('selected-skill-id').textContent);
+            console.log('Выбранный навык ID:', selectedSkillId);
+            
+            // Создаем данные для Vis.js
+            const nodesArray = [];
+            const edgesArray = [];
+            
+            // Преобразуем узлы
+            graphData.nodes.forEach(function(node) {
+                const isBase = node.data.is_base;
+                const isSelected = node.data.skill_id === selectedSkillId;
+                console.log(`Узел ${node.data.name}: базовый=${isBase}, выбранный=${isSelected}`);
+                
+                nodesArray.push({
+                    id: node.data.id,
+                    label: node.data.name,
+                    title: node.data.name,
+                    skillId: node.data.skill_id,
+                    isBase: isBase,
+                    shape: 'box',
+                    color: {
+                        background: isSelected ? '#ff9800' : (isBase ? '#4285f4' : '#34a853'),
+                        border: isSelected ? '#e65100' : (isBase ? '#2054a5' : '#1a682f')
+                    },
+                    font: {
+                        color: 'white',
+                        size: isSelected ? 16 : 14
+                    }
+                });
+            });
+            
+            // Преобразуем ребра
+            graphData.edges.forEach(function(edge) {
+                console.log(`Ребро: ${edge.data.source} -> ${edge.data.target}`);
+                edgesArray.push({
+                    id: edge.data.id,
+                    from: edge.data.source,
+                    to: edge.data.target,
+                    arrows: 'to'
+                });
+            });
+            
+            console.log('Узлы для Vis.js:', nodesArray);
+            console.log('Ребра для Vis.js:', edgesArray);
+            
+            // Создаем наборы данных
+            const nodes = new vis.DataSet(nodesArray);
+            const edges = new vis.DataSet(edgesArray);
+            
+            // Получаем контейнер
+            const container = document.getElementById('skill-network');
+            console.log('Контейнер:', container);
+            
+            if (container) {
+                // Создаем граф
+                const network = new vis.Network(container, { nodes, edges }, {
+                    nodes: {
+                        shape: 'box',
+                        font: { color: 'white' }
+                    },
+                    edges: {
+                        arrows: 'to'
+                    },
+                    physics: {
+                        enabled: true
+                    }
+                });
+                
+                console.log('Граф создан:', network);
+                
+                network.on('stabilizationIterationsDone', function() {
+                    console.log('Стабилизация завершена');
+                    network.setOptions({ physics: { enabled: false } });
+                });
+            } else {
+                console.error('Контейнер не найден!');
+            }
+        });
+    </script>
+</body>
+</html>

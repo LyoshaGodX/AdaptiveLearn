@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_extensions",
+    # "django_extensions",  # Временно отключено
     "skills",
     "methodist",
     "student",
@@ -59,7 +59,7 @@ ROOT_URLCONF = "adaptive_learning.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -127,6 +127,10 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# Media files (uploads)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 # Включение отладки статических файлов для разработки
 if DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
@@ -137,5 +141,5 @@ if DEBUG:
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "/login/"
-LOGIN_REDIRECT_URL = "/student/"
+# LOGIN_REDIRECT_URL теперь определяется динамически в RoleBasedLoginView
 LOGOUT_REDIRECT_URL = "/login/"

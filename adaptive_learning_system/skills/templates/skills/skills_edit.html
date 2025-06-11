@@ -196,13 +196,19 @@
                                 <h6 class="text-md font-semibold text-green-700">
                                     От {% if selected_skill %}{{ selected_skill.name }}{% else %}навыка{% endif %} зависят
                                 </h6>
-                            </div>
-                            <div class="p-4">
+                            </div>                            <div class="p-4">
                                 <ul class="space-y-2">
                                     {% for dep_skill in dependent_skills %}
-                                    <li class="flex items-center bg-green-100 rounded px-3 py-2">
-                                        <span class="font-medium text-green-900">{{ dep_skill.name }}</span>
-                                        <span class="text-xs text-green-500 ml-2">ID: {{ dep_skill.id }}</span>
+                                    <li class="flex items-center justify-between bg-green-100 rounded px-3 py-2">
+                                        <div class="flex items-center">
+                                            <span class="font-medium text-green-900">{{ dep_skill.name }}</span>
+                                            <span class="text-xs text-green-500 ml-2">ID: {{ dep_skill.id }}</span>
+                                        </div>
+                                        <button type="button" class="remove-dependent-btn text-red-500 hover:text-red-700 ml-2" 
+                                                data-skill-id="{{ selected_skill.id }}" data-dependent-id="{{ dep_skill.id }}"
+                                                title="Убрать зависимость">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </li>
                                     {% empty %}
                                     <li class="text-gray-400 italic">Нет зависимых навыков</li>
@@ -407,9 +413,9 @@
     <script src="{% static 'skills/js/network.js' %}"></script>
     <script src="{% static 'skills/js/delete-modal.js' %}"></script>
     <script src="{% static 'skills/js/skill-modal.js' %}"></script>
-    <script src="{% static 'skills/skills_edit.js' %}"></script>
-    <script src="{% static 'skills/js/add-prerequisite.js' %}"></script>
+    <script src="{% static 'skills/skills_edit.js' %}"></script>    <script src="{% static 'skills/js/add-prerequisite.js' %}"></script>
     <script src="{% static 'skills/js/remove-prerequisite.js' %}"></script>
     <script src="{% static 'skills/js/add-dependent.js' %}"></script>
+    <script src="{% static 'skills/js/remove-dependent.js' %}"></script>
 </body>
 </html>

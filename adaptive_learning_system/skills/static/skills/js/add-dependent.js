@@ -7,20 +7,31 @@ function openAddDependentModal(selectedSkillId, allSkills, courses) {
     const skillsList = modal.querySelector('.skills-list');
     const courseFilter = modal.querySelector('.course-filter');
     const nameFilter = modal.querySelector('.name-filter');
-    const selectedSkillName = modal.querySelector('.selected-skill-name');
-
-    var selectedSkill = allSkills.find(s => Number(s.id) === Number(selectedSkillId));
+    const selectedSkillName = modal.querySelector('.selected-skill-name');    var selectedSkill = allSkills.find(s => Number(s.id) === Number(selectedSkillId));
     selectedSkillName.textContent = selectedSkill ? selectedSkill.name : '';
     let chosenSkillId = null;
 
-    // Собрать все id потомков (всех зависимых навыков, включая транзитивно)
+    // --- Вспомогательные функции для предотвращения циклических зависимостей ---
+    
+    // Собрать все id навыков, от которых выбранный навык зависит (предпосылки вверх по графу)
+    function collectAllPrerequisites(skillId, visited = new Set()) {
+        if (visited.has(Number(skillId))) return;
+        visited.add(Number(skillId));
+        const skill = allSkills.find(s => Number(s.id) === Number(skillId));
+        if (skill && skill.prerequisites) {
+            skill.prerequisites.map(Number).forEach(prereqId => {
+                collectAllPrerequisites(prereqId, visited);
+            });
+        }
+    }
+    
+    // Собрать все id навыков, которые зависят от выбранного навыка (потомки вниз по графу)
     function collectAllDescendants(skillId, visited = new Set()) {
+        if (visited.has(Number(skillId))) return;
+        visited.add(Number(skillId));
         allSkills.forEach(s => {
             if (s.prerequisites.map(Number).includes(Number(skillId))) {
-                if (!visited.has(Number(s.id))) {
-                    visited.add(Number(s.id));
-                    collectAllDescendants(s.id, visited);
-                }
+                collectAllDescendants(s.id, visited);
             }
         });
     }
@@ -28,14 +39,31 @@ function openAddDependentModal(selectedSkillId, allSkills, courses) {
     // --- Формируем forbiddenIds и причины ---
     const forbiddenIds = new Set();
     const forbiddenReasons = {};
+    
+    // 1. Сам выбранный навык
     forbiddenIds.add(Number(selectedSkillId));
     forbiddenReasons[Number(selectedSkillId)] = 'Сам выбранный навык';
-    // Все потомки (все зависимые навыки, включая транзитивно)
+    
+    // 2. Все навыки, от которых выбранный навык зависит (предпосылки)
+    // Если мы добавим один из них как зависимый, получим цикл
+    const allPrerequisites = new Set();
+    collectAllPrerequisites(selectedSkillId, allPrerequisites);
+    allPrerequisites.forEach(id => {
+        if (Number(id) !== Number(selectedSkillId)) { // Исключаем сам навык, он уже добавлен
+            forbiddenIds.add(Number(id));
+            forbiddenReasons[Number(id)] = 'Является предпосылкой (создаст цикл)';
+        }
+    });
+    
+    // 3. Все навыки, которые уже зависят от выбранного навыка (потомки)
+    // Их добавление не создаст цикл, но это будет дублированием
     const allDescendants = new Set();
     collectAllDescendants(selectedSkillId, allDescendants);
     allDescendants.forEach(id => {
-        forbiddenIds.add(Number(id));
-        forbiddenReasons[Number(id)] = 'Является потомком (зависимым)';
+        if (Number(id) !== Number(selectedSkillId)) { // Исключаем сам навык, он уже добавлен
+            forbiddenIds.add(Number(id));
+            forbiddenReasons[Number(id)] = 'Уже является зависимым навыком';
+        }
     });
 
     // Фильтрация навыков для выбора зависимого
@@ -116,11 +144,10 @@ function openAddDependentModal(selectedSkillId, allSkills, courses) {
                 }
             }
             return cookieValue;
-        }
-        const csrftoken = getCookie('csrftoken');
+        }        const csrftoken = getCookie('csrftoken');
         saveBtn.disabled = true;
         saveBtn.textContent = 'Добавление...';
-        fetch('/api/add_prerequisite/', {
+        fetch('/skills/api/add_prerequisite/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
