@@ -29,14 +29,9 @@ class Task(models.Model):
         max_length=20,
         choices=DifficultyLevel.choices,
         default=DifficultyLevel.BEGINNER,
-        verbose_name="Уровень сложности"    )
-    question_text = models.TextField(verbose_name="Формулировка задачи")
-    correct_answer = models.TextField(verbose_name="Правильный ответ")
-    explanation = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name="Объяснение ответа"
+        verbose_name="Уровень сложности"
     )
+    question_text = models.TextField(verbose_name="Формулировка задачи")
     skills = models.ManyToManyField(
         Skill,
         related_name="tasks",

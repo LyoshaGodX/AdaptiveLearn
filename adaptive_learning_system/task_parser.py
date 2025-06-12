@@ -128,7 +128,8 @@ class TaskParser:
                 current_section = 'explanation'
                 continue
             elif current_section == 'question':
-                question_lines.append(line)            elif current_section == 'variants':
+                question_lines.append(line)
+            elif current_section == 'variants':
                 if line and (line.startswith(('A)', 'B)', 'C)', 'D)', 'E)', 'F)')) or re.match(r'^\d+\)', line)):
                     variants.append(line)
             elif current_section == 'explanation':

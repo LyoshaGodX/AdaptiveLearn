@@ -261,19 +261,24 @@ def _parse_tasks_from_markdown(content):
     # Объединяем заголовки с их содержимым
     for i in range(1, len(sections), 2):
         if i + 1 < len(sections):
-            section_content = sections[i + 1]
-            # Ищем блок между первой и последней парой ```
+            section_content = sections[i + 1]            # Ищем блок между первой и последней парой ```
             lines = section_content.split('\n')
             
             start_idx = -1
             end_idx = -1
             
+            # Находим первый блок ```
             for j, line in enumerate(lines):
                 if line.strip() == '```' and start_idx == -1:
                     start_idx = j + 1
-                elif line.strip() == '```' and start_idx != -1:
-                    end_idx = j
                     break
+            
+            # Находим последний блок ```
+            if start_idx != -1:
+                for j in range(len(lines) - 1, -1, -1):
+                    if lines[j].strip() == '```':
+                        end_idx = j
+                        break
             
             if start_idx != -1 and end_idx != -1:
                 task_block = '\n'.join(lines[start_idx:end_idx])
@@ -309,26 +314,32 @@ def _parse_single_task(block):
         elif line.startswith('КУРСЫ:'):
             courses_text = line[6:].strip()
             task['courses'] = [{'name': course.strip()} for course in courses_text.split(';') if course.strip()]
-        
-        # Секции
+          # Секции
         elif line == 'ВОПРОС:':
             current_section = 'question'
+            continue
         elif line == 'ВАРИАНТЫ:':
             current_section = 'variants'
+            continue
         elif line.startswith('ПРАВИЛЬНЫЙ:'):
             task['correct_single'] = line[11:].strip()
+            current_section = None
         elif line.startswith('ПРАВИЛЬНЫЕ:'):
             task['correct_multiple'] = line[11:].strip()
+            current_section = None
         elif line.startswith('ПРАВИЛЬНЫЙ ОТВЕТ:'):
             task['correct_answer'] = line[17:].strip()
+            current_section = None
         elif line.startswith('ОБЪЯСНЕНИЕ:'):
             task['explanation'] = line[11:].strip()
+            current_section = None
         
         # Содержимое секций
         elif current_section == 'question':
             question_lines.append(line)
-        elif current_section == 'variants' and re.match(r'^[A-Z]\)', line):
-            variants.append(line)
+        elif current_section == 'variants':
+            if line and (line.startswith(('A)', 'B)', 'C)', 'D)', 'E)', 'F)')) or re.match(r'^\d+\)', line)):
+                variants.append(line)
     
     # Собираем вопрос
     if question_lines:
