@@ -1,0 +1,319 @@
+{% extends 'methodist/base.html' %}
+{% load static %}
+
+{% block title %}Зачисление студентов{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'methodist/css/enrollment.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="enrollment-management">
+    <!-- Заголовок и статистика -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-graduate me-2"></i>
+                        Управление зачислением студентов
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                                <h5>{{ stats.total_students }}</h5>
+                                <p class="text-muted">Всего студентов</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <i class="fas fa-book fa-2x text-success mb-2"></i>
+                                <h5>{{ stats.total_courses }}</h5>
+                                <p class="text-muted">Всего курсов</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <i class="fas fa-clipboard-list fa-2x text-warning mb-2"></i>
+                                <h5>{{ stats.total_enrollments }}</h5>
+                                <p class="text-muted">Всего записей</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <i class="fas fa-play fa-2x text-info mb-2"></i>
+                                <h5>{{ stats.active_enrollments }}</h5>
+                                <p class="text-muted">Активных записей</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Студенты -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-users me-2"></i>
+                        Студенты ({{ students.count }})
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Поиск студентов -->
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="student-search" 
+                                   placeholder="Поиск студентов..."
+                                   value="{{ student_search }}">
+                        </div>
+                    </div>
+
+                    <!-- Список студентов -->
+                    <div class="students-list" id="students-list">
+                        {% for student in students %}
+                        <div class="student-item" data-student-id="{{ student.id }}" data-enrolled-courses="{% for enr in student.studentcourseenrollment_set.all %}{{ enr.course.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                            <div class="d-flex align-items-center">
+                                <div class="student-avatar me-3">
+                                    {% if student.profile_photo %}
+                                        <img src="{{ student.profile_photo.url }}" alt="Фото" class="rounded-circle">
+                                    {% else %}
+                                        <i class="fas fa-user-circle fa-2x text-muted"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="student-info flex-grow-1">
+                                    <h6 class="mb-1">{{ student.full_name }}</h6>
+                                    <small class="text-muted">{{ student.user.username }}</small>
+                                    {% if student.organization %}
+                                    <br><small class="text-info">{{ student.organization }}</small>
+                                    {% endif %}
+                                </div>
+                                <div class="student-actions">
+                                    <button class="btn btn-outline-info btn-sm view-student-enrollments" 
+                                            data-student-id="{{ student.id }}"
+                                            title="Просмотреть курсы">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Студенты не найдены</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Курсы -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-book me-2"></i>
+                        Курсы ({{ courses.count }})
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Поиск курсов -->
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="course-search" 
+                                   placeholder="Поиск курсов..."
+                                   value="{{ course_search }}">
+                        </div>
+                    </div>
+
+                    <!-- Список курсов -->
+                    <div class="courses-list" id="courses-list">
+                        {% for course in courses %}
+                        <div class="course-item" data-course-id="{{ course.id }}" data-enrolled-students="{% for enr in course.student_enrollments.all %}{{ enr.student.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                            <div class="d-flex align-items-center">
+                                <div class="course-icon me-3">
+                                    <i class="fas fa-book fa-2x text-success"></i>
+                                </div>
+                                <div class="course-info flex-grow-1">
+                                    <h6 class="mb-1">{{ course.name }}</h6>
+                                    <small class="text-muted">ID: {{ course.id }}</small>
+                                    {% if course.enrolled_count > 0 %}
+                                    <br><small class="text-info">
+                                        <i class="fas fa-users"></i> {{ course.enrolled_count }} студентов
+                                    </small>
+                                    {% endif %}
+                                </div>
+                                <div class="course-actions">
+                                    <button class="btn btn-outline-success btn-sm view-course-enrollments" 
+                                            data-course-id="{{ course.id }}"
+                                            title="Просмотреть студентов">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-book fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Курсы не найдены</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Форма записи -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-plus me-2"></i>
+                        Записать студента на курс
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="enrollment-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label class="form-label">Выберите студента:</label>
+                                <div class="selected-student" id="selected-student">
+                                    <p class="text-muted">Выберите студента из списка выше</p>
+                                </div>
+                                <input type="hidden" id="selected-student-id" name="student_id">
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Выберите курс:</label>
+                                <div class="selected-course" id="selected-course">
+                                    <p class="text-muted">Выберите курс из списка выше</p>
+                                </div>
+                                <input type="hidden" id="selected-course-id" name="course_id">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100" id="enroll-btn" disabled>
+                                    <i class="fas fa-plus"></i>
+                                    Записать
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Последние записи -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history me-2"></i>
+                        Последние записи
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Студент</th>
+                                    <th>Курс</th>
+                                    <th>Статус</th>
+                                    <th>Дата записи</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="enrollments-table">
+                                {% for enrollment in all_enrollments %}
+                                <tr data-enrollment-id="{{ enrollment.id }}">
+                                    <td>{{ enrollment.student.full_name }}</td>
+                                    <td>{{ enrollment.course.name }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if enrollment.status == 'completed' %}bg-success
+                                            {% elif enrollment.status == 'in_progress' %}bg-primary
+                                            {% elif enrollment.status == 'enrolled' %}bg-info
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ enrollment.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ enrollment.enrolled_at|date:"d.m.Y H:i" }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-danger btn-sm unenroll-btn" 
+                                                data-enrollment-id="{{ enrollment.id }}"
+                                                title="Отчислить">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">Записи не найдены</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальные окна -->
+<!-- Модальное окно курсов студента -->
+<div class="modal fade" id="studentEnrollmentsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Курсы студента</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="student-enrollments-content">
+                <!-- Контент загружается динамически -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно студентов курса -->
+<div class="modal fade" id="courseEnrollmentsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Студенты курса</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="course-enrollments-content">
+                <!-- Контент загружается динамически -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'methodist/js/enrollment.js' %}"></script>
+{% endblock %}

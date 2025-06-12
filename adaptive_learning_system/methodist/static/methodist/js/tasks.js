@@ -3,6 +3,9 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Исправление z-index для dropdown меню в карточках заданий
+    initializeTaskCardDropdowns();
+    
     // Автоматическая отправка формы при изменении фильтров
     const filterSelects = document.querySelectorAll('#course, #difficulty, #skill');
     filterSelects.forEach(select => {
@@ -103,4 +106,63 @@ function showNotification(message, type = 'success') {
             notification.remove();
         }
     }, 5000);
+}
+
+// Функция для исправления z-index dropdown меню в карточках заданий
+function initializeTaskCardDropdowns() {
+    const taskCards = document.querySelectorAll('.task-card');
+    
+    taskCards.forEach(card => {
+        const dropdown = card.querySelector('.dropdown');
+        const dropdownToggle = card.querySelector('.dropdown-toggle');
+        const dropdownMenu = card.querySelector('.dropdown-menu');
+        
+        if (dropdown && dropdownToggle && dropdownMenu) {
+            // События Bootstrap dropdown
+            dropdownToggle.addEventListener('show.bs.dropdown', function(e) {
+                console.log('Dropdown показывается для карточки задания');
+                
+                // Поднимаем z-index карточки
+                card.style.setProperty('z-index', '1060', 'important');
+                card.classList.add('dropdown-open');
+                
+                // Убеждаемся, что меню имеет правильный z-index
+                dropdownMenu.style.setProperty('z-index', '1061', 'important');
+                dropdownMenu.style.setProperty('position', 'absolute', 'important');
+            });
+            
+            dropdownToggle.addEventListener('hide.bs.dropdown', function(e) {
+                console.log('Dropdown скрывается для карточки задания');
+                
+                // Возвращаем z-index
+                card.style.removeProperty('z-index');
+                card.classList.remove('dropdown-open');
+                dropdownMenu.style.removeProperty('z-index');
+            });
+            
+            // Предотвращение закрытия dropdown при клике на элементы формы
+            dropdownMenu.addEventListener('click', function(e) {
+                // Если кликнули на кнопку удаления - позволяем продолжить
+                if (e.target.type === 'submit' || e.target.closest('button[type="submit"]')) {
+                    return true;
+                }
+                
+                // Иначе предотвращаем закрытие
+                e.stopPropagation();
+            });
+        }
+        
+        // При наведении на карточку поднимаем её z-index
+        card.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('dropdown-open')) {
+                this.style.setProperty('z-index', '5', 'important');
+            }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('dropdown-open')) {
+                this.style.removeProperty('z-index');
+            }
+        });
+    });
 }

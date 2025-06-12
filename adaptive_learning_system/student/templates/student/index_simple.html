@@ -29,7 +29,8 @@
                                 <p class="card-text">Завершенных курсов</p>
                             </div>
                         </div>
-                    </div>                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
                         <div class="card border-info">
                             <div class="card-body text-center">
                                 <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
@@ -52,13 +53,14 @@
                                     <h6 class="card-title">{{ enrollment.course.name }}</h6>
                                     <p class="card-text">{{ enrollment.course.description|truncatewords:15 }}</p>
                                     
-                                    <!-- Прогресс-бар -->
+                                    <!-- Прогресс -->
                                     <div class="mb-2">
                                         <div class="d-flex justify-content-between">
                                             <small>Прогресс:</small>
                                             <small>{{ enrollment.progress_percentage }}%</small>
-                                        </div>                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: {{ enrollment.progress_percentage }}%" aria-valuenow="{{ enrollment.progress_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: {{ enrollment.progress_percentage }}%"></div>
                                         </div>
                                     </div>
                                     

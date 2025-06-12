@@ -1,5 +1,64 @@
 /* Unified CSS styles for AdaptiveLearn system */
 
+/* ======= DROPDOWN Z-INDEX FIX ======= */
+/* Универсальные стили для исправления проблем с dropdown меню */
+
+.card {
+    position: relative;
+}
+
+.card:hover {
+    z-index: 1;
+}
+
+.card .dropdown {
+    position: relative;
+}
+
+.card .dropdown-menu {
+    z-index: 1050 !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    border: none;
+    border-radius: 8px;
+    animation: dropdownFadeIn 0.15s ease-out;
+}
+
+.card .dropdown.show {
+    z-index: 1051 !important;
+}
+
+.card .dropdown.show .dropdown-menu {
+    z-index: 1052 !important;
+}
+
+/* Анимация появления dropdown */
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Улучшение стилей dropdown элементов */
+.dropdown-item {
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(2px);
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: #f8d7da;
+    color: #721c24 !important;
+}
+
 /* ======= SKILL GRAPH STYLES ======= */
 /* Стили для интерактивного графа навыков */
 

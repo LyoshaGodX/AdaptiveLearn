@@ -1,0 +1,112 @@
+{% extends 'student/base.html' %}
+{% block title %}Редактирование профиля{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4>Редактирование профиля</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="full_name" class="form-label">ФИО <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" 
+                                       value="{{ profile.full_name }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="{{ profile.email }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="organization" class="form-label">Организация</label>
+                        <input type="text" class="form-control" id="organization" name="organization" 
+                               value="{{ profile.organization|default:'' }}" 
+                               placeholder="Название учебного заведения или организации">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="profile_photo" class="form-label">Фото профиля</label>
+                        <input type="file" class="form-control" id="profile_photo" name="profile_photo" 
+                               accept="image/*">
+                        <div class="form-text">
+                            Рекомендуемый размер: 200x200px. Поддерживаемые форматы: JPG, PNG, GIF
+                        </div>
+                        
+                        {% if profile.profile_photo %}
+                        <div class="mt-2">
+                            <small class="text-muted">Текущее фото:</small><br>
+                            <img src="{{ profile.profile_photo.url }}" alt="Текущее фото" 
+                                 class="img-thumbnail" style="max-width: 100px;">
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Информация аккаунта</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Имя пользователя</label>
+                                <input type="text" class="form-control" value="{{ profile.user.username }}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Дата регистрации</label>
+                                <input type="text" class="form-control" value="{{ profile.created_at|date:'d.m.Y' }}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'student_profile' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Сохранить изменения
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Предпросмотр загружаемого изображения
+    const photoInput = document.getElementById('profile_photo');
+    photoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Создаем предпросмотр, если его еще нет
+                let preview = document.getElementById('photo-preview');
+                if (!preview) {
+                    preview = document.createElement('div');
+                    preview.id = 'photo-preview';
+                    preview.className = 'mt-2';
+                    photoInput.parentNode.appendChild(preview);
+                }
+                
+                preview.innerHTML = `
+                    <small class="text-muted">Предпросмотр:</small><br>
+                    <img src="${e.target.result}" alt="Предпросмотр" 
+                         class="img-thumbnail" style="max-width: 100px;">
+                `;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+</script>
+{% endblock %}

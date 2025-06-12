@@ -1,0 +1,242 @@
+{% extends 'methodist/base.html' %}
+{% load static %}
+
+{% block title %}
+{% if is_editing %}Редактировать курс{% else %}Создать курс{% endif %} - Методист
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'methodist/css/courses.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Заголовок -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-{% if is_editing %}edit{% else %}plus{% endif %} me-2 text-primary"></i>
+                    {% if is_editing %}Редактировать курс: {{ course.name }}{% else %}Создать новый курс{% endif %}
+                </h1>
+                <a href="{% url 'methodist_courses' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Назад к списку
+                </a>
+            </div>
+
+            <!-- Форма -->
+            <form method="post" class="course-form">
+                {% csrf_token %}
+                  <!-- Основная информация -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Основная информация о курсе
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="course_id" class="form-label">
+                                        ID курса <span class="text-danger">*</span>
+                                    </label>
+                                    {% if is_editing %}
+                                        <input type="text" class="form-control" id="course_id" name="course_id" 
+                                               value="{{ course.id }}" readonly>
+                                        <div class="form-text">ID курса нельзя изменить после создания</div>
+                                    {% else %}
+                                        <input type="text" class="form-control" id="course_id" name="course_id" 
+                                               placeholder="C4, C5..." pattern="^C\d+$" maxlength="10" required>
+                                        <div class="form-text">Формат: C + число (например, C4, C5)</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">
+                                        Название курса <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="name" name="name" 
+                                           value="{% if course %}{{ course.name }}{% endif %}" 
+                                           maxlength="255" required>
+                                    <div class="form-text">Краткое и понятное название курса</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="duration_hours" class="form-label">
+                                        Длительность (часы)
+                                    </label>
+                                    <input type="number" class="form-control" id="duration_hours" name="duration_hours" 
+                                           value="{% if course.duration_hours %}{{ course.duration_hours }}{% endif %}" 
+                                           min="1" max="1000" placeholder="40">
+                                    <div class="form-text">Примерное время изучения</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">
+                                Описание курса <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" id="description" name="description" rows="4" 
+                                      placeholder="Опишите содержание и цели курса" 
+                                      required>{% if course %}{{ course.description }}{% endif %}</textarea>
+                            <div class="form-text">Подробное описание того, чему научится студент</div>
+                        </div>
+
+                        {% if is_editing %}
+                        <!-- Метаинформация для существующего курса -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <i class="fas fa-brain text-success"></i>
+                                    <span class="info-label">Навыков:</span>
+                                    <span class="info-value">{{ current_skills.count }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <i class="fas fa-tasks text-warning"></i>
+                                    <span class="info-label">Заданий:</span>
+                                    <span class="info-value">{{ current_tasks.count }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <i class="fas fa-clock text-info"></i>
+                                    <span class="info-label">Создан:</span>
+                                    <span class="info-value">{{ course.id }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>                <!-- Навыки курса -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-brain me-2"></i>
+                            Навыки, изучаемые в курсе
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">Доступные навыки</h6>
+                                    <small class="text-muted" id="available-skills-count">0</small>
+                                </div>
+                                <div class="skills-search mb-3">
+                                    <input type="text" class="form-control" id="available-skills-search" 
+                                           placeholder="Поиск доступных навыков...">
+                                </div>
+                                <div class="skills-container" id="available-skills-container">
+                                    <!-- Навыки будут добавлены динамически -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">Выбранные навыки</h6>
+                                    <small class="text-muted" id="selected-skills-count">0</small>
+                                </div>
+                                <div class="skills-search mb-3">
+                                    <input type="text" class="form-control" id="selected-skills-search" 
+                                           placeholder="Поиск выбранных навыков...">
+                                </div>
+                                <div class="skills-container" id="selected-skills-container">
+                                    <div class="empty-state" id="skills-empty-state">
+                                        <i class="fas fa-brain fa-2x text-muted mb-2"></i>
+                                        <p class="text-muted">Навыки не выбраны</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Скрытые поля для отправки формы -->
+                        <div id="selected-skills-hidden"></div>
+                    </div>
+                </div>                <!-- Задания курса -->
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-tasks me-2"></i>
+                            Задания курса
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">Доступные задания</h6>
+                                    <small class="text-muted" id="available-tasks-count">0</small>
+                                </div>
+                                <div class="tasks-search mb-3">
+                                    <input type="text" class="form-control" id="available-tasks-search" 
+                                           placeholder="Поиск доступных заданий...">
+                                </div>
+                                <div class="tasks-filters mb-3">
+                                    <select class="form-select form-select-sm" id="tasks-difficulty-filter">
+                                        <option value="">Все уровни сложности</option>
+                                        <option value="beginner">Начальный</option>
+                                        <option value="intermediate">Средний</option>
+                                        <option value="advanced">Продвинутый</option>
+                                    </select>
+                                </div>
+                                <div class="tasks-container" id="available-tasks-container">
+                                    <!-- Задания будут добавлены динамически -->
+                                </div>
+                            </div>                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">Выбранные задания</h6>
+                                    <small class="text-muted" id="selected-tasks-count">0</small>
+                                </div>
+                                <div class="tasks-search mb-3">
+                                    <input type="text" class="form-control" id="selected-tasks-search" 
+                                           placeholder="Поиск выбранных заданий...">
+                                </div>
+                                <div class="tasks-filters mb-3">
+                                    <select class="form-select form-select-sm" id="selected-tasks-difficulty-filter">
+                                        <option value="">Все уровни сложности</option>
+                                        <option value="beginner">Начальный</option>
+                                        <option value="intermediate">Средний</option>
+                                        <option value="advanced">Продвинутый</option>
+                                    </select>
+                                </div>
+                                <div class="tasks-container" id="selected-tasks-container">
+                                    <div class="empty-state" id="tasks-empty-state">
+                                        <i class="fas fa-tasks fa-2x text-muted mb-2"></i>
+                                        <p class="text-muted">Задания не выбраны</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Скрытые поля для отправки формы -->
+                        <div id="selected-tasks-hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Кнопки действий -->
+                <div class="card">
+                    <div class="card-body text-center">
+                        <button type="submit" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-save me-2"></i>
+                            {% if is_editing %}Сохранить изменения{% else %}Создать курс{% endif %}
+                        </button>
+                        <a href="{% url 'methodist_courses' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-times me-2"></i>Отмена
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'methodist/js/course-form.js' %}"></script>
+{% endblock %}

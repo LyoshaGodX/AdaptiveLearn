@@ -5,6 +5,7 @@ class Course(models.Model):
     id = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=255, verbose_name="Название курса")
     description = models.TextField(verbose_name="Описание")
+    duration_hours = models.PositiveIntegerField(null=True, blank=True, verbose_name="Длительность (часы)")
     
     def __str__(self):
         return self.name

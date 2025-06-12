@@ -4,12 +4,50 @@
     transition: all 0.3s ease;
     cursor: pointer;
     border: 1px solid #dee2e6;
+    position: relative !important; /* Добавляем для работы z-index */
 }
 
 .task-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border-color: #007bff;
+    z-index: 10 !important; /* Поднимаем карточку при наведении */
+}
+
+/* Стили для dropdown меню в карточках заданий */
+.task-card .dropdown {
+    position: relative !important;
+}
+
+.task-card .dropdown-menu {
+    z-index: 1050 !important; /* Высокий z-index для меню */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    border: none !important;
+    border-radius: 8px;
+    position: absolute !important;
+}
+
+.task-card .dropdown-toggle::after {
+    display: none !important; /* Убираем стандартную стрелку Bootstrap */
+}
+
+/* Активное состояние dropdown */
+.task-card .dropdown.show {
+    z-index: 1051 !important; /* Еще выше при открытом меню */
+}
+
+.task-card .dropdown.show .dropdown-menu {
+    z-index: 1052 !important;
+}
+
+/* Дополнительные правила для карточки с открытым dropdown */
+.task-card:has(.dropdown.show) {
+    z-index: 1053 !important;
+}
+
+/* Альтернативный способ для старых браузеров */
+.task-card.dropdown-open {
+    z-index: 1053 !important;
 }
 
 .task-card .card-header {
@@ -21,10 +59,6 @@
 .task-card .card-header h6 {
     font-weight: 600;
     color: #495057;
-}
-
-.task-card .dropdown-toggle::after {
-    display: none;
 }
 
 .task-card .badge {

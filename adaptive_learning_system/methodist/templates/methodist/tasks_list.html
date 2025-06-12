@@ -5,6 +5,29 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'methodist/css/tasks.css' %}">
+<style>
+/* Критически важные стили для исправления z-index dropdown меню */
+.task-card {
+    position: relative !important;
+}
+
+.task-card:hover {
+    z-index: 10 !important;
+}
+
+.task-card .dropdown-menu {
+    z-index: 1050 !important;
+    position: absolute !important;
+}
+
+.task-card.dropdown-open {
+    z-index: 1060 !important;
+}
+
+.task-card.dropdown-open .dropdown-menu {
+    z-index: 1061 !important;
+}
+</style>
 {% endblock %}
 
 {% block content %}

@@ -11,56 +11,343 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Дополнительные стили -->
+      <!-- Дополнительные стили -->
     <style>
-        body {
-            padding-top: 20px;
-            background-color: #f8f9fa;
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --bg-light: #f8fafc;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+
+        /* Обнуление отступов для полноэкранной шапки */
+        html, body {
+            margin: 0;
+            padding: 0;
+        }        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Открепленная шапка с отступом */
+        .modern-header {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            height: 80px;
+            margin: 1rem 1rem 2rem 1rem; /* Отступы сверху, справа, снизу, слева */
+            border-radius: 16px; /* Закругленные углы для красоты */
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Логотип */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .brand-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .brand-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Компактная навигация */
+        .nav-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-tabs-compact {
+            display: flex;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 0.25rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            gap: 0.125rem;
+        }
+
+        .nav-link-compact {
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .nav-link-compact:hover {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        .nav-link-compact.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-link-compact i {
+            font-size: 0.75rem;
+        }
+
+        /* Профиль пользователя */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--accent-color), #f97316);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .user-role {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }        /* Мобильная адаптивность */
+        @media (max-width: 992px) {            
+            .modern-header {
+                height: 70px;
+                margin: 0.75rem 0.75rem 1.5rem 0.75rem; /* Уменьшенные отступы на мобильных */
+            }
+            
+            .nav-link-compact span {
+                display: none;
+            }
+            
+            .nav-link-compact {
+                padding: 0.5rem;
+            }
+            
+            .user-details {
+                display: none;
+            }
+            
+            .brand-subtitle {
+                display: none;
+            }
+        }        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 0.75rem;
+            }
+            
+            .modern-header {
+                margin: 0.5rem 0.5rem 1rem 0.5rem; /* Еще меньшие отступы на малых экранах */
+            }
+            
+            .nav-tabs-compact {
+                gap: 0.25rem;
+                padding: 0.125rem;
+            }
+            
+            .nav-link-compact {
+                padding: 0.375rem;
+                font-size: 0.75rem;
+            }
+            
+            .brand-title {
+                font-size: 1rem;
+            }
+            
+            .brand-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Контейнер основного контента */
         .container {
             max-width: 1400px;
         }
-        .methodist-theme {
-            --bs-primary: #dc3545;
-            --bs-primary-rgb: 220, 53, 69;
-        }
-        .navbar {
-            background-color: #dc3545 !important;
-        }
-        .navbar .nav-link, .navbar .navbar-brand {
-            color: white !important;
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(226, 232, 240, 0.3);
         }
     </style>
     
     {% block extra_css %}{% endblock %}
 </head>
-<body class="methodist-theme">
-    <div class="container">
-        <header class="mb-4">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="/methodist/">Адаптивное обучение - Панель методиста</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="/methodist/">Граф навыков</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/methodist/edit/">Редактор навыков</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/methodist/tasks/">Управление заданиями</a></li>
-                            <!-- Дополнительные пункты меню методиста -->
-                        </ul>
-                        <ul class="navbar-nav">
-                            {% if user.is_authenticated %}
-                                <li class="nav-item"><span class="navbar-text me-2 text-white">{{ user.username }}</span></li>
-                                <li class="nav-item"><a class="nav-link" href="/logout/">Выйти</a></li>
-                            {% else %}
-                                <li class="nav-item"><a class="nav-link" href="/login/">Войти</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
+<body class="methodist-theme">    <!-- Современная фиксированная шапка -->
+    <header class="modern-header">
+        <div class="header-container">
+            <!-- Логотип и название -->
+            <a href="/methodist/" class="brand">
+                <div class="brand-icon">
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
-            </nav>        </header>
+                <div class="brand-text">
+                    <div class="brand-title">AdaptiveLearn</div>
+                    <div class="brand-subtitle">Панель методиста</div>
+                </div>
+            </a>
+
+            <!-- Навигационное меню -->
+            <nav class="nav-section">
+                <div class="nav-tabs-compact">
+                    <a href="/methodist/" class="nav-link-compact {% if request.resolver_match.url_name == 'methodist_index' %}active{% endif %}">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Граф навыков</span>
+                    </a>
+                    <a href="/methodist/edit/" class="nav-link-compact {% if 'edit' in request.path %}active{% endif %}">
+                        <i class="fas fa-edit"></i>
+                        <span>Редактор</span>
+                    </a>
+                    <a href="/methodist/courses/" class="nav-link-compact {% if 'courses' in request.path %}active{% endif %}">
+                        <i class="fas fa-book"></i>
+                        <span>Курсы</span>
+                    </a>
+                    <a href="/methodist/tasks/" class="nav-link-compact {% if 'tasks' in request.path %}active{% endif %}">
+                        <i class="fas fa-tasks"></i>
+                        <span>Задания</span>
+                    </a>
+                    <a href="/methodist/enrollment/" class="nav-link-compact {% if 'enrollment' in request.path %}active{% endif %}">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Зачисление</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Информация о пользователе -->
+            <div class="user-section">
+                {% if user.is_authenticated %}
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            {{ user.first_name|first|default:user.username|first|upper }}
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name">{{ user.first_name|default:user.username }}</div>
+                            <div class="user-role">Методист</div>
+                        </div>
+                    </div>
+                    <a href="/logout/" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Выйти</span>
+                    </a>
+                {% else %}
+                    <a href="/login/" class="nav-link-compact">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Войти</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
 
         <!-- Django Messages -->
         {% if messages %}

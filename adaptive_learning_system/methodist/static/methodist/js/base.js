@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Автоматическое скрытие уведомлений Django messages
     autoDismissMessages();
+    
+    // Исправления для dropdown меню
+    initializeDropdownFixes();
+    
+    // Улучшение эффектов карточек
+    initializeCardHoverEffects();
 });
 
 function highlightActiveNavLink() {
@@ -151,3 +157,62 @@ window.MethodistUtils = {
         };
     }
 };
+
+// Исправления для dropdown меню
+function initializeDropdownFixes() {
+    // Добавляем обработчики для всех dropdown в карточках
+    const dropdowns = document.querySelectorAll('.card .dropdown');
+    
+    dropdowns.forEach(dropdown => {
+        const toggle = dropdown.querySelector('.dropdown-toggle');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        
+        if (toggle && menu) {
+            // При открытии dropdown
+            toggle.addEventListener('shown.bs.dropdown', function() {
+                const card = this.closest('.card');
+                if (card) {
+                    card.style.zIndex = '1051';
+                }
+            });
+            
+            // При закрытии dropdown
+            toggle.addEventListener('hidden.bs.dropdown', function() {
+                const card = this.closest('.card');
+                if (card) {
+                    card.style.zIndex = '';
+                }
+            });
+            
+            // Предотвращаем закрытие при клике на элементы формы
+            menu.addEventListener('click', function(e) {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') {
+                    e.stopPropagation();
+                }
+            });
+        }
+    });
+}
+
+// Улучшение эффектов при наведении на карточки
+function initializeCardHoverEffects() {
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            // Если dropdown не открыт, поднимаем карточку
+            const dropdown = this.querySelector('.dropdown');
+            if (!dropdown || !dropdown.classList.contains('show')) {
+                this.style.zIndex = '1';
+            }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            // Если dropdown не открыт, возвращаем z-index
+            const dropdown = this.querySelector('.dropdown');
+            if (!dropdown || !dropdown.classList.contains('show')) {
+                this.style.zIndex = '';
+            }
+        });
+    });
+}
