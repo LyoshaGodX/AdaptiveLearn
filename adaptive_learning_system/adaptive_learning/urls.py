@@ -23,10 +23,12 @@ from methodist import views as methodist_views
 from . import views as core_views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),    path("methodist/", include('methodist.urls')),
+    path("admin/", admin.site.urls),
+    path("methodist/", include('methodist.urls')),
     path("student/", include('student.urls')),
     path("expert/", include('expert.urls')),
     path("skills/", include('skills.urls')),
+    path("mlmodels/", include('mlmodels.urls')),
     path("", core_views.home_redirect, name='home'),
     path("login/", core_views.RoleBasedLoginView.as_view(), name='login'),
     path("logout/", core_views.CustomLogoutView.as_view(), name='logout'),
