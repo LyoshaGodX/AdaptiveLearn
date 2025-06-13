@@ -97,6 +97,11 @@ class StudentStrategy(ABC):
         """Множитель времени для решения задания"""
         pass
     
+    @abstractmethod
+    def get_success_probability(self, task_difficulty: str, current_mastery: float) -> float:
+        """Получить вероятность успешного решения задания"""
+        pass
+    
     def update_session_state(self, task_result: bool, time_spent: float):
         """Обновить состояние сессии после выполнения задания"""
         # Увеличиваем усталость
@@ -236,6 +241,17 @@ class BeginnerStrategy(StudentStrategy):
         
         return multiplier * fatigue_penalty
     
+    def get_success_probability(self, task_difficulty: str, current_mastery: float) -> float:
+        """Вероятность успешного решения задания для начинающего студента"""
+        # Базовая вероятность на уровне сложности 'beginner'
+        if task_difficulty == 'beginner':
+            return 0.7 - self.session_fatigue * 0.3
+        elif task_difficulty == 'intermediate':
+            return 0.4 - self.session_fatigue * 0.2
+        elif task_difficulty == 'advanced':
+            return 0.1 - self.session_fatigue * 0.1
+        return 0.1
+    
     def get_task_type_preference(self, task_type: str) -> float:
         """Начинающие предпочитают простые типы заданий"""
         preferences = {
@@ -294,14 +310,18 @@ class IntermediateStrategy(StudentStrategy):
         fatigue_penalty = 1 + self.session_fatigue * 0.3
         return multiplier * fatigue_penalty
     
-    def get_task_type_preference(self, task_type: str) -> float:
-        """Средние студенты имеют нейтральные предпочтения"""
-        preferences = {
-            'true_false': 1.0,    # Нейтральное отношение ко всем типам
-            'single': 1.0,        # Нейтральное отношение 
-            'multiple': 1.0       # Нейтральное отношение
-        }
-        return preferences.get(task_type, 1.0)
+    def get_success_probability(self, task_difficulty: str, current_mastery: float) -> float:
+        """Вероятность успешного решения задания для студента среднего уровня"""
+        base_prob = 0.5
+        
+        # Корректируем на основе сложности задания и текущего освоения
+        if task_difficulty == 'beginner':
+            return base_prob + current_mastery * 0.3 - self.session_fatigue * 0.2
+        elif task_difficulty == 'intermediate':
+            return base_prob + current_mastery * 0.1 - self.session_fatigue * 0.1
+        elif task_difficulty == 'advanced':
+            return base_prob - self.session_fatigue * 0.1
+        return 0.1
 
 
 class AdvancedStrategy(StudentStrategy):
@@ -350,14 +370,17 @@ class AdvancedStrategy(StudentStrategy):
         fatigue_penalty = 1 + self.session_fatigue * 0.2
         return multiplier * fatigue_penalty
     
-    def get_task_type_preference(self, task_type: str) -> float:
-        """Одаренные студенты комфортно работают с любыми типами заданий"""
-        preferences = {
-            'true_false': 1.1,    # Слегка предпочитают быстрые да/нет для разминки
-            'single': 1.0,        # Нейтральное отношение
-            'multiple': 1.3       # Больше всего любят сложные множественные выборы
-        }
-        return preferences.get(task_type, 1.0)
+    def get_success_probability(self, task_difficulty: str, current_mastery: float) -> float:
+        """Вероятность успешного решения задания для продвинутого студента"""
+        base_prob = 0.6
+        
+        if task_difficulty == 'beginner':
+            return base_prob + current_mastery * 0.2 - self.session_fatigue * 0.1
+        elif task_difficulty == 'intermediate':
+            return base_prob + current_mastery * 0.1 - self.session_fatigue * 0.1
+        elif task_difficulty == 'advanced':
+            return base_prob - self.session_fatigue * 0.2
+        return 0.1
 
 
 class GiftedStrategy(StudentStrategy):
@@ -408,6 +431,18 @@ class GiftedStrategy(StudentStrategy):
         multiplier = base_multipliers.get(task_difficulty, 0.5)
         fatigue_penalty = 1 + self.session_fatigue * 0.1
         return multiplier * fatigue_penalty
+    
+    def get_success_probability(self, task_difficulty: str, current_mastery: float) -> float:
+        """Вероятность успешного решения задания для одаренного студента"""
+        base_prob = 0.7
+        
+        if task_difficulty == 'beginner':
+            return base_prob + current_mastery * 0.3 - self.session_fatigue * 0.1
+        elif task_difficulty == 'intermediate':
+            return base_prob + current_mastery * 0.2 - self.session_fatigue * 0.1
+        elif task_difficulty == 'advanced':
+            return base_prob + current_mastery * 0.1 - self.session_fatigue * 0.2
+        return 0.1
 
 
 class StruggleStrategy(StudentStrategy):
@@ -461,14 +496,17 @@ class StruggleStrategy(StudentStrategy):
         fatigue_penalty = 1 + self.session_fatigue * 0.8
         return multiplier * fatigue_penalty
     
-    def get_task_type_preference(self, task_type: str) -> float:
-        """Студенты с трудностями предпочитают самые простые типы заданий"""
-        preferences = {
-            'true_false': 1.5,    # Сильно предпочитают да/нет (самые простые)
-            'single': 1.0,        # Нейтральное отношение к одиночному выбору
-            'multiple': 0.5       # Сильно избегают множественного выбора
-        }
-        return preferences.get(task_type, 1.0)
+    def get_success_probability(self, task_difficulty: str, current_mastery: float) -> float:
+        """Вероятность успешного решения задания для студента с трудностями"""
+        base_prob = 0.2
+        
+        if task_difficulty == 'beginner':
+            return base_prob + current_mastery * 0.1 - self.session_fatigue * 0.1
+        elif task_difficulty == 'intermediate':
+            return base_prob - self.session_fatigue * 0.2
+        elif task_difficulty == 'advanced':
+            return base_prob - self.session_fatigue * 0.3
+        return 0.1
 
 
 class StudentStrategyFactory:
@@ -614,10 +652,6 @@ class StudentStrategyFactory:
                 'struggle': 0.05
             }
         
-        # Нормализуем распределение
-        total_prob = sum(distribution.values())
-        distribution = {k: v/total_prob for k, v in distribution.items()}
-        
         students = []
         for strategy_type, prob in distribution.items():
             count = int(total_students * prob)
@@ -626,7 +660,8 @@ class StudentStrategyFactory:
         
         # Добавляем недостающих студентов случайным образом
         while len(students) < total_students:
-            students.append(StudentStrategyFactory.create_random_strategy())
+            strategy_type = random.choice(list(distribution.keys()))
+            students.append(StudentStrategyFactory.create_strategy(strategy_type))
         
         # Перемешиваем
         random.shuffle(students)

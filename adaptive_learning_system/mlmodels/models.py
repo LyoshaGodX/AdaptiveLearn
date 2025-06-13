@@ -192,8 +192,7 @@ class TaskAttempt(models.Model):
         verbose_name="Время решения (сек)",
         help_text="Время, затраченное на решение задания в секундах"
     )
-    
-    # Дополнительные метаданные (JSON)
+      # Дополнительные метаданные (JSON)
     metadata = models.JSONField(
         default=dict,
         blank=True,
@@ -219,24 +218,56 @@ class TaskAttempt(models.Model):
             self.time_spent = int(delta.total_seconds())
         
         super().save(*args, **kwargs)
-        
-        # Обновляем вероятности освоения навыков
-        self.update_skill_masteries()
+        # BKT больше не применяется автоматически - только по вызову через интерфейс
     
     def update_skill_masteries(self):
         """Обновляет вероятности освоения связанных навыков"""
         for skill in self.task.skills.all():
+            # Получаем обученные параметры BKT для этого навыка
+            trained_params = self._get_trained_bkt_parameters(skill)
+            
             mastery, created = StudentSkillMastery.objects.get_or_create(
                 student=self.student,
                 skill=skill,
-                defaults={
-                    'initial_mastery_prob': 0.1,  # Начальное значение
-                    'current_mastery_prob': 0.1,                    'transition_prob': 0.3,
-                    'guess_prob': 0.2,
-                    'slip_prob': 0.1,
-                }
+                defaults=trained_params
             )
             mastery.update_mastery_probability(self.is_correct)
+    
+    def _get_trained_bkt_parameters(self, skill):
+        """Получает обученные BKT параметры для навыка"""
+        import json
+        from pathlib import Path
+        
+        try:
+            # Путь к обученной модели
+            model_path = Path(__file__).parent.parent / 'optimized_bkt_model' / 'bkt_model_optimized.json'
+            
+            if model_path.exists():
+                with open(model_path, 'r', encoding='utf-8') as f:
+                    model_data = json.load(f)
+                
+                skill_params = model_data.get('skill_parameters', {}).get(str(skill.id))
+                
+                if skill_params:
+                    return {
+                        'initial_mastery_prob': skill_params.get('P_L0', 0.1),
+                        'current_mastery_prob': skill_params.get('P_L0', 0.1),  # Начинаем с P_L0
+                        'transition_prob': skill_params.get('P_T', 0.3),
+                        'guess_prob': skill_params.get('P_G', 0.2),
+                        'slip_prob': skill_params.get('P_S', 0.1),
+                    }
+            
+        except Exception as e:
+            print(f"⚠️ Ошибка загрузки обученных параметров BKT: {e}")
+        
+        # Возвращаем дефолтные параметры если не удалось загрузить обученные
+        return {
+            'initial_mastery_prob': 0.1,
+            'current_mastery_prob': 0.1,
+            'transition_prob': 0.3,
+            'guess_prob': 0.2,
+            'slip_prob': 0.1,
+        }
     
     class Meta:
         app_label = 'mlmodels'

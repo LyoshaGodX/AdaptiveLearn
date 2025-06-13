@@ -93,20 +93,51 @@ class TaskCharacteristics:
     def get_guess_probability(self) -> float:
         """Получить базовую вероятность угадывания для типа задания"""
         base_guess = {
-            'true_false': 0.5,    # 50% шанс угадать (2 варианта)
-            'single': 0.25,       # 25% шанс угадать (обычно 4 варианта)
-            'multiple': 0.1       # 10% шанс угадать (множественный выбор сложнее)
+            'true_false': 0.5,    # 50% шанс угадать
+            'single': 0.25,       # 25% шанс угадать (из 4 вариантов)
+            'multiple': 0.1       # 10% шанс угадать полностью правильно
         }
         return base_guess.get(self.task_type, 0.25)
     
     def get_slip_adjustment(self) -> float:
-        """Получить корректировку вероятности ошибки для типа задания"""
+        """Получить корректировку вероятности ошибки для сложности"""
         slip_adjustments = {
-            'true_false': 0.8,    # Меньше ошибок (простой формат)
-            'single': 1.0,        # Базовый уровень ошибок
-            'multiple': 1.3       # Больше ошибок (сложный формат)
+            'beginner': 0.8,      # Меньше ошибок на легких заданиях
+            'intermediate': 1.0,   # Стандартная вероятность ошибки
+            'advanced': 1.3       # Больше ошибок на сложных заданиях
         }
-        return slip_adjustments.get(self.task_type, 1.0)
+        return slip_adjustments.get(self.difficulty, 1.0)
+        
+    def get_answer_weight(self) -> float:
+        """
+        Получить вес правильного ответа для типа задания
+        true_false: пониженный вес (легко угадать)
+        single: стандартный вес 
+        multiple: может быть небинарным (частично правильный ответ)
+        """
+        weights = {
+            'true_false': 0.7,    # Пониженный вес из-за высокой вероятности угадывания
+            'single': 1.0,        # Стандартный вес
+            'multiple': 1.2       # Повышенный вес, может быть частично правильным
+        }
+        return weights.get(self.task_type, 1.0)
+    
+    def process_answer_score(self, raw_score: float) -> float:
+        """
+        Обработать сырой балл ответа в зависимости от типа задания
+        
+        Args:
+            raw_score: Сырой балл (0.0 - 1.0 для multiple, 0 или 1 для остальных)
+            
+        Returns:
+            float: Обработанный балл (0.0 - 1.0)
+        """
+        if self.task_type == 'multiple':
+            # Для multiple choice допускаем небинарные оценки
+            return max(0.0, min(1.0, raw_score))
+        else:
+            # Для true_false и single - бинарные оценки
+            return 1.0 if raw_score > 0.5 else 0.0
 
 
 class BKTModel:
@@ -188,30 +219,49 @@ class BKTModel:
         prereq_masteries = []
         for prereq_id in prerequisite_ids:
             if (student_id in self.student_states and 
-                prereq_id in self.student_states[student_id]):
-                prereq_masteries.append(
+                prereq_id in self.student_states[student_id]):                prereq_masteries.append(
                     self.student_states[student_id][prereq_id].current_mastery
                 )
         
         if not prereq_masteries:
             return base_mastery
-          # Простая эвристика: среднее освоение пререквизатов влияет на начальное освоение
+        
+        # Улучшенная эвристика влияния пререквизитов
         avg_prereq_mastery = np.mean(prereq_masteries)
+        min_prereq_mastery = np.min(prereq_masteries)
         
-        # Корректируем базовую вероятность
-        adjustment = (avg_prereq_mastery - 0.5) * 0.3  # Влияние до 30%
-        adjusted_mastery = base_mastery + adjustment
+        # Штраф за плохое освоение пререквизитов
+        if avg_prereq_mastery < 0.3:
+            penalty = (0.3 - avg_prereq_mastery) * 0.5  # До 50% штрафа
+            adjusted_mastery = base_mastery * (1 - penalty)
+        # Бонус за хорошее освоение пререквизитов
+        elif avg_prereq_mastery > 0.7:
+            bonus = (avg_prereq_mastery - 0.7) * 0.4  # До 40% бонуса
+            adjusted_mastery = base_mastery + bonus
+        else:
+            # Линейная корректировка для средних значений
+            adjustment = (avg_prereq_mastery - 0.5) * 0.2
+            adjusted_mastery = base_mastery + adjustment
         
+        # Дополнительный штраф, если есть критически неосвоенные пререквизиты
+        if min_prereq_mastery < 0.2:
+            critical_penalty = (0.2 - min_prereq_mastery) * 0.3
+            adjusted_mastery *= (1 - critical_penalty)
         return max(0.0, min(1.0, float(adjusted_mastery)))
     
     def update_student_state(
         self, 
         student_id: int, 
         skill_id: int, 
-        is_correct: bool,
+        answer_score: float,  # Теперь поддерживаем небинарные оценки (0.0 - 1.0)
         task_characteristics: Optional[TaskCharacteristics] = None
     ) -> StudentSkillState:
-        """Обновить состояние студента после попытки"""
+        """
+        Обновить состояние студента после попытки
+        
+        Args:
+            answer_score: Оценка ответа (0.0 - 1.0), где 1.0 = полностью правильно
+        """
         
         # Инициализируем состояние если нужно
         if (student_id not in self.student_states or 
@@ -225,31 +275,39 @@ class BKTModel:
             # Используем параметры по умолчанию
             params = BKTParameters(P_L0=0.1, P_T=0.3, P_G=0.2, P_S=0.1)
         
-        # Адаптируем параметры с учетом характеристик задания
+        # Обрабатываем оценку в зависимости от типа задания
         if task_characteristics:
+            processed_score = task_characteristics.process_answer_score(answer_score)
+            answer_weight = task_characteristics.get_answer_weight()
             adjusted_params = self._adjust_parameters_for_task(params, task_characteristics)
         else:
+            processed_score = 1.0 if answer_score > 0.5 else 0.0
+            answer_weight = 1.0
             adjusted_params = params
         
         # Обновляем статистику
         state.attempts_count += 1
-        if is_correct:
-            state.correct_attempts += 1
+        # Для статистики используем взвешенную правильность
+        if processed_score > 0.5:
+            state.correct_attempts += processed_score * answer_weight
         
-        # Обновляем вероятность освоения по формулам BKT
+        # Обновляем вероятность освоения по формулам BKT с учетом веса ответа
         current_mastery = state.current_mastery
         
-        # Формула обновления по Байесу
-        if is_correct:
+        # Для небинарных оценок используем взвешенное обновление
+        effective_correctness = processed_score * answer_weight
+        
+        # Формула обновления по Байесу (модифицированная для небинарных оценок)
+        if effective_correctness > 0.5:
             # P(L_t | correct) = P(L_{t-1}) * (1 - P_S) / [P(L_{t-1}) * (1 - P_S) + (1 - P(L_{t-1})) * P_G]
-            numerator = current_mastery * (1 - adjusted_params.P_S)
-            denominator = (current_mastery * (1 - adjusted_params.P_S) + 
-                          (1 - current_mastery) * adjusted_params.P_G)
+            numerator = current_mastery * (1 - adjusted_params.P_S * (1 - effective_correctness))
+            denominator = (current_mastery * (1 - adjusted_params.P_S * (1 - effective_correctness)) + 
+                          (1 - current_mastery) * adjusted_params.P_G * effective_correctness)
         else:
             # P(L_t | incorrect) = P(L_{t-1}) * P_S / [P(L_{t-1}) * P_S + (1 - P(L_{t-1})) * (1 - P_G)]
-            numerator = current_mastery * adjusted_params.P_S
-            denominator = (current_mastery * adjusted_params.P_S + 
-                          (1 - current_mastery) * (1 - adjusted_params.P_G))
+            numerator = current_mastery * adjusted_params.P_S * (1 - effective_correctness)
+            denominator = (current_mastery * adjusted_params.P_S * (1 - effective_correctness) + 
+                          (1 - current_mastery) * (1 - adjusted_params.P_G * effective_correctness))
         
         if denominator > 0:
             updated_mastery = numerator / denominator
@@ -346,8 +404,7 @@ class BKTModel:
         """
         difficulty_scores = []
         
-        for skill_id, params in self.skill_parameters.items():
-            # Простая метрика сложности: низкие P_L0 и P_T, высокие P_S
+        for skill_id, params in self.skill_parameters.items():            # Простая метрика сложности: низкие P_L0 и P_T, высокие P_S
             difficulty = (1 - params.P_L0) * 0.4 + (1 - params.P_T) * 0.4 + params.P_S * 0.2
             difficulty_scores.append((skill_id, difficulty))
         
@@ -355,58 +412,52 @@ class BKTModel:
         difficulty_scores.sort(key=lambda x: x[1], reverse=True)
         return difficulty_scores
     
-    def recommend_skills_for_student(
-        self, 
-        student_id: int, 
-        max_recommendations: int = 5
-    ) -> List[Tuple[int, float, str]]:
+    def get_course_mastery(self, student_id: int, course_skills: List[int]) -> float:
         """
-        Рекомендовать навыки для изучения студентом
-        Возвращает список (skill_id, current_mastery, recommendation_reason)
+        Оценить общий уровень освоения курса студентом
+        
+        Args:
+            student_id: ID студента
+            course_skills: Список ID навыков курса
+            
+        Returns:
+            float: Средневзвешенный уровень освоения курса (0.0 - 1.0)
         """
         if student_id not in self.student_states:
-            return []
+            return 0.0
         
         student_profile = self.student_states[student_id]
-        recommendations = []
+        mastery_scores = []
+        weights = []
         
-        for skill_id, state in student_profile.items():
-            mastery = state.current_mastery
+        for skill_id in course_skills:
+            if skill_id in student_profile:
+                mastery = student_profile[skill_id].current_mastery
+            else:
+                # Если навык не изучался, инициализируем его
+                self.initialize_student(student_id, skill_id)
+                mastery = student_profile[skill_id].current_mastery
             
-            # Рекомендуем навыки с частичным освоением (0.2 - 0.8)
-            if 0.2 <= mastery <= 0.8:
-                if mastery < 0.5:
-                    reason = "Навык требует дополнительной практики"
-                    priority = 1.0 - mastery  # Чем ниже освоение, тем выше приоритет
-                else:
-                    reason = "Навык близок к освоению"
-                    priority = mastery  # Чем ближе к освоению, тем выше приоритет
-                
-                recommendations.append((skill_id, mastery, reason, priority))
+            mastery_scores.append(mastery)
+            
+            # Вес навыка может быть основан на его сложности или важности
+            # Пока используем равные веса
+            weights.append(1.0)
         
-        # Также рекомендуем неосвоенные навыки, если освоены пререквизиты
-        if self.skills_graph:
-            for skill_id in self.skill_parameters:
-                if skill_id not in student_profile:
-                    # Проверяем, освоены ли пререквизиты
-                    prerequisites = self.skills_graph.get(skill_id, [])
-                    if self._are_prerequisites_met(student_id, prerequisites):
-                        recommendations.append((
-                            skill_id, 
-                            0.0, 
-                            "Новый навык, готов к изучению", 
-                            0.5
-                        ))
+        if not mastery_scores:
+            return 0.0
         
-        # Сортируем по приоритету и возвращаем топ
-        recommendations.sort(key=lambda x: x[3], reverse=True)
-        return [(skill_id, mastery, reason) for skill_id, mastery, reason, _ in recommendations[:max_recommendations]]
+        # Средневзвешенная оценка
+        weighted_sum = sum(score * weight for score, weight in zip(mastery_scores, weights))
+        total_weight = sum(weights)
+        return weighted_sum / total_weight if total_weight > 0 else 0.0
     
     def _are_prerequisites_met(
         self, 
         student_id: int, 
         prerequisite_ids: List[int], 
-        mastery_threshold: float = 0.7    ) -> bool:
+        mastery_threshold: float = 0.7
+    ) -> bool:
         """Проверить, освоены ли необходимые навыки"""
         if not prerequisite_ids:
             return True
@@ -580,3 +631,33 @@ class BKTModel:
                     (1 - current_mastery) * adapted_params.P_G)
         
         return P_correct
+    
+    def initialize_student_all_skills(self, student_id: int, all_skill_ids: Optional[List[int]] = None) -> Dict[int, StudentSkillState]:
+        """
+        Инициализировать состояние студента для всех навыков в системе
+        Это позволяет рекомендательному агенту давать задания из любых курсов
+        для улучшения навыков-предпосылок
+        
+        Args:
+            student_id: ID студента
+            all_skill_ids: Список всех ID навыков в системе. Если None, используются навыки из skill_parameters
+            
+        Returns:
+            Dict[int, StudentSkillState]: Словарь инициализированных состояний навыков
+        """
+        if student_id not in self.student_states:
+            self.student_states[student_id] = {}
+        
+        if all_skill_ids is None:
+            all_skill_ids = list(self.skill_parameters.keys())
+        
+        initialized_skills = {}
+        
+        for skill_id in all_skill_ids:
+            if skill_id not in self.student_states[student_id]:
+                skill_state = self.initialize_student(student_id, skill_id)
+                initialized_skills[skill_id] = skill_state
+            else:
+                initialized_skills[skill_id] = self.student_states[student_id][skill_id]
+        
+        return initialized_skills
