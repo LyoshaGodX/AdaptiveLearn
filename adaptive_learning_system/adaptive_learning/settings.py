@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "methodist",
     "student",
     "expert",
+    "mlmodels",
 ]
 
 MIDDLEWARE = [
