@@ -20,8 +20,8 @@ from mlmodels.models import TaskAttempt, StudentSkillMastery
 from student.models import StudentProfile
 
 # Local imports
-from .model import DKNModel, DKNConfig
-from .data_processor import DKNDataProcessor
+from model import DKNModel, DKNConfig
+from data_processor import DKNDataProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +68,13 @@ class DKNRecommender:
             logger.info(f"Модель загружена из {model_path}")
         except FileNotFoundError:
             logger.warning(f"Файл модели {model_path} не найден. Используется необученная модель.")
+        except RuntimeError as e:
+            if "size mismatch" in str(e):
+                logger.warning(f"Несоответствие размеров модели в {model_path}. Используется необученная модель.")
+            else:
+                logger.error(f"Ошибка загрузки модели: {e}")
+        except Exception as e:
+            logger.warning(f"Не удалось загрузить модель {model_path}: {e}. Используется необученная модель.")
     
     def get_recommendations(self, student_id: int, 
                           num_recommendations: int = 5,
@@ -111,9 +118,9 @@ class DKNRecommender:
                     predicted_success_prob=pred_data['success_prob'],
                     confidence=pred_data['confidence'],
                     reasoning=pred_data['reasoning'],
-                    required_skills=[skill.name for skill in task.required_skills.all()],
+                    required_skills=[skill.name for skill in task.skills.all()],
                     difficulty=task.difficulty,
-                    estimated_time=task.estimated_time or 30
+                    estimated_time=getattr(task, 'estimated_time', 30)
                 )
                 recommendations.append(recommendation)
             
@@ -142,7 +149,7 @@ class DKNRecommender:
         # Фильтр по навыкам
         if skill_focus:
             skills = Skill.objects.filter(name__in=skill_focus)
-            tasks_query = tasks_query.filter(required_skills__in=skills).distinct()
+            tasks_query = tasks_query.filter(skills__in=skills).distinct()
         
         # Исключаем уже выполненные задания
         if exclude_completed:
@@ -209,7 +216,7 @@ class DKNRecommender:
             reasoning_parts.append("Задание может быть слишком сложным")
         
         # Анализ навыков
-        required_skills = list(task.required_skills.all())
+        required_skills = list(task.skills.all())
         if required_skills:
             skill_names = [skill.name for skill in required_skills]
             reasoning_parts.append(f"Требует навыки: {', '.join(skill_names)}")
@@ -290,7 +297,7 @@ class DKNRecommender:
                 'task_title': task.title,
                 'predicted_success': success_prob,
                 'difficulty': task.difficulty,
-                'required_skills': [s.name for s in task.required_skills.all()],
+                'required_skills': [s.name for s in task.skills.all()],
                 'skill_analysis': skill_analysis,
                 'recommendation_type': self._get_recommendation_type(success_prob),
                 'learning_benefit': self._estimate_learning_benefit(success_prob)
@@ -308,7 +315,7 @@ class DKNRecommender:
             
             skill_analysis = {}
             
-            for skill in task.required_skills.all():
+            for skill in task.skills.all():
                 try:
                     mastery = StudentSkillMastery.objects.get(
                         student=student_profile, 

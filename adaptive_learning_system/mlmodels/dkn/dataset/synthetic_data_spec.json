@@ -1,0 +1,2441 @@
+{
+  "generation_params": {
+    "students": {
+      "total": 1500,
+      "distribution": {
+        "новичок_курс1": 0.25,
+        "новичок_курс2": 0.15,
+        "средний_курс1": 0.2,
+        "средний_курс2": 0.15,
+        "продвинутый_все_курсы": 0.15,
+        "гений_все_курсы": 0.05,
+        "специалист_курс3": 0.05
+      }
+    },
+    "enhanced_features": {
+      "course_aware_generation": true,
+      "full_skill_coverage": true,
+      "realistic_trajectories": true
+    }
+  },
+  "skills_graph": {
+    "skills": {
+      "11": {
+        "name": "Введение в ООП",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "29": {
+        "name": "Введение в нейросети",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Введение в машинное обучение"
+        ]
+      },
+      "22": {
+        "name": "Графы (поиск в ширину и глубину)",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Алгоритмы и структуры данных"
+        ]
+      },
+      "21": {
+        "name": "Деревья (обход, поиск)",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Алгоритмы и структуры данных"
+        ]
+      },
+      "27": {
+        "name": "Классификация данных",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Введение в машинное обучение"
+        ]
+      },
+      "18": {
+        "name": "Контейнеры данных (tuple, set)",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Основы программирования на Python"
+        ]
+      },
+      "9": {
+        "name": "Логические операторы",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "28": {
+        "name": "Методы кластеризации",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Введение в машинное обучение"
+        ]
+      },
+      "7": {
+        "name": "Модули и пакеты",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "6": {
+        "name": "Обработка ошибок",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "30": {
+        "name": "Обработка признаков (Feature Engineering)",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Введение в машинное обучение"
+        ]
+      },
+      "15": {
+        "name": "Объектно-ориентированное программирование",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "2": {
+        "name": "Операторы и выражения",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "12": {
+        "name": "Основы алгоритмов",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "26": {
+        "name": "Основы регрессии",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Введение в машинное обучение"
+        ]
+      },
+      "1": {
+        "name": "Переменные и типы данных",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "25": {
+        "name": "Поиск оптимального пути (A*, Dijkstra)",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Алгоритмы и структуры данных"
+        ]
+      },
+      "17": {
+        "name": "Примитивы сериализации (JSON, CSV)",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Основы программирования на Python"
+        ]
+      },
+      "20": {
+        "name": "Работа с библиотеками Python (math, random)",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Основы программирования на Python"
+        ]
+      },
+      "16": {
+        "name": "Работа с вводом/выводом данных",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Основы программирования на Python"
+        ]
+      },
+      "8": {
+        "name": "Работа с файлами",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "19": {
+        "name": "Регулярные выражения",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Основы программирования на Python"
+        ]
+      },
+      "14": {
+        "name": "Рекурсия",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "13": {
+        "name": "Сложность алгоритмов",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "24": {
+        "name": "Сортировки (быстрая, пузырьковая, слиянием)",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Алгоритмы и структуры данных"
+        ]
+      },
+      "10": {
+        "name": "Списки и словари",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "3": {
+        "name": "Условные операторы",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "5": {
+        "name": "Функции и процедуры",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      },
+      "23": {
+        "name": "Хэш-таблицы",
+        "description": "",
+        "is_base": false,
+        "courses": [
+          "Алгоритмы и структуры данных"
+        ]
+      },
+      "4": {
+        "name": "Циклы",
+        "description": "",
+        "is_base": true,
+        "courses": [
+          "Основы программирования на Python",
+          "Алгоритмы и структуры данных",
+          "Введение в машинное обучение"
+        ]
+      }
+    },
+    "dependencies": {
+      "11": [],
+      "29": [
+        28,
+        15,
+        25
+      ],
+      "22": [
+        21,
+        14
+      ],
+      "21": [
+        14
+      ],
+      "27": [
+        21,
+        30,
+        26,
+        13,
+        24
+      ],
+      "18": [
+        1
+      ],
+      "9": [
+        1
+      ],
+      "28": [
+        22,
+        27,
+        13,
+        5,
+        23
+      ],
+      "7": [
+        5
+      ],
+      "6": [
+        5
+      ],
+      "30": [
+        17,
+        20,
+        19,
+        10
+      ],
+      "15": [
+        11,
+        12
+      ],
+      "2": [
+        1
+      ],
+      "12": [],
+      "26": [
+        30,
+        13,
+        5
+      ],
+      "1": [],
+      "25": [
+        22,
+        9,
+        24
+      ],
+      "17": [
+        16,
+        8,
+        10
+      ],
+      "20": [
+        18,
+        7,
+        5
+      ],
+      "16": [],
+      "8": [
+        7,
+        6,
+        19
+      ],
+      "19": [
+        2,
+        16
+      ],
+      "14": [
+        12,
+        4
+      ],
+      "13": [
+        12
+      ],
+      "24": [
+        21,
+        13,
+        4
+      ],
+      "10": [
+        18,
+        1,
+        23,
+        4
+      ],
+      "3": [
+        9,
+        2
+      ],
+      "5": [
+        10,
+        3,
+        4
+      ],
+      "23": [
+        13,
+        24
+      ],
+      "4": [
+        9,
+        2
+      ]
+    },
+    "reverse_dependencies": {
+      "11": [
+        15
+      ],
+      "29": [],
+      "28": [
+        29
+      ],
+      "15": [
+        29
+      ],
+      "25": [
+        29
+      ],
+      "22": [
+        28,
+        25
+      ],
+      "21": [
+        22,
+        27,
+        24
+      ],
+      "14": [
+        22,
+        21
+      ],
+      "27": [
+        28
+      ],
+      "30": [
+        27,
+        26
+      ],
+      "26": [
+        27
+      ],
+      "13": [
+        27,
+        28,
+        26,
+        24,
+        23
+      ],
+      "24": [
+        27,
+        25,
+        23
+      ],
+      "18": [
+        20,
+        10
+      ],
+      "1": [
+        18,
+        9,
+        2,
+        10
+      ],
+      "9": [
+        25,
+        3,
+        4
+      ],
+      "5": [
+        28,
+        7,
+        6,
+        26,
+        20
+      ],
+      "23": [
+        28,
+        10
+      ],
+      "7": [
+        20,
+        8
+      ],
+      "6": [
+        8
+      ],
+      "17": [
+        30
+      ],
+      "20": [
+        30
+      ],
+      "19": [
+        30,
+        8
+      ],
+      "10": [
+        30,
+        17,
+        5
+      ],
+      "12": [
+        15,
+        14,
+        13
+      ],
+      "2": [
+        19,
+        3,
+        4
+      ],
+      "16": [
+        17,
+        19
+      ],
+      "8": [
+        17
+      ],
+      "4": [
+        14,
+        24,
+        10,
+        5
+      ],
+      "3": [
+        5
+      ]
+    },
+    "tasks_by_skill": {
+      "26": [
+        {
+          "id": 676,
+          "title": "Причины плохой обобщающей способности",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 675,
+          "title": "Линейная регрессия с несколькими признаками",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 674,
+          "title": "Переобучение модели регрессии",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 673,
+          "title": "Выбор метрик для регрессии",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 672,
+          "title": "Интерпретация коэффициентов регрессии",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 671,
+          "title": "Ошибка модели при регрессии",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 670,
+          "title": "Примеры задач регрессии",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 669,
+          "title": "Основная цель линейной регрессии",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 668,
+          "title": "Что такое регрессия в машинном обучении",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "30": [
+        {
+          "id": 667,
+          "title": "Выбор признаков",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 666,
+          "title": "PCA и уменьшение размерности",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 665,
+          "title": "Удаление выбросов",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 664,
+          "title": "Преобразование признаков",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 663,
+          "title": "Применение масштабирования",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 662,
+          "title": "One-hot кодирование",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 661,
+          "title": "Типы признаков",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 660,
+          "title": "Пример числового признака",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 659,
+          "title": "Что такое признаки в машинном обучении",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "28": [
+        {
+          "id": 658,
+          "title": "Выбор метрики расстояния",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 657,
+          "title": "Проблемы кластеризации",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 656,
+          "title": "Минусы алгоритма K-Means",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 655,
+          "title": "Иерархическая кластеризация",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 654,
+          "title": "Результат кластеризации K-Means",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 653,
+          "title": "Основы DBSCAN",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 652,
+          "title": "Примеры алгоритмов кластеризации",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 651,
+          "title": "Определение количества кластеров",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 650,
+          "title": "Что такое кластеризация",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "27": [
+        {
+          "id": 649,
+          "title": "Сравнение классификации и регрессии",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 648,
+          "title": "Применение F1-меры",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 647,
+          "title": "Метрики качества классификации",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 646,
+          "title": "Классификация: подходящие алгоритмы",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 645,
+          "title": "Назначение логистической регрессии",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 644,
+          "title": "Модели классификации",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 643,
+          "title": "Метки классов",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 642,
+          "title": "Выбор примеров задач классификации",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 641,
+          "title": "Что такое классификация в ML",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "29": [
+        {
+          "id": 640,
+          "title": "Основные этапы обучения нейросети",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 639,
+          "title": "Назначение функции потерь",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 638,
+          "title": "Назначение обратного распространения ошибки",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 637,
+          "title": "Назначение весов в нейросети",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 636,
+          "title": "Назначение скрытых слоёв",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 635,
+          "title": "Назначение функции активации",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 634,
+          "title": "Элементы нейронной сети",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 633,
+          "title": "Структура нейросети",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 632,
+          "title": "Что такое нейросеть",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "23": [
+        {
+          "id": 631,
+          "title": "Применение хэш-таблиц",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 630,
+          "title": "Использование defaultdict",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 629,
+          "title": "Сложность операций",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 628,
+          "title": "Методы словаря",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 627,
+          "title": "Доступ к элементам словаря",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 626,
+          "title": "Коллизии в хэш-таблицах",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 625,
+          "title": "Допустимые типы ключей",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 624,
+          "title": "Выбор корректной операции",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 623,
+          "title": "Основы хэш-таблиц",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "24": [
+        {
+          "id": 622,
+          "title": "Выбор сортировки по критериям",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 621,
+          "title": "Поведение быстрой сортировки",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 620,
+          "title": "Устойчивость алгоритма сортировки",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 619,
+          "title": "Сравнение характеристик сортировок",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 618,
+          "title": "Результат одной итерации пузырьковой сортировки",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 617,
+          "title": "Слияние отсортированных списков",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 616,
+          "title": "Сложность алгоритмов сортировки",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 615,
+          "title": "Выбор подходящего алгоритма сортировки",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 614,
+          "title": "Понимание пузырьковой сортировки",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "25": [
+        {
+          "id": 613,
+          "title": "Отладка алгоритма Дейкстры",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 612,
+          "title": "Алгоритм A* при различных эвристиках",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 611,
+          "title": "Сравнение сложности",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 610,
+          "title": "Особенности использования алгоритма A*",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 609,
+          "title": "Применение A* на сетке",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 608,
+          "title": "Приоритетная очередь в алгоритме Дейкстры",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 607,
+          "title": "Характеристики A* и Дейкстры",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 606,
+          "title": "Выбор начальной вершины",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 605,
+          "title": "Основы алгоритма Дейкстры",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "21": [
+        {
+          "id": 604,
+          "title": "Сценарии применения деревьев",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 603,
+          "title": "Поиск значения в дереве",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 602,
+          "title": "Особенности обхода в ширину",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 601,
+          "title": "Выбор типов обхода дерева",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 600,
+          "title": "Что напечатает обход в глубину (прямой)",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 599,
+          "title": "Обход дерева в глубину",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 598,
+          "title": "Виды деревьев",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 597,
+          "title": "Выбор корректной иерархии узлов дерева",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 596,
+          "title": "Основы структуры дерева",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "22": [
+        {
+          "id": 595,
+          "title": "Циклы и посещённые вершины",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 594,
+          "title": "Очерёдность обхода DFS",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 593,
+          "title": "Рекурсивность DFS",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 592,
+          "title": "Варианты представления графов",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 591,
+          "title": "Применение BFS",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 590,
+          "title": "BFS vs DFS",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 589,
+          "title": "Узлы и рёбра",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 588,
+          "title": "Какой граф ориентированный?",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 587,
+          "title": "Основы графов",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "19": [
+        {
+          "id": 586,
+          "title": "Проверка номера телефона",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 585,
+          "title": "Использование групп и подстановок",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 584,
+          "title": "Жадные и ленивые квантификаторы",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 583,
+          "title": "Варианты поиска",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 582,
+          "title": "Использование re.sub",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 581,
+          "title": "Функции модуля re",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 580,
+          "title": "Выбор корректных шаблонов",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 579,
+          "title": "Найти соответствие шаблону",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 578,
+          "title": "Что такое регулярные выражения",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "20": [
+        {
+          "id": 577,
+          "title": "Выбор верных утверждений по math и random",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 576,
+          "title": "Какой результат вернёт выражение",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 575,
+          "title": "Импорт и область применения math и random",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 574,
+          "title": "Применение библиотеки random",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 573,
+          "title": "Выбор функции для округления",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 572,
+          "title": "Назначение функции floor()",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 571,
+          "title": "Что можно делать с math и random",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 570,
+          "title": "Использование функции randint()",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 569,
+          "title": "Назначение библиотеки math",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "17": [
+        {
+          "id": 568,
+          "title": "Что необходимо для сериализации пользовательских объектов",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 567,
+          "title": "Обратная десериализация JSON",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 566,
+          "title": "Стандарты сериализации и unicode",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 565,
+          "title": "Какие типы можно сериализовать в CSV",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 564,
+          "title": "Запись в CSV-файл",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 563,
+          "title": "CSV — текстовый табличный формат",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 562,
+          "title": "Что можно сериализовать в JSON",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 561,
+          "title": "Синтаксис сериализации в JSON",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 560,
+          "title": "Сериализация — это сохранение структуры данных",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "18": [
+        {
+          "id": 559,
+          "title": "Какие из следующих объектов можно добавить в множество",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 558,
+          "title": "Что произойдёт при попытке изменить элемент кортежа",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 557,
+          "title": "Хешируемость кортежей",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 556,
+          "title": "Выбор операций, доступных для множеств",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 555,
+          "title": "Какой элемент будет на позиции 1",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 554,
+          "title": "Повторное добавление в множество",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 553,
+          "title": "Какие из этих контейнеров являются неизменяемыми",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 552,
+          "title": "Выбор правильного способа создания множества",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 551,
+          "title": "Что такое кортеж (tuple) в Python",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "10": [
+        {
+          "id": 550,
+          "title": "Создание списков и словарей",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 549,
+          "title": "Итерация по словарю",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 548,
+          "title": "Поведение ссылок при копировании списков",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 547,
+          "title": "Операции со словарями",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 546,
+          "title": "Объединение списков",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 545,
+          "title": "Вложенные структуры данных",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 544,
+          "title": "Допустимые ключи в словарях",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 543,
+          "title": "Индексация элементов списка",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 542,
+          "title": "Списки и словари — изменяемые коллекции",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "13": [
+        {
+          "id": 541,
+          "title": "Идентификация сложности по коду",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 540,
+          "title": "Анализ рекурсивной функции",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 539,
+          "title": "Как влияют вложенные циклы",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 538,
+          "title": "Сравнение сложности алгоритмов",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 537,
+          "title": "Оценка кода по сложности",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 536,
+          "title": "Характеристики экспоненциальной сложности",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 535,
+          "title": "Выбор всех алгоритмов с логарифмической сложностью",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 534,
+          "title": "Выбор линейной сложности",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 533,
+          "title": "Что означает \"временная сложность алгоритма\"",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "14": [
+        {
+          "id": 532,
+          "title": "Эффективные способы рекурсии",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 531,
+          "title": "Какой результат вычисления",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 530,
+          "title": "Хвостовая рекурсия",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 529,
+          "title": "Какие функции корректно используют рекурсию",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 528,
+          "title": "Что вернёт функция",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 527,
+          "title": "Проблемы глубокой рекурсии",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 526,
+          "title": "Примеры корректной рекурсии",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 525,
+          "title": "Что напечатает рекурсивная функция",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 524,
+          "title": "Базовое понимание рекурсии",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "8": [
+        {
+          "id": 523,
+          "title": "Обработка ошибок при работе с файлами",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 522,
+          "title": "Запись в файл",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 521,
+          "title": "Работа с бинарными файлами",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 520,
+          "title": "Методы работы с файлами",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 519,
+          "title": "Чтение строк из файла",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 518,
+          "title": "Автоматическое закрытие файла",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 517,
+          "title": "Корректная работа с файловыми режимами",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 516,
+          "title": "Открытие файла на чтение",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 515,
+          "title": "Что такое файловый объект в Python",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "16": [
+        {
+          "id": 514,
+          "title": "Предобработка пользовательского ввода",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 513,
+          "title": "Альтернативный вывод",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 512,
+          "title": "Использование end и sep",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 511,
+          "title": "Подготовка ввода к вычислениям",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 510,
+          "title": "Форматированный вывод",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 509,
+          "title": "Что делает функция print()",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 508,
+          "title": "Обработка ввода данных",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 507,
+          "title": "Получение данных от пользователя",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 506,
+          "title": "Назначение функции input()",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "12": [
+        {
+          "id": 505,
+          "title": "Характеристики сложного алгоритма",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 504,
+          "title": "Минимальное число итераций",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 503,
+          "title": "Разветвление в алгоритмах",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 502,
+          "title": "Оценка правильности алгоритма",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 501,
+          "title": "Последовательность действий",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 500,
+          "title": "Алгоритмы и входные данные",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 499,
+          "title": "Свойства алгоритмов",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 498,
+          "title": "Упорядочивание чисел",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 497,
+          "title": "Что такое алгоритм",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "15": [
+        {
+          "id": 496,
+          "title": "Магические методы",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 495,
+          "title": "Использование super()",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 494,
+          "title": "Полиморфизм в ООП",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 493,
+          "title": "Переопределение методов",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 492,
+          "title": "Конструктор и инициализация",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 491,
+          "title": "Наследование классов",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 490,
+          "title": "Атрибуты экземпляра и класса",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 489,
+          "title": "Определение класса в Python",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 488,
+          "title": "Основы объектно-ориентированного подхода",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "9": [
+        {
+          "id": 487,
+          "title": "Комбинации логических выражений",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 486,
+          "title": "Что вернёт and с разными типами",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 485,
+          "title": "Поведение логических операторов с числами",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 484,
+          "title": "Определите все ложные выражения",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 483,
+          "title": "Анализ сложного выражения",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 482,
+          "title": "Приоритет логических операторов",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 481,
+          "title": "Выберите истинные выражения",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 480,
+          "title": "Какой из вариантов вернёт True?",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 479,
+          "title": "Что возвращает логический оператор and",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "11": [
+        {
+          "id": 478,
+          "title": "Иерархия классов",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 477,
+          "title": "Различие между классом и объектом",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 476,
+          "title": "Инкапсуляция в Python",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 475,
+          "title": "Отличие метода от функции",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 474,
+          "title": "Инициализация объектов",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 473,
+          "title": "Что такое self",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 472,
+          "title": "Атрибуты экземпляра",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 471,
+          "title": "Определение класса",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 470,
+          "title": "Основы объектно-ориентированного подхода",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "4": [
+        {
+          "id": 469,
+          "title": "Генерация матриц с вложенными циклами",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 468,
+          "title": "Управление итерациями",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 467,
+          "title": "Использование else с циклами",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 466,
+          "title": "Вложенные циклы",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 465,
+          "title": "Обратный отсчёт с for",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 464,
+          "title": "Особенности цикла while",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 463,
+          "title": "Условия прерывания цикла",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 462,
+          "title": "Цикл for с range",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 461,
+          "title": "Основы циклов for и while",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "5": [
+        {
+          "id": 460,
+          "title": "Передача функций как аргументов",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 459,
+          "title": "Использование *args",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 458,
+          "title": "Рекурсивные функции",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 457,
+          "title": "Именованные и позиционные аргументы",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 456,
+          "title": "Множественное возвращение значений",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 455,
+          "title": "Область видимости переменных",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 454,
+          "title": "Параметры функций",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 453,
+          "title": "Возврат значения из функции",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 452,
+          "title": "Основы определения функции",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "3": [
+        {
+          "id": 451,
+          "title": "Сложные вложенные условия",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 450,
+          "title": "Результат работы тернарного выражения",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 449,
+          "title": "Тернарный оператор",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 448,
+          "title": "Условия с несколькими выражениями",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 447,
+          "title": "Конструкция elif",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 446,
+          "title": "Сравнение значений в условии",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 445,
+          "title": "Логические выражения в условиях",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 444,
+          "title": "Правильный синтаксис ветвления",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 443,
+          "title": "Основы условных операторов",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "1": [
+        {
+          "id": 442,
+          "title": "Когда переменная меняет тип?",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 441,
+          "title": "Работа с кэшированием целых чисел",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 440,
+          "title": "Как Python работает с объектами и ссылками",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 439,
+          "title": "Преобразование строк в числа",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 438,
+          "title": "Что выведет функция type()",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 437,
+          "title": "Тип переменной определяется автоматически",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 436,
+          "title": "Выбор допустимых имён переменных",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 435,
+          "title": "Выбор правильного синтаксиса переменной",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 434,
+          "title": "Что такое переменная в Python",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "2": [
+        {
+          "id": 433,
+          "title": "Выражения с побитовыми операциями",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 432,
+          "title": "Комбинированные выражения с and и or",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 431,
+          "title": "Особенности логического \"и\"",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 430,
+          "title": "Выражения с операторами сравнения",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 429,
+          "title": "Работа с модулем и делением",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 428,
+          "title": "Оператор присваивания и выражения",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 427,
+          "title": "Выбор корректных логических выражений",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 426,
+          "title": "Порядок выполнения выражений",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 425,
+          "title": "Арифметические операторы в Python",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "6": [
+        {
+          "id": 424,
+          "title": "Генерация и перехват ошибок",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 423,
+          "title": "Обработка исключений в цикле",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 422,
+          "title": "Создание пользовательского исключения",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 421,
+          "title": "Искусственное возбуждение исключений",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 420,
+          "title": "Перехват нескольких исключений",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 419,
+          "title": "Использование блока finally",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 418,
+          "title": "Виды ошибок и их перехват",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 417,
+          "title": "Перехват исключения",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 416,
+          "title": "Основы обработки исключений",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ],
+      "7": [
+        {
+          "id": 415,
+          "title": "Организация модульного проекта",
+          "difficulty": "advanced",
+          "task_type": "multiple"
+        },
+        {
+          "id": 414,
+          "title": "Проверка модуля как основной программы",
+          "difficulty": "advanced",
+          "task_type": "single"
+        },
+        {
+          "id": 413,
+          "title": "Повторный импорт модуля",
+          "difficulty": "advanced",
+          "task_type": "true_false"
+        },
+        {
+          "id": 412,
+          "title": "Различные формы импорта",
+          "difficulty": "intermediate",
+          "task_type": "multiple"
+        },
+        {
+          "id": 411,
+          "title": "Использование псевдонимов при импорте",
+          "difficulty": "intermediate",
+          "task_type": "single"
+        },
+        {
+          "id": 410,
+          "title": "Пакеты и вложенные модули",
+          "difficulty": "intermediate",
+          "task_type": "true_false"
+        },
+        {
+          "id": 409,
+          "title": "Стандартные и сторонние модули",
+          "difficulty": "beginner",
+          "task_type": "multiple"
+        },
+        {
+          "id": 408,
+          "title": "Импорт функций из модуля",
+          "difficulty": "beginner",
+          "task_type": "single"
+        },
+        {
+          "id": 407,
+          "title": "Основы использования модулей",
+          "difficulty": "beginner",
+          "task_type": "true_false"
+        }
+      ]
+    },
+    "levels": {
+      "11": 0,
+      "12": 0,
+      "1": 0,
+      "9": 1,
+      "2": 1,
+      "4": 2,
+      "14": 3,
+      "21": 4,
+      "22": 5,
+      "16": 0,
+      "18": 1,
+      "13": 1,
+      "24": 5,
+      "23": 6,
+      "10": 7,
+      "3": 2,
+      "5": 8,
+      "7": 9,
+      "6": 9,
+      "19": 2,
+      "8": 10,
+      "17": 11,
+      "20": 10,
+      "30": 12,
+      "26": 13,
+      "27": 14,
+      "28": 15,
+      "15": 1,
+      "25": 6,
+      "29": 16
+    }
+  },
+  "courses_info": {
+    "C1": {
+      "id": "C1",
+      "name": "Основы программирования на Python",
+      "skills": [
+        11,
+        18,
+        9,
+        7,
+        6,
+        15,
+        2,
+        12,
+        1,
+        17,
+        20,
+        16,
+        8,
+        19,
+        14,
+        13,
+        10,
+        3,
+        5,
+        4
+      ]
+    },
+    "C2": {
+      "id": "C2",
+      "name": "Алгоритмы и структуры данных",
+      "skills": [
+        11,
+        22,
+        21,
+        9,
+        7,
+        6,
+        15,
+        2,
+        12,
+        1,
+        25,
+        8,
+        14,
+        13,
+        24,
+        10,
+        3,
+        5,
+        23,
+        4
+      ]
+    },
+    "C3": {
+      "id": "C3",
+      "name": "Введение в машинное обучение",
+      "skills": [
+        11,
+        29,
+        27,
+        9,
+        28,
+        7,
+        6,
+        30,
+        15,
+        2,
+        12,
+        26,
+        1,
+        8,
+        14,
+        13,
+        10,
+        3,
+        5,
+        4
+      ]
+    }
+  },
+  "requirements": {
+    "student_archetypes": {
+      "новичок_курс1": {
+        "description": "Изучает базовые навыки первого курса",
+        "success_rate_range": [
+          0.4,
+          0.7
+        ],
+        "attempts_range": [
+          30,
+          60
+        ],
+        "learning_speed": "медленная",
+        "course_focus": 1,
+        "max_level": 5
+      },
+      "новичок_курс2": {
+        "description": "Изучает базовые навыки второго курса",
+        "success_rate_range": [
+          0.3,
+          0.6
+        ],
+        "attempts_range": [
+          40,
+          70
+        ],
+        "learning_speed": "медленная",
+        "course_focus": 2,
+        "max_level": 6
+      },
+      "средний_курс1": {
+        "description": "Продвинутый студент первого курса",
+        "success_rate_range": [
+          0.6,
+          0.8
+        ],
+        "attempts_range": [
+          40,
+          80
+        ],
+        "learning_speed": "средняя",
+        "course_focus": 1,
+        "max_level": 10
+      },
+      "средний_курс2": {
+        "description": "Продвинутый студент второго курса",
+        "success_rate_range": [
+          0.5,
+          0.8
+        ],
+        "attempts_range": [
+          50,
+          90
+        ],
+        "learning_speed": "средняя",
+        "course_focus": 2,
+        "max_level": 12
+      },
+      "продвинутый_все_курсы": {
+        "description": "Изучает навыки всех курсов",
+        "success_rate_range": [
+          0.7,
+          0.9
+        ],
+        "attempts_range": [
+          60,
+          120
+        ],
+        "learning_speed": "быстрая",
+        "course_focus": null,
+        "max_level": 16
+      },
+      "гений_все_курсы": {
+        "description": "Быстро осваивает все навыки всех курсов",
+        "success_rate_range": [
+          0.8,
+          0.95
+        ],
+        "attempts_range": [
+          40,
+          100
+        ],
+        "learning_speed": "очень быстрая",
+        "course_focus": null,
+        "max_level": 16
+      },
+      "специалист_курс3": {
+        "description": "Фокусируется на машинном обучении (3-й курс)",
+        "success_rate_range": [
+          0.6,
+          0.85
+        ],
+        "attempts_range": [
+          50,
+          100
+        ],
+        "learning_speed": "быстрая",
+        "course_focus": 3,
+        "max_level": 16
+      }
+    },
+    "coverage_requirements": {
+      "min_skill_coverage": 1.0,
+      "min_course_coverage": 1.0,
+      "min_examples_per_skill": 50
+    }
+  }
+}

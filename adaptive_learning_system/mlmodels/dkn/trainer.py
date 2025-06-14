@@ -18,8 +18,9 @@ from datetime import datetime
 import os
 
 # Local imports
-from .model import DKNModel, DKNConfig, DKNTrainer
-from .data_processor import DKNDataProcessor, DKNDataset
+from model import DKNModel, DKNConfig, DKNTrainer
+from data_processor import DKNDataProcessor, DKNDataset
+from training_artifacts import TrainingArtifactsCollector
 
 logger = logging.getLogger(__name__)
 
@@ -28,11 +29,15 @@ class AdvancedDKNTrainer(DKNTrainer):
     """Расширенный тренер с дополнительными возможностями"""
     
     def __init__(self, model: DKNModel, config: DKNConfig, 
-                 save_dir: str = 'checkpoints'):
+                 save_dir: str = 'checkpoints',
+                 artifacts_dir: str = 'mlmodels/dkn/training'):
         super().__init__(model, config)
         
         self.save_dir = Path(save_dir)
         self.save_dir.mkdir(exist_ok=True)
+        
+        # Инициализация коллектора артефактов
+        self.artifacts_collector = TrainingArtifactsCollector(artifacts_dir)
         
         # История обучения
         self.train_history = {
@@ -86,9 +91,8 @@ class AdvancedDKNTrainer(DKNTrainer):
             total_loss += loss.item()
             all_predictions.extend(predictions.detach().cpu().numpy())
             all_targets.extend(targets.cpu().numpy())
-            
-            # Логирование каждые 100 батчей
-            if batch_idx % 100 == 0:
+              # Логирование каждые 500 батчей (вместо 100)
+            if batch_idx % 500 == 0:
                 logger.info(f'Epoch {epoch}, Batch {batch_idx}, Loss: {loss:.4f}')
         
         # Вычисляем метрики
@@ -121,21 +125,20 @@ class AdvancedDKNTrainer(DKNTrainer):
                 
                 all_predictions.extend(predictions.cpu().numpy())
                 all_targets.extend(targets.cpu().numpy())
-        
-        # Вычисляем метрики
+          # Вычисляем метрики
         avg_loss = total_loss / len(val_loader)
         metrics = self._calculate_detailed_metrics(all_predictions, all_targets)
         metrics['loss'] = avg_loss
         
         return metrics
-    
+
     def _calculate_detailed_metrics(self, predictions: List[float], 
                                   targets: List[float]) -> Dict[str, float]:
-        """Вычисляет подробные метрики качества"""
+        """Быстрое вычисление метрик качества (оптимизированная версия)"""
         pred_array = np.array(predictions)
         target_array = np.array(targets)
         
-        # Бинарные предсказания
+        # Бинарные предсказания с фиксированным порогом
         predicted_labels = (pred_array > 0.5).astype(float)
         
         # Основные метрики
@@ -150,49 +153,30 @@ class AdvancedDKNTrainer(DKNTrainer):
         recall = true_positives / (true_positives + false_negatives) if (true_positives + false_negatives) > 0 else 0
         f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
         
-        # AUC-ROC (упрощенная версия)
-        # Сортируем по предсказаниям
-        sorted_indices = np.argsort(predictions)[::-1]
-        sorted_targets = target_array[sorted_indices]
-        
-        # Вычисляем TPR и FPR для разных порогов
-        thresholds = np.unique(predictions)
-        tpr_list = []
-        fpr_list = []
-        
-        for threshold in thresholds:
-            pred_at_threshold = (predictions >= threshold).astype(float)
-            tp = np.sum((pred_at_threshold == 1) & (target_array == 1))
-            fp = np.sum((pred_at_threshold == 1) & (target_array == 0))
-            tn = np.sum((pred_at_threshold == 0) & (target_array == 0))
-            fn = np.sum((pred_at_threshold == 0) & (target_array == 1))
-            
-            tpr = tp / (tp + fn) if (tp + fn) > 0 else 0
-            fpr = fp / (fp + tn) if (fp + tn) > 0 else 0
-            
-            tpr_list.append(tpr)
-            fpr_list.append(fpr)
-        
-        # Простое приближение AUC
+        # Упрощенный AUC (без медленного перебора порогов)
         try:
-            auc = np.trapz(tpr_list, fpr_list) if len(tpr_list) > 1 else 0.5
-            auc_value = float(auc) if isinstance(auc, (int, float, np.number)) else 0.5
+            from sklearn.metrics import roc_auc_score
+            auc_value = roc_auc_score(target_array, pred_array)
         except:
-            auc_value = 0.5
+            # Простое приближение без sklearn
+            auc_value = 0.5 + abs(accuracy - 0.5)
         
         return {
-            'accuracy': accuracy,
-            'precision': precision,
-            'recall': recall,
-            'f1': f1,
-            'auc': auc_value
+            'accuracy': float(accuracy),
+            'precision': float(precision),
+            'recall': float(recall),
+            'f1': float(f1),
+            'auc': float(auc_value)
         }
     
     def train_with_validation(self, train_loader: DataLoader, 
                             val_loader: DataLoader, 
                             num_epochs: int = 50,
                             save_best: bool = True) -> Dict[str, List]:
-        """Полное обучение с валидацией"""
+        """Полное обучение с валидацией и сбором артефактов"""
+        
+        # Инициализация времени начала обучения
+        self.artifacts_collector.set_training_start()
         
         logger.info(f"Начинаем обучение DKN модели на {num_epochs} эпох")
         try:
@@ -202,6 +186,8 @@ class AdvancedDKNTrainer(DKNTrainer):
             logger.info(f"Размер валидационной выборки: {val_size}")
         except:
             logger.info("Размеры выборок не определены")
+        
+        early_stopped = False
         
         for epoch in range(num_epochs):
             start_time = datetime.now()
@@ -223,6 +209,27 @@ class AdvancedDKNTrainer(DKNTrainer):
             self.train_history['val_accuracy'].append(val_metrics['accuracy'])
             self.train_history['learning_rate'].append(current_lr)
             
+            # Логируем в коллектор артефактов
+            additional_metrics = {
+                'train_f1': train_metrics.get('f1', 0),
+                'val_f1': val_metrics.get('f1', 0),
+                'train_precision': train_metrics.get('precision', 0),
+                'val_precision': val_metrics.get('precision', 0),
+                'train_recall': train_metrics.get('recall', 0),
+                'val_recall': val_metrics.get('recall', 0),
+                'epoch_time_seconds': (datetime.now() - start_time).total_seconds()
+            }
+            
+            self.artifacts_collector.log_epoch(
+                epoch=epoch,
+                train_loss=train_metrics['loss'],
+                val_loss=val_metrics['loss'],
+                train_accuracy=train_metrics['accuracy'],
+                val_accuracy=val_metrics['accuracy'],
+                learning_rate=current_lr,
+                additional_metrics=additional_metrics
+            )
+            
             # Логирование
             epoch_time = (datetime.now() - start_time).total_seconds()
             
@@ -239,12 +246,14 @@ class AdvancedDKNTrainer(DKNTrainer):
                 self.patience_counter = 0
                 
                 if save_best:
-                    self._save_checkpoint(epoch, 'best_model.pth', val_metrics)
+                    best_model_path = self._save_checkpoint(epoch, 'best_model.pth', val_metrics)
+                    self.artifacts_collector.training_info['best_model_path'] = str(best_model_path)
             else:
                 self.patience_counter += 1
                 
             if self.patience_counter >= self.patience:
                 logger.info(f"Early stopping на эпохе {epoch+1}")
+                early_stopped = True
                 break
             
             # Периодические сохранения
@@ -252,14 +261,23 @@ class AdvancedDKNTrainer(DKNTrainer):
                 self._save_checkpoint(epoch, f'checkpoint_epoch_{epoch+1}.pth', val_metrics)
         
         # Сохраняем финальную модель
-        self._save_checkpoint(epoch, 'final_model.pth', val_metrics)
+        final_model_path = self._save_checkpoint(epoch, 'final_model.pth', val_metrics)
+        self.artifacts_collector.training_info['final_model_path'] = str(final_model_path)
+        
+        # Сохраняем конфигурацию модели
+        self._save_model_config()
+        
+        # Финализация обучения с артефактами
+        self.artifacts_collector.finalize_training(early_stopped=early_stopped)
         
         # Сохраняем историю обучения
         self._save_training_history()
         
+        logger.info("Обучение завершено! Артефакты сохранены в: " +                   str(self.artifacts_collector.artifacts_dir))
+        
         return self.train_history
     
-    def _save_checkpoint(self, epoch: int, filename: str, metrics: Dict):
+    def _save_checkpoint(self, epoch: int, filename: str, metrics: Dict) -> Path:
         """Сохраняет checkpoint модели"""
         checkpoint = {
             'epoch': epoch,
@@ -272,9 +290,27 @@ class AdvancedDKNTrainer(DKNTrainer):
             'config': self.config.__dict__
         }
         
+        # Сохраняем в обычное место
         checkpoint_path = self.save_dir / filename
         torch.save(checkpoint, checkpoint_path)
+        
+        # Также сохраняем в директорию артефактов
+        artifacts_checkpoint_path = self.artifacts_collector.models_dir / filename
+        torch.save(checkpoint, artifacts_checkpoint_path)
+        
         logger.info(f"Checkpoint сохранен: {checkpoint_path}")
+        return artifacts_checkpoint_path
+    
+    def _save_model_config(self):
+        """Сохраняет конфигурацию модели"""
+        config_dict = self.config.__dict__.copy()
+        
+        # Сохраняем в директорию артефактов
+        config_path = self.artifacts_collector.models_dir / 'model_config.json'
+        with open(config_path, 'w', encoding='utf-8') as f:
+            json.dump(config_dict, f, indent=2, ensure_ascii=False)
+        
+        logger.info(f"Конфигурация модели сохранена: {config_path}")
     
     def _save_training_history(self):
         """Сохраняет историю обучения"""
@@ -347,51 +383,120 @@ class AdvancedDKNTrainer(DKNTrainer):
 def train_dkn_model(train_data: List[Dict], val_data: List[Dict],
                    config: Optional[DKNConfig] = None,
                    save_dir: str = 'checkpoints',
+                   artifacts_dir: str = 'mlmodels/dkn/training',
                    num_epochs: int = 50,
-                   batch_size: int = 32) -> AdvancedDKNTrainer:
+                   batch_size: int = 32,
+                   test_data: Optional[List[Dict]] = None,
+                   collate_fn = None,
+                   num_skills: Optional[int] = None,
+                   num_tasks: Optional[int] = None) -> AdvancedDKNTrainer:
     """
-    Полная функция обучения DKN модели
+    Полная функция обучения DKN модели с созданием артефактов
     
     Args:
         train_data: Тренировочные данные
         val_data: Валидационные данные  
         config: Конфигурация модели
-        save_dir: Директория для сохранения
+        save_dir: Директория для сохранения checkpoints
+        artifacts_dir: Директория для артефактов обучения
         num_epochs: Количество эпох
         batch_size: Размер батча
+        test_data: Тестовые данные (опционально)
         
     Returns:
-        Обученный тренер
+        Обученный тренер с артефактами
     """
     
     if config is None:
         config = DKNConfig()
         config.batch_size = batch_size
-    
-    # Подготавливаем данные
-    processor = DKNDataProcessor()
-    
+      # Подготавливаем данные
     train_dataset = DKNDataset(train_data)
     val_dataset = DKNDataset(val_data)
     
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+    # Используем переданный collate_fn или создаем процессор для дефолтного
+    if collate_fn is None:
+        processor = DKNDataProcessor()
+        used_collate_fn = processor.collate_fn
+        # Используем параметры из процессора если не переданы
+        if num_skills is None:
+            model_num_skills = len(processor.skill_to_id)
+        else:
+            model_num_skills = num_skills
+        if num_tasks is None:
+            model_num_tasks = len(processor.task_to_id)
+        else:
+            model_num_tasks = num_tasks
+    else:
+        used_collate_fn = collate_fn
+        # Для кастомного collate_fn обязательно нужны параметры
+        if num_skills is None or num_tasks is None:
+            raise ValueError("При использовании кастомного collate_fn необходимо передать num_skills и num_tasks")
+        model_num_skills = num_skills
+        model_num_tasks = num_tasks
     
-    # Создаем модель
-    num_skills = len(processor.skill_to_id)
-    num_tasks = len(processor.task_to_id)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=used_collate_fn)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, collate_fn=used_collate_fn)    # Создаем модель
+    model = DKNModel(model_num_skills, model_num_tasks, config)
     
-    model = DKNModel(num_skills, num_tasks, config)
-    
-    # Создаем тренер
-    trainer = AdvancedDKNTrainer(model, config, save_dir)
+    # Создаем тренер с поддержкой артефактов
+    trainer = AdvancedDKNTrainer(model, config, save_dir, artifacts_dir)
+      # Собираем информацию о датасете
+    dataset_info = {
+        'train_size': len(train_data),
+        'val_size': len(val_data),
+        'test_size': len(test_data) if test_data else 0,
+        'num_skills': model_num_skills,
+        'num_tasks': model_num_tasks,
+        'batch_size': batch_size
+    }
     
     # Обучаем
+    logger.info("Начинаем обучение DKN модели с полным сбором артефактов...")
     history = trainer.train_with_validation(
         train_loader, val_loader, num_epochs, save_best=True
     )
     
+    # Если есть тестовые данные, проводим оценку
+    test_metrics = None
+    if test_data:
+        logger.info("Проводим тестирование модели...")
+        test_dataset = DKNDataset(test_data)
+        test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
+        test_metrics = trainer.validate(test_loader)
+        
+        # Получаем предсказания для создания расширенного дашборда
+        all_predictions = []
+        all_targets = []
+        
+        trainer.model.eval()
+        with torch.no_grad():
+            for batch in test_loader:
+                batch = {k: v.to(trainer.device) if isinstance(v, torch.Tensor) else v 
+                        for k, v in batch.items()}
+                predictions = trainer.model(batch)
+                targets = batch['targets'].float()
+                
+                all_predictions.extend(predictions.cpu().numpy())
+                all_targets.extend(targets.cpu().numpy())
+        
+        # Создаем расширенный дашборд с тестовыми метриками
+        trainer.artifacts_collector.create_metrics_dashboard(
+            test_predictions=np.array(all_predictions),
+            test_targets=np.array(all_targets)
+        )
+        
+        logger.info(f"Результаты тестирования: {test_metrics}")
+      # Создаем итоговый отчет
+    report_path = trainer.artifacts_collector.generate_training_report(
+        model_config=config.__dict__,
+        dataset_info=dataset_info,
+        test_metrics=test_metrics or {}
+    )
+    
     logger.info("Обучение завершено успешно!")
+    logger.info(f"Артефакты сохранены в: {trainer.artifacts_collector.artifacts_dir}")
+    logger.info(f"Отчет об обучении: {report_path}")
     
     return trainer
 

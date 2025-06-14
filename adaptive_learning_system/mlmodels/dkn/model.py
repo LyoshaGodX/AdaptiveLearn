@@ -27,7 +27,7 @@ class DKNConfig:
         self.skill_embedding_dim = 64
         self.task_embedding_dim = 64
         self.student_state_dim = 32
-        self.hidden_dim = 128
+        self.hidden_dim = 256  # Было 128, но обученная модель использует 256
         self.output_dim = 1  # Вероятность успеха для задания
         
         # Гиперпараметры

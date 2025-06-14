@@ -66,13 +66,12 @@ class DKNDataProcessor:
         for i, skill in enumerate(skills):
             self.skill_to_id[skill.id] = i
             self.id_to_skill[i] = skill.id
-            
-        # Задания
+              # Задания
         tasks = list(Task.objects.all())
         for i, task in enumerate(tasks):
             self.task_to_id[task.id] = i
             self.id_to_task[i] = task.id
-    
+
     def get_student_data(self, student_id: int, target_task_id: int) -> Dict:
         """
         Получает данные студента для предсказания успеха на задании
@@ -84,17 +83,17 @@ class DKNDataProcessor:
         Returns:
             Dict с подготовленными данными
         """
-        student = User.objects.get(id=student_id)
+        user = User.objects.get(id=student_id)
+        student_profile, created = StudentProfile.objects.get_or_create(user=user)
         target_task = Task.objects.get(id=target_task_id)
         
         # История попыток студента
-        history = self._get_student_history(student)
+        history = self._get_student_history(student_profile)
         
         # Текущие BKT параметры для всех навыков
-        bkt_params = self._get_bkt_parameters(student)
-        
-        # Навыки, связанные с заданием
-        task_skills = list(target_task.required_skills.all())
+        bkt_params = self._get_bkt_parameters(student_profile)
+          # Навыки, связанные с заданием
+        task_skills = list(target_task.skills.all())
         
         # Характеристики задания
         task_data = self._get_task_data(target_task)
@@ -102,22 +101,21 @@ class DKNDataProcessor:
         return {
             'student_id': student_id,
             'task_id': target_task_id,
-            'history': history,
-            'bkt_params': bkt_params,
+            'history': history,            'bkt_params': bkt_params,
             'task_skills': [self.skill_to_id[s.id] for s in task_skills],
             'task_data': task_data
         }
-    
-    def _get_student_history(self, student: User) -> List[Dict]:
+
+    def _get_student_history(self, student_profile: StudentProfile) -> List[Dict]:
         """Получает историю попыток студента"""
         attempts = TaskAttempt.objects.filter(
-            student=student
-        ).order_by('-created_at')[:self.max_history_length]
+            student=student_profile
+        ).order_by('-started_at')[:self.max_history_length]
         
         history = []
         for attempt in reversed(attempts):  # Хронологический порядок
             # Получаем навыки для задания
-            task_skills = list(attempt.task.required_skills.all())
+            task_skills = list(attempt.task.skills.all())
             skill_vector = [0] * 5  # До 5 навыков на задание
             
             for i, skill in enumerate(task_skills[:5]):
@@ -126,7 +124,7 @@ class DKNDataProcessor:
             history_item = {
                 'task_id': self.task_to_id.get(attempt.task.id, 0),
                 'is_correct': 1.0 if attempt.is_correct else 0.0,
-                'score': attempt.score,
+                'score': 1.0 if attempt.is_correct else 0.0,  # Используем результат как score
                 'time_spent': min(attempt.time_spent or 60, 600),  # Ограничиваем время
                 'difficulty': self.difficulty_map.get(attempt.task.difficulty, 0),
                 'task_type': self.type_map.get(attempt.task.task_type, 0),
@@ -134,8 +132,7 @@ class DKNDataProcessor:
             }
             history.append(history_item)
         
-        # Дополняем до нужной длины нулями, если история короткая
-        while len(history) < self.max_history_length:
+        # Дополняем до нужной длины нулями, если история короткая        while len(history) < self.max_history_length:
             history.append({
                 'task_id': 0, 'is_correct': 0.0, 'score': 0.0,
                 'time_spent': 0, 'difficulty': 0, 'task_type': 0,
@@ -143,11 +140,10 @@ class DKNDataProcessor:
             })
         
         return history
-    
-    def _get_bkt_parameters(self, student: User) -> Dict[int, Dict]:
+
+    def _get_bkt_parameters(self, student_profile: StudentProfile) -> Dict[int, Dict]:
         """Получает BKT параметры для всех навыков студента"""
         bkt_model = BKTModel()
-        student_profile = StudentProfile.objects.get(user=student)
         
         bkt_params = {}
         
@@ -156,13 +152,12 @@ class DKNDataProcessor:
         
         for mastery in masteries:
             skill_id = self.skill_to_id.get(mastery.skill.id, 0)
-            
-            # Используем сохраненные BKT параметры или дефолтные
+              # Используем сохраненные BKT параметры или дефолтные
             bkt_params[skill_id] = {
-                'P_L': mastery.mastery_probability,  # Вероятность освоения
-                'P_T': 0.1,   # Вероятность перехода (по умолчанию)
-                'P_G': 0.1,   # Вероятность угадывания
-                'P_S': 0.1    # Вероятность ошибки
+                'P_L': mastery.current_mastery_prob,  # Текущая вероятность освоения
+                'P_T': mastery.transition_prob,       # Вероятность перехода
+                'P_G': mastery.guess_prob,           # Вероятность угадывания
+                'P_S': mastery.slip_prob             # Вероятность ошибки
             }
         
         # Для навыков без попыток используем дефолтные значения
@@ -183,7 +178,7 @@ class DKNDataProcessor:
         return {
             'difficulty': self.difficulty_map.get(task.difficulty, 0),
             'task_type': self.type_map.get(task.task_type, 0),
-            'skills': [self.skill_to_id[s.id] for s in task.required_skills.all()]
+            'skills': [self.skill_to_id[s.id] for s in task.skills.all()]
         }
     
     def prepare_batch(self, data_items: List[Dict]) -> Dict[str, torch.Tensor]:

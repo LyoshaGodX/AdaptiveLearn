@@ -1,0 +1,317 @@
+2025-06-14 02:02:01,573 - __main__ - INFO - ============================================================
+2025-06-14 02:02:01,575 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:02:01,934 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:02:01,937 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:02:01,958 - __main__ - INFO - Разделение данных:
+2025-06-14 02:02:01,958 - __main__ - INFO -   Обучение: 63575 примеров от 1050 студентов
+2025-06-14 02:02:01,959 - __main__ - INFO -   Валидация: 13225 примеров от 225 студентов
+2025-06-14 02:02:01,959 - __main__ - INFO -   Тест: 13606 примеров от 225 студентов
+2025-06-14 02:03:41,484 - __main__ - INFO - ============================================================
+2025-06-14 02:03:41,486 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:03:41,814 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:03:41,818 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:03:41,833 - __main__ - INFO - Разделение данных:
+2025-06-14 02:03:41,834 - __main__ - INFO -   Обучение: 63148 примеров от 1050 студентов
+2025-06-14 02:03:41,834 - __main__ - INFO -   Валидация: 13847 примеров от 225 студентов
+2025-06-14 02:03:41,835 - __main__ - INFO -   Тест: 13411 примеров от 225 студентов
+2025-06-14 02:04:03,172 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели с полным сбором артефактов...
+2025-06-14 02:04:03,172 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели на 30 эпох
+2025-06-14 02:04:03,172 - mlmodels.dkn.trainer - INFO - Размер обучающей выборки: 63148
+2025-06-14 02:04:03,172 - mlmodels.dkn.trainer - INFO - Размер валидационной выборки: 13847
+2025-06-14 02:08:29,275 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 02:08:29,276 - __main__ - INFO - ============================================================
+2025-06-14 02:08:29,276 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 02:08:29,277 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:08:29,570 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:08:29,570 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 02:08:29,570 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:08:29,586 - __main__ - INFO - Разделение данных:
+2025-06-14 02:08:29,586 - __main__ - INFO -   Обучение: 63843 примеров от 1050 студентов
+2025-06-14 02:08:29,586 - __main__ - INFO -   Валидация: 13451 примеров от 225 студентов
+2025-06-14 02:08:29,586 - __main__ - INFO -   Тест: 13112 примеров от 225 студентов
+2025-06-14 02:08:40,936 - __main__ - INFO - Шаг 3: Настройка конфигурации модели
+2025-06-14 02:08:40,936 - __main__ - INFO - Шаг 4: Запуск обучения с созданием артефактов
+2025-06-14 02:08:42,930 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели с полным сбором артефактов...
+2025-06-14 02:08:42,931 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели на 30 эпох
+2025-06-14 02:08:42,931 - mlmodels.dkn.trainer - INFO - Размер обучающей выборки: 63843
+2025-06-14 02:08:42,931 - mlmodels.dkn.trainer - INFO - Размер валидационной выборки: 13451
+2025-06-14 02:08:42,957 - __main__ - ERROR - Ошибка при обучении: mat1 and mat2 shapes cannot be multiplied (64x2 and 4x16)
+2025-06-14 02:11:25,931 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 02:11:25,932 - __main__ - INFO - ============================================================
+2025-06-14 02:11:25,932 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 02:11:25,932 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:11:26,238 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:11:26,239 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 02:11:26,239 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:11:26,254 - __main__ - INFO - Разделение данных:
+2025-06-14 02:11:26,254 - __main__ - INFO -   Обучение: 63490 примеров от 1050 студентов
+2025-06-14 02:11:26,255 - __main__ - INFO -   Валидация: 13828 примеров от 225 студентов
+2025-06-14 02:11:26,255 - __main__ - INFO -   Тест: 13088 примеров от 225 студентов
+2025-06-14 02:11:37,440 - __main__ - INFO - Шаг 3: Настройка конфигурации модели
+2025-06-14 02:11:37,440 - __main__ - INFO - Шаг 4: Запуск обучения с созданием артефактов
+2025-06-14 02:11:39,731 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели с полным сбором артефактов...
+2025-06-14 02:11:39,732 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели на 30 эпох
+2025-06-14 02:11:39,732 - mlmodels.dkn.trainer - INFO - Размер обучающей выборки: 63490
+2025-06-14 02:11:39,732 - mlmodels.dkn.trainer - INFO - Размер валидационной выборки: 13828
+2025-06-14 02:11:39,764 - __main__ - ERROR - Ошибка при обучении: index out of range in self
+2025-06-14 02:18:58,440 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 02:18:58,440 - __main__ - INFO - ============================================================
+2025-06-14 02:18:58,441 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 02:18:58,441 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:18:58,770 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:18:58,771 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 02:18:58,771 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:18:58,786 - __main__ - INFO - Разделение данных:
+2025-06-14 02:18:58,787 - __main__ - INFO -   Обучение: 63291 примеров от 1050 студентов
+2025-06-14 02:18:58,787 - __main__ - INFO -   Валидация: 13545 примеров от 225 студентов
+2025-06-14 02:18:58,787 - __main__ - INFO -   Тест: 13570 примеров от 225 студентов
+2025-06-14 02:19:45,762 - __main__ - INFO - Шаг 3: Настройка конфигурации модели
+2025-06-14 02:19:45,762 - __main__ - INFO - Шаг 4: Запуск обучения с созданием артефактов
+2025-06-14 02:19:47,659 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели с полным сбором артефактов...
+2025-06-14 02:19:47,659 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели на 30 эпох
+2025-06-14 02:19:47,660 - mlmodels.dkn.trainer - INFO - Размер обучающей выборки: 63291
+2025-06-14 02:19:47,661 - mlmodels.dkn.trainer - INFO - Размер валидационной выборки: 13545
+2025-06-14 02:19:47,674 - __main__ - ERROR - Ошибка при обучении: index out of range in self
+2025-06-14 02:21:33,607 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 02:21:33,608 - __main__ - INFO - ============================================================
+2025-06-14 02:21:33,608 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 02:21:33,608 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:21:33,934 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:21:33,934 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 02:21:33,935 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:21:33,949 - __main__ - INFO - Разделение данных:
+2025-06-14 02:21:33,950 - __main__ - INFO -   Обучение: 63081 примеров от 1050 студентов
+2025-06-14 02:21:33,950 - __main__ - INFO -   Валидация: 13753 примеров от 225 студентов
+2025-06-14 02:21:33,950 - __main__ - INFO -   Тест: 13572 примеров от 225 студентов
+2025-06-14 02:22:21,075 - __main__ - INFO - Шаг 3: Настройка конфигурации модели
+2025-06-14 02:22:21,076 - __main__ - INFO - Шаг 4: Запуск обучения с созданием артефактов
+2025-06-14 02:22:22,996 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели с полным сбором артефактов...
+2025-06-14 02:22:22,996 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели на 30 эпох
+2025-06-14 02:22:22,997 - mlmodels.dkn.trainer - INFO - Размер обучающей выборки: 63081
+2025-06-14 02:22:22,997 - mlmodels.dkn.trainer - INFO - Размер валидационной выборки: 13753
+2025-06-14 02:22:23,136 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 0, Loss: 0.6987
+2025-06-14 02:22:24,807 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 100, Loss: 0.6492
+2025-06-14 02:22:26,437 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 200, Loss: 0.6601
+2025-06-14 02:22:28,074 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 300, Loss: 0.7030
+2025-06-14 02:22:29,694 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 400, Loss: 0.6694
+2025-06-14 02:22:31,321 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 500, Loss: 0.6961
+2025-06-14 02:22:32,981 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 600, Loss: 0.6601
+2025-06-14 02:22:34,607 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 700, Loss: 0.6804
+2025-06-14 02:22:36,218 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 800, Loss: 0.6805
+2025-06-14 02:22:37,867 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 900, Loss: 0.7081
+2025-06-14 02:26:38,907 - mlmodels.dkn.trainer - INFO - 
+            Эпоха 1/30 (255.9s):
+            Обучение - Loss: 0.6810, Accuracy: 0.5681, F1: 0.5598
+            Валидация - Loss: 0.6771, Accuracy: 0.5825, F1: 0.6346
+            Learning Rate: 0.001000
+            
+2025-06-14 02:26:38,949 - mlmodels.dkn.trainer - INFO - Checkpoint сохранен: checkpoints\best_model.pth
+2025-06-14 02:26:38,971 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 0, Loss: 0.6871
+2025-06-14 02:26:40,708 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 100, Loss: 0.6745
+2025-06-14 02:26:42,384 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 200, Loss: 0.6428
+2025-06-14 02:26:44,024 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 300, Loss: 0.6898
+2025-06-14 02:26:45,637 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 400, Loss: 0.6783
+2025-06-14 02:26:47,321 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 500, Loss: 0.6967
+2025-06-14 02:26:49,066 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 600, Loss: 0.7052
+2025-06-14 02:26:50,783 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 700, Loss: 0.6608
+2025-06-14 02:26:52,420 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 800, Loss: 0.6889
+2025-06-14 02:26:54,117 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 900, Loss: 0.6931
+2025-06-14 02:32:48,777 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 02:32:48,777 - __main__ - INFO - ============================================================
+2025-06-14 02:32:48,777 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 02:32:48,777 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:32:49,092 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:32:49,092 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 02:32:49,094 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:32:49,094 - __main__ - INFO - Разделение данных:
+2025-06-14 02:32:49,094 - __main__ - INFO -   Обучение: 63423 примеров от 1050 студентов
+2025-06-14 02:32:49,110 - __main__ - INFO -   Валидация: 13377 примеров от 225 студентов
+2025-06-14 02:32:49,110 - __main__ - INFO -   Тест: 13606 примеров от 225 студентов
+2025-06-14 02:33:37,096 - __main__ - INFO - Шаг 3: Настройка конфигурации модели
+2025-06-14 02:33:37,096 - __main__ - INFO - Шаг 4: Запуск обучения с созданием артефактов
+2025-06-14 02:33:39,230 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели с полным сбором артефактов...
+2025-06-14 02:33:39,230 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели на 5 эпох
+2025-06-14 02:33:39,230 - mlmodels.dkn.trainer - INFO - Размер обучающей выборки: 63423
+2025-06-14 02:33:39,230 - mlmodels.dkn.trainer - INFO - Размер валидационной выборки: 13377
+2025-06-14 02:33:39,290 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 0, Loss: 0.6934
+2025-06-14 02:33:40,376 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 100, Loss: 0.6822
+2025-06-14 02:33:41,567 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 200, Loss: 0.6687
+2025-06-14 02:33:42,653 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 300, Loss: 0.6778
+2025-06-14 02:33:43,743 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 400, Loss: 0.6106
+2025-06-14 02:33:44,826 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 500, Loss: 0.8147
+2025-06-14 02:33:45,909 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 600, Loss: 0.7140
+2025-06-14 02:33:47,036 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 700, Loss: 0.7665
+2025-06-14 02:33:48,203 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 800, Loss: 0.6958
+2025-06-14 02:33:49,306 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 900, Loss: 0.6822
+2025-06-14 02:33:50,421 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1000, Loss: 0.6864
+2025-06-14 02:33:51,503 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1100, Loss: 0.7101
+2025-06-14 02:33:52,640 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1200, Loss: 0.7155
+2025-06-14 02:33:53,729 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1300, Loss: 0.6880
+2025-06-14 02:33:54,849 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1400, Loss: 0.6568
+2025-06-14 02:33:55,921 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1500, Loss: 0.6667
+2025-06-14 02:33:57,049 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1600, Loss: 0.6572
+2025-06-14 02:33:58,114 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1700, Loss: 0.7526
+2025-06-14 02:33:59,245 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1800, Loss: 0.7784
+2025-06-14 02:34:00,321 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1900, Loss: 0.6302
+2025-06-14 02:34:01,582 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2000, Loss: 0.6546
+2025-06-14 02:34:02,736 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2100, Loss: 0.6823
+2025-06-14 02:34:03,833 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2200, Loss: 0.6332
+2025-06-14 02:34:04,912 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2300, Loss: 0.6952
+2025-06-14 02:34:06,003 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2400, Loss: 0.6330
+2025-06-14 02:34:07,099 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2500, Loss: 0.7085
+2025-06-14 02:34:08,225 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2600, Loss: 0.6177
+2025-06-14 02:34:09,330 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2700, Loss: 0.6485
+2025-06-14 02:34:10,584 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2800, Loss: 0.7220
+2025-06-14 02:34:11,695 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2900, Loss: 0.6796
+2025-06-14 02:34:12,842 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3000, Loss: 0.6428
+2025-06-14 02:34:13,923 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3100, Loss: 0.6948
+2025-06-14 02:34:15,033 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3200, Loss: 0.7543
+2025-06-14 02:34:16,138 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3300, Loss: 0.6916
+2025-06-14 02:34:17,328 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3400, Loss: 0.6622
+2025-06-14 02:34:18,409 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3500, Loss: 0.6724
+2025-06-14 02:34:19,519 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3600, Loss: 0.6027
+2025-06-14 02:34:20,640 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3700, Loss: 0.6590
+2025-06-14 02:34:21,734 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3800, Loss: 0.7316
+2025-06-14 02:34:22,863 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3900, Loss: 0.7428
+2025-06-14 02:40:59,179 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 02:40:59,179 - __main__ - INFO - ============================================================
+2025-06-14 02:40:59,179 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 02:40:59,180 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:40:59,498 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:40:59,498 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 02:40:59,499 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:40:59,514 - __main__ - INFO - Разделение данных:
+2025-06-14 02:40:59,514 - __main__ - INFO -   Обучение: 63421 примеров от 1050 студентов
+2025-06-14 02:40:59,514 - __main__ - INFO -   Валидация: 13638 примеров от 225 студентов
+2025-06-14 02:40:59,514 - __main__ - INFO -   Тест: 13347 примеров от 225 студентов
+2025-06-14 02:41:52,264 - __main__ - INFO - Шаг 3: Настройка конфигурации модели
+2025-06-14 02:41:52,265 - __main__ - INFO - Шаг 4: Запуск обучения с созданием артефактов
+2025-06-14 02:41:54,458 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели с полным сбором артефактов...
+2025-06-14 02:41:54,459 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели на 5 эпох
+2025-06-14 02:41:54,459 - mlmodels.dkn.trainer - INFO - Размер обучающей выборки: 63421
+2025-06-14 02:41:54,459 - mlmodels.dkn.trainer - INFO - Размер валидационной выборки: 13638
+2025-06-14 02:41:54,502 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 0, Loss: 0.6864
+2025-06-14 02:41:59,877 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 500, Loss: 0.6678
+2025-06-14 02:42:05,366 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1000, Loss: 0.7021
+2025-06-14 02:42:10,872 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1500, Loss: 0.7309
+2025-06-14 02:42:16,318 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2000, Loss: 0.6794
+2025-06-14 02:42:21,825 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2500, Loss: 0.7279
+2025-06-14 02:42:27,308 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3000, Loss: 0.6733
+2025-06-14 02:42:32,896 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 3500, Loss: 0.6593
+2025-06-14 02:42:40,605 - mlmodels.dkn.trainer - INFO - 
+            Эпоха 1/5 (46.1s):
+            Обучение - Loss: 0.6820, Accuracy: 0.5667, F1: 0.5635
+            Валидация - Loss: 0.6782, Accuracy: 0.5749, F1: 0.5868
+            Learning Rate: 0.001000
+            
+2025-06-14 02:42:40,631 - mlmodels.dkn.trainer - INFO - Checkpoint сохранен: checkpoints\best_model.pth
+2025-06-14 02:42:40,647 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 0, Loss: 0.6793
+2025-06-14 02:42:46,364 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 500, Loss: 0.5816
+2025-06-14 02:42:51,896 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 1000, Loss: 0.6767
+2025-06-14 02:42:57,590 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 1500, Loss: 0.6522
+2025-06-14 02:43:03,711 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 2000, Loss: 0.6749
+2025-06-14 02:43:09,399 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 2500, Loss: 0.6736
+2025-06-14 02:43:15,205 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 3000, Loss: 0.6819
+2025-06-14 02:43:20,930 - mlmodels.dkn.trainer - INFO - Epoch 1, Batch 3500, Loss: 0.6617
+2025-06-14 02:43:28,902 - mlmodels.dkn.trainer - INFO - 
+            Эпоха 2/5 (48.3s):
+            Обучение - Loss: 0.6813, Accuracy: 0.5705, F1: 0.5784
+            Валидация - Loss: 0.6772, Accuracy: 0.5784, F1: 0.5434
+            Learning Rate: 0.001000
+            
+2025-06-14 02:43:28,930 - mlmodels.dkn.trainer - INFO - Checkpoint сохранен: checkpoints\best_model.pth
+2025-06-14 02:43:28,954 - mlmodels.dkn.trainer - INFO - Epoch 2, Batch 0, Loss: 0.7019
+2025-06-14 02:43:34,831 - mlmodels.dkn.trainer - INFO - Epoch 2, Batch 500, Loss: 0.6581
+2025-06-14 02:43:40,532 - mlmodels.dkn.trainer - INFO - Epoch 2, Batch 1000, Loss: 0.6996
+2025-06-14 02:43:46,165 - mlmodels.dkn.trainer - INFO - Epoch 2, Batch 1500, Loss: 0.6992
+2025-06-14 02:43:51,856 - mlmodels.dkn.trainer - INFO - Epoch 2, Batch 2000, Loss: 0.6951
+2025-06-14 02:43:57,599 - mlmodels.dkn.trainer - INFO - Epoch 2, Batch 2500, Loss: 0.6821
+2025-06-14 02:44:03,587 - mlmodels.dkn.trainer - INFO - Epoch 2, Batch 3000, Loss: 0.6255
+2025-06-14 02:44:09,286 - mlmodels.dkn.trainer - INFO - Epoch 2, Batch 3500, Loss: 0.6792
+2025-06-14 02:44:17,313 - mlmodels.dkn.trainer - INFO - 
+            Эпоха 3/5 (48.4s):
+            Обучение - Loss: 0.6811, Accuracy: 0.5683, F1: 0.5772
+            Валидация - Loss: 0.6790, Accuracy: 0.5756, F1: 0.6223
+            Learning Rate: 0.001000
+            
+2025-06-14 02:44:17,328 - mlmodels.dkn.trainer - INFO - Epoch 3, Batch 0, Loss: 0.6032
+2025-06-14 02:44:23,018 - mlmodels.dkn.trainer - INFO - Epoch 3, Batch 500, Loss: 0.7368
+2025-06-14 02:44:28,698 - mlmodels.dkn.trainer - INFO - Epoch 3, Batch 1000, Loss: 0.7119
+2025-06-14 02:44:34,498 - mlmodels.dkn.trainer - INFO - Epoch 3, Batch 1500, Loss: 0.6750
+2025-06-14 02:44:40,275 - mlmodels.dkn.trainer - INFO - Epoch 3, Batch 2000, Loss: 0.7007
+2025-06-14 02:44:45,949 - mlmodels.dkn.trainer - INFO - Epoch 3, Batch 2500, Loss: 0.6633
+2025-06-14 02:44:51,702 - mlmodels.dkn.trainer - INFO - Epoch 3, Batch 3000, Loss: 0.6138
+2025-06-14 02:44:57,391 - mlmodels.dkn.trainer - INFO - Epoch 3, Batch 3500, Loss: 0.6605
+2025-06-14 02:45:05,504 - mlmodels.dkn.trainer - INFO - 
+            Эпоха 4/5 (48.2s):
+            Обучение - Loss: 0.6805, Accuracy: 0.5680, F1: 0.5872
+            Валидация - Loss: 0.6754, Accuracy: 0.5774, F1: 0.5051
+            Learning Rate: 0.001000
+            
+2025-06-14 02:45:05,521 - mlmodels.dkn.trainer - INFO - Checkpoint сохранен: checkpoints\best_model.pth
+2025-06-14 02:45:05,534 - mlmodels.dkn.trainer - INFO - Epoch 4, Batch 0, Loss: 0.6427
+2025-06-14 02:45:11,632 - mlmodels.dkn.trainer - INFO - Epoch 4, Batch 500, Loss: 0.7893
+2025-06-14 02:45:17,395 - mlmodels.dkn.trainer - INFO - Epoch 4, Batch 1000, Loss: 0.7139
+2025-06-14 02:45:23,187 - mlmodels.dkn.trainer - INFO - Epoch 4, Batch 1500, Loss: 0.6500
+2025-06-14 02:45:28,890 - mlmodels.dkn.trainer - INFO - Epoch 4, Batch 2000, Loss: 0.7196
+2025-06-14 02:45:34,755 - mlmodels.dkn.trainer - INFO - Epoch 4, Batch 2500, Loss: 0.6469
+2025-06-14 02:45:40,459 - mlmodels.dkn.trainer - INFO - Epoch 4, Batch 3000, Loss: 0.6764
+2025-06-14 02:45:46,280 - mlmodels.dkn.trainer - INFO - Epoch 4, Batch 3500, Loss: 0.6221
+2025-06-14 02:45:54,230 - mlmodels.dkn.trainer - INFO - 
+            Эпоха 5/5 (48.7s):
+            Обучение - Loss: 0.6799, Accuracy: 0.5704, F1: 0.5949
+            Валидация - Loss: 0.6776, Accuracy: 0.5764, F1: 0.6244
+            Learning Rate: 0.001000
+            
+2025-06-14 02:45:54,248 - mlmodels.dkn.trainer - INFO - Checkpoint сохранен: checkpoints\final_model.pth
+2025-06-14 02:45:54,248 - mlmodels.dkn.trainer - INFO - Конфигурация модели сохранена: mlmodels\dkn\training\models\model_config.json
+2025-06-14 02:46:00,846 - mlmodels.dkn.trainer - INFO - Графики сохранены: checkpoints\training_curves.png
+2025-06-14 02:46:00,846 - mlmodels.dkn.trainer - INFO - Обучение завершено! Артефакты сохранены в: mlmodels\dkn\training
+2025-06-14 02:46:00,846 - mlmodels.dkn.trainer - INFO - Проводим тестирование модели...
+2025-06-14 02:46:08,236 - mlmodels.dkn.trainer - INFO - Результаты тестирования: {'accuracy': 0.5748857421143329, 'precision': 0.5587891538101917, 'recall': 0.7157185628742515, 'f1': 0.6275925439747965, 'auc': 0.599539693673999, 'loss': 0.6796196003873906}
+2025-06-14 02:46:08,252 - __main__ - ERROR - Ошибка при обучении: Invalid format specifier '.6f if self.training_history['train_loss'] else 'N/A'' for object of type 'float'
+2025-06-14 02:46:45,953 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 02:46:45,954 - __main__ - INFO - ============================================================
+2025-06-14 02:46:45,954 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 02:46:45,954 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:46:46,286 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:46:46,286 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 02:46:46,286 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:46:46,301 - __main__ - INFO - Разделение данных:
+2025-06-14 02:46:46,302 - __main__ - INFO -   Обучение: 63057 примеров от 1050 студентов
+2025-06-14 02:46:46,302 - __main__ - INFO -   Валидация: 13828 примеров от 225 студентов
+2025-06-14 02:46:46,302 - __main__ - INFO -   Тест: 13521 примеров от 225 студентов
+2025-06-14 02:47:22,131 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 02:47:22,131 - __main__ - INFO - ============================================================
+2025-06-14 02:47:22,131 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 02:47:22,132 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 02:47:22,462 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 02:47:22,462 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 02:47:22,462 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 02:47:22,479 - __main__ - INFO - Разделение данных:
+2025-06-14 02:47:22,479 - __main__ - INFO -   Обучение: 63768 примеров от 1050 студентов
+2025-06-14 02:47:22,480 - __main__ - INFO -   Валидация: 13333 примеров от 225 студентов
+2025-06-14 02:47:22,480 - __main__ - INFO -   Тест: 13305 примеров от 225 студентов
+2025-06-14 02:48:11,247 - __main__ - INFO - Шаг 3: Настройка конфигурации модели
+2025-06-14 02:48:11,249 - __main__ - INFO - Шаг 4: Запуск обучения с созданием артефактов
+2025-06-14 02:48:13,400 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели с полным сбором артефактов...
+2025-06-14 02:48:13,400 - mlmodels.dkn.trainer - INFO - Начинаем обучение DKN модели на 5 эпох
+2025-06-14 02:48:13,400 - mlmodels.dkn.trainer - INFO - Размер обучающей выборки: 63768
+2025-06-14 02:48:13,400 - mlmodels.dkn.trainer - INFO - Размер валидационной выборки: 13333
+2025-06-14 02:48:13,444 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 0, Loss: 0.6867
+2025-06-14 02:48:20,024 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 500, Loss: 0.6877
+2025-06-14 02:48:27,785 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1000, Loss: 0.6546
+2025-06-14 02:48:35,393 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 1500, Loss: 0.7050
+2025-06-14 02:48:42,991 - mlmodels.dkn.trainer - INFO - Epoch 0, Batch 2000, Loss: 0.6909
+2025-06-14 03:01:52,967 - __main__ - INFO - Запуск обучения DKN модели
+2025-06-14 03:01:52,967 - __main__ - INFO - ============================================================
+2025-06-14 03:01:52,967 - __main__ - INFO - Шаг 1: Загрузка синтетического датасета
+2025-06-14 03:01:52,967 - __main__ - INFO - Загружаем датасет: mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv
+2025-06-14 03:01:53,328 - __main__ - INFO - Датасет загружен: 90406 примеров, 37 признаков
+2025-06-14 03:01:53,328 - __main__ - INFO - Шаг 2: Подготовка данных для DKN
+2025-06-14 03:01:53,328 - __main__ - INFO - Подготавливаем данные для DKN...
+2025-06-14 03:01:53,346 - __main__ - INFO - Разделение данных:
+2025-06-14 03:01:53,347 - __main__ - INFO -   Обучение: 63565 примеров от 1050 студентов
+2025-06-14 03:01:53,347 - __main__ - INFO -   Валидация: 13472 примеров от 225 студентов
+2025-06-14 03:01:53,347 - __main__ - INFO -   Тест: 13369 примеров от 225 студентов
+2025-06-14 03:02:40,651 - __main__ - ERROR - Ошибка при обучении: No module named 'mlmodels.dkn.trainer'

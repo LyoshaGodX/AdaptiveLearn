@@ -1,0 +1,17 @@
+{
+  "skill_embedding_dim": 64,
+  "task_embedding_dim": 64,
+  "student_state_dim": 32,
+  "hidden_dim": 256,
+  "output_dim": 1,
+  "dropout_rate": 0.2,
+  "learning_rate": 0.001,
+  "batch_size": 16,
+  "max_history_length": 50,
+  "bkt_weight": 0.4,
+  "task_weight": 0.3,
+  "history_weight": 0.2,
+  "graph_weight": 0.1,
+  "num_layers": 3,
+  "dropout": 0.2
+}

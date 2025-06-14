@@ -7,10 +7,11 @@ from django.core.exceptions import ObjectDoesNotExist
 import json
 from typing import Dict, List, Any, Optional
 
-from student.models import StudentProfile, StudentTaskAttempt
+from student.models import StudentProfile
+from .models import TaskAttempt
 from skills.models import Skill, Course
 from methodist.models import Task
-from .models import StudentSkillMastery, BKTModelState
+from .models import StudentSkillMastery
 from .bkt.base_model import BKTModel, BKTParameters, TaskCharacteristics
 
 
@@ -87,7 +88,7 @@ class MLModelsAPI:
             List попыток с подробной информацией
         """
         try:
-            attempts = StudentTaskAttempt.objects.filter(
+            attempts = TaskAttempt.objects.filter(
                 student_id=student_id
             ).select_related(
                 'task', 
