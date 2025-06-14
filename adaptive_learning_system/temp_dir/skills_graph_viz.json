@@ -1,0 +1,626 @@
+{
+  "nodes": [
+    {
+      "id": 11,
+      "name": "Введение в ООП",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 0,
+      "prerequisites_count": 0,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 29,
+      "name": "Введение в нейросети",
+      "description": "",
+      "course": "Введение в машинное обучение",
+      "depth": 16,
+      "prerequisites_count": 3,
+      "dependents_count": 0,
+      "tasks_count": 9
+    },
+    {
+      "id": 22,
+      "name": "Графы (поиск в ширину и глубину)",
+      "description": "",
+      "course": "Алгоритмы и структуры данных",
+      "depth": 5,
+      "prerequisites_count": 2,
+      "dependents_count": 2,
+      "tasks_count": 9
+    },
+    {
+      "id": 21,
+      "name": "Деревья (обход, поиск)",
+      "description": "",
+      "course": "Алгоритмы и структуры данных",
+      "depth": 4,
+      "prerequisites_count": 1,
+      "dependents_count": 3,
+      "tasks_count": 9
+    },
+    {
+      "id": 27,
+      "name": "Классификация данных",
+      "description": "",
+      "course": "Введение в машинное обучение",
+      "depth": 14,
+      "prerequisites_count": 5,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 18,
+      "name": "Контейнеры данных (tuple, set)",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 1,
+      "prerequisites_count": 1,
+      "dependents_count": 2,
+      "tasks_count": 9
+    },
+    {
+      "id": 9,
+      "name": "Логические операторы",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 1,
+      "prerequisites_count": 1,
+      "dependents_count": 3,
+      "tasks_count": 9
+    },
+    {
+      "id": 28,
+      "name": "Методы кластеризации",
+      "description": "",
+      "course": "Введение в машинное обучение",
+      "depth": 15,
+      "prerequisites_count": 5,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 7,
+      "name": "Модули и пакеты",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 9,
+      "prerequisites_count": 1,
+      "dependents_count": 2,
+      "tasks_count": 9
+    },
+    {
+      "id": 6,
+      "name": "Обработка ошибок",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 9,
+      "prerequisites_count": 1,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 30,
+      "name": "Обработка признаков (Feature Engineering)",
+      "description": "",
+      "course": "Введение в машинное обучение",
+      "depth": 12,
+      "prerequisites_count": 4,
+      "dependents_count": 2,
+      "tasks_count": 9
+    },
+    {
+      "id": 15,
+      "name": "Объектно-ориентированное программирование",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 1,
+      "prerequisites_count": 2,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 2,
+      "name": "Операторы и выражения",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 1,
+      "prerequisites_count": 1,
+      "dependents_count": 3,
+      "tasks_count": 9
+    },
+    {
+      "id": 12,
+      "name": "Основы алгоритмов",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 0,
+      "prerequisites_count": 0,
+      "dependents_count": 3,
+      "tasks_count": 9
+    },
+    {
+      "id": 26,
+      "name": "Основы регрессии",
+      "description": "",
+      "course": "Введение в машинное обучение",
+      "depth": 13,
+      "prerequisites_count": 3,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 1,
+      "name": "Переменные и типы данных",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 0,
+      "prerequisites_count": 0,
+      "dependents_count": 4,
+      "tasks_count": 9
+    },
+    {
+      "id": 25,
+      "name": "Поиск оптимального пути (A*, Dijkstra)",
+      "description": "",
+      "course": "Алгоритмы и структуры данных",
+      "depth": 6,
+      "prerequisites_count": 3,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 17,
+      "name": "Примитивы сериализации (JSON, CSV)",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 11,
+      "prerequisites_count": 3,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 20,
+      "name": "Работа с библиотеками Python (math, random)",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 10,
+      "prerequisites_count": 3,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 16,
+      "name": "Работа с вводом/выводом данных",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 0,
+      "prerequisites_count": 0,
+      "dependents_count": 2,
+      "tasks_count": 9
+    },
+    {
+      "id": 8,
+      "name": "Работа с файлами",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 10,
+      "prerequisites_count": 3,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 19,
+      "name": "Регулярные выражения",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 2,
+      "prerequisites_count": 2,
+      "dependents_count": 2,
+      "tasks_count": 9
+    },
+    {
+      "id": 14,
+      "name": "Рекурсия",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 3,
+      "prerequisites_count": 2,
+      "dependents_count": 2,
+      "tasks_count": 9
+    },
+    {
+      "id": 13,
+      "name": "Сложность алгоритмов",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 1,
+      "prerequisites_count": 1,
+      "dependents_count": 5,
+      "tasks_count": 9
+    },
+    {
+      "id": 24,
+      "name": "Сортировки (быстрая, пузырьковая, слиянием)",
+      "description": "",
+      "course": "Алгоритмы и структуры данных",
+      "depth": 5,
+      "prerequisites_count": 3,
+      "dependents_count": 3,
+      "tasks_count": 9
+    },
+    {
+      "id": 10,
+      "name": "Списки и словари",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 7,
+      "prerequisites_count": 4,
+      "dependents_count": 3,
+      "tasks_count": 9
+    },
+    {
+      "id": 3,
+      "name": "Условные операторы",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 2,
+      "prerequisites_count": 2,
+      "dependents_count": 1,
+      "tasks_count": 9
+    },
+    {
+      "id": 5,
+      "name": "Функции и процедуры",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 8,
+      "prerequisites_count": 3,
+      "dependents_count": 5,
+      "tasks_count": 9
+    },
+    {
+      "id": 23,
+      "name": "Хэш-таблицы",
+      "description": "",
+      "course": "Алгоритмы и структуры данных",
+      "depth": 6,
+      "prerequisites_count": 2,
+      "dependents_count": 2,
+      "tasks_count": 9
+    },
+    {
+      "id": 4,
+      "name": "Циклы",
+      "description": "",
+      "course": "Основы программирования на Python",
+      "depth": 2,
+      "prerequisites_count": 2,
+      "dependents_count": 4,
+      "tasks_count": 9
+    }
+  ],
+  "edges": [
+    {
+      "source": 25,
+      "target": 29,
+      "type": "prerequisite"
+    },
+    {
+      "source": 28,
+      "target": 29,
+      "type": "prerequisite"
+    },
+    {
+      "source": 15,
+      "target": 29,
+      "type": "prerequisite"
+    },
+    {
+      "source": 21,
+      "target": 22,
+      "type": "prerequisite"
+    },
+    {
+      "source": 14,
+      "target": 22,
+      "type": "prerequisite"
+    },
+    {
+      "source": 14,
+      "target": 21,
+      "type": "prerequisite"
+    },
+    {
+      "source": 13,
+      "target": 27,
+      "type": "prerequisite"
+    },
+    {
+      "source": 21,
+      "target": 27,
+      "type": "prerequisite"
+    },
+    {
+      "source": 24,
+      "target": 27,
+      "type": "prerequisite"
+    },
+    {
+      "source": 26,
+      "target": 27,
+      "type": "prerequisite"
+    },
+    {
+      "source": 30,
+      "target": 27,
+      "type": "prerequisite"
+    },
+    {
+      "source": 1,
+      "target": 18,
+      "type": "prerequisite"
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "type": "prerequisite"
+    },
+    {
+      "source": 5,
+      "target": 28,
+      "type": "prerequisite"
+    },
+    {
+      "source": 13,
+      "target": 28,
+      "type": "prerequisite"
+    },
+    {
+      "source": 22,
+      "target": 28,
+      "type": "prerequisite"
+    },
+    {
+      "source": 23,
+      "target": 28,
+      "type": "prerequisite"
+    },
+    {
+      "source": 27,
+      "target": 28,
+      "type": "prerequisite"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "type": "prerequisite"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "type": "prerequisite"
+    },
+    {
+      "source": 17,
+      "target": 30,
+      "type": "prerequisite"
+    },
+    {
+      "source": 10,
+      "target": 30,
+      "type": "prerequisite"
+    },
+    {
+      "source": 19,
+      "target": 30,
+      "type": "prerequisite"
+    },
+    {
+      "source": 20,
+      "target": 30,
+      "type": "prerequisite"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "type": "prerequisite"
+    },
+    {
+      "source": 12,
+      "target": 15,
+      "type": "prerequisite"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "type": "prerequisite"
+    },
+    {
+      "source": 5,
+      "target": 26,
+      "type": "prerequisite"
+    },
+    {
+      "source": 13,
+      "target": 26,
+      "type": "prerequisite"
+    },
+    {
+      "source": 30,
+      "target": 26,
+      "type": "prerequisite"
+    },
+    {
+      "source": 24,
+      "target": 25,
+      "type": "prerequisite"
+    },
+    {
+      "source": 9,
+      "target": 25,
+      "type": "prerequisite"
+    },
+    {
+      "source": 22,
+      "target": 25,
+      "type": "prerequisite"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "type": "prerequisite"
+    },
+    {
+      "source": 8,
+      "target": 17,
+      "type": "prerequisite"
+    },
+    {
+      "source": 10,
+      "target": 17,
+      "type": "prerequisite"
+    },
+    {
+      "source": 18,
+      "target": 20,
+      "type": "prerequisite"
+    },
+    {
+      "source": 5,
+      "target": 20,
+      "type": "prerequisite"
+    },
+    {
+      "source": 7,
+      "target": 20,
+      "type": "prerequisite"
+    },
+    {
+      "source": 19,
+      "target": 8,
+      "type": "prerequisite"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "type": "prerequisite"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "type": "prerequisite"
+    },
+    {
+      "source": 16,
+      "target": 19,
+      "type": "prerequisite"
+    },
+    {
+      "source": 2,
+      "target": 19,
+      "type": "prerequisite"
+    },
+    {
+      "source": 12,
+      "target": 14,
+      "type": "prerequisite"
+    },
+    {
+      "source": 4,
+      "target": 14,
+      "type": "prerequisite"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "type": "prerequisite"
+    },
+    {
+      "source": 13,
+      "target": 24,
+      "type": "prerequisite"
+    },
+    {
+      "source": 4,
+      "target": 24,
+      "type": "prerequisite"
+    },
+    {
+      "source": 21,
+      "target": 24,
+      "type": "prerequisite"
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "type": "prerequisite"
+    },
+    {
+      "source": 18,
+      "target": 10,
+      "type": "prerequisite"
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "type": "prerequisite"
+    },
+    {
+      "source": 23,
+      "target": 10,
+      "type": "prerequisite"
+    },
+    {
+      "source": 9,
+      "target": 3,
+      "type": "prerequisite"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "type": "prerequisite"
+    },
+    {
+      "source": 10,
+      "target": 5,
+      "type": "prerequisite"
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "type": "prerequisite"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "type": "prerequisite"
+    },
+    {
+      "source": 24,
+      "target": 23,
+      "type": "prerequisite"
+    },
+    {
+      "source": 13,
+      "target": 23,
+      "type": "prerequisite"
+    },
+    {
+      "source": 9,
+      "target": 4,
+      "type": "prerequisite"
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "type": "prerequisite"
+    }
+  ],
+  "metadata": {
+    "total_nodes": 30,
+    "total_edges": 63,
+    "max_depth": 16
+  }
+}
