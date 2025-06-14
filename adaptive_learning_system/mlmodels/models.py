@@ -4,10 +4,6 @@ from skills.models import Skill, Course
 from methodist.models import Task
 from student.models import StudentProfile
 import json
-import os
-import logging
-
-logger = logging.getLogger(__name__)
 
 
 class StudentSkillMastery(models.Model):
@@ -211,30 +207,18 @@ class TaskAttempt(models.Model):
     @property
     def duration_minutes(self):
         """Время решения в минутах"""
-        if self.time_spent:            return round(self.time_spent / 60, 2)
+        if self.time_spent:
+            return round(self.time_spent / 60, 2)
         return None
-
+    
     def save(self, *args, **kwargs):
-        # Проверяем, создаётся ли новая попытка
-        is_new_attempt = self.pk is None
-        
         # Автоматически вычисляем время решения
         if self.started_at and self.completed_at and not self.time_spent:
             delta = self.completed_at - self.started_at
             self.time_spent = int(delta.total_seconds())
         
         super().save(*args, **kwargs)
-        
-        # Автоматически обновляем BKT при создании новой попытки
-        if is_new_attempt:
-            try:
-                self.update_skill_masteries()
-                logger.debug(f"BKT обновлен для студента {self.student.user.username} "
-                           f"после попытки задания {self.task.title} "
-                           f"(результат: {'правильно' if self.is_correct else 'неправильно'})")
-            except Exception as e:
-                logger.error(f"Ошибка при автоматическом обновлении BKT: {e}")
-                # Не прерываем сохранение попытки из-за ошибки BKT
+        # BKT больше не применяется автоматически - только по вызову через интерфейс
     
     def update_skill_masteries(self):
         """Обновляет вероятности освоения связанных навыков"""
@@ -244,10 +228,11 @@ class TaskAttempt(models.Model):
             
             mastery, created = StudentSkillMastery.objects.get_or_create(
                 student=self.student,
-                skill=skill,                defaults=trained_params
+                skill=skill,
+                defaults=trained_params
             )
             mastery.update_mastery_probability(self.is_correct)
-
+    
     def _get_trained_bkt_parameters(self, skill):
         """Получает обученные BKT параметры для навыка"""
         import json
@@ -271,10 +256,9 @@ class TaskAttempt(models.Model):
                         'guess_prob': skill_params.get('P_G', 0.2),
                         'slip_prob': skill_params.get('P_S', 0.1),
                     }
-                    
+            
         except Exception as e:
-            logger.warning(f"Ошибка загрузки обученных параметров BKT: {e}")
-            logger.debug(f"Используются дефолтные параметры BKT для навыка {skill.name}")
+            print(f"⚠️ Ошибка загрузки обученных параметров BKT: {e}")
         
         # Возвращаем дефолтные параметры если не удалось загрузить обученные
         return {

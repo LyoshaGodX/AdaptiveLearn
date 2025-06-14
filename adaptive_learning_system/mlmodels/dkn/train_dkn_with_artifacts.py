@@ -14,9 +14,7 @@ import logging
 
 # Настройка Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'adaptive_learning.settings')
-# Добавляем корневую директорию проекта в путь
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(project_root)
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import django
 django.setup()
@@ -26,14 +24,14 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('../../dkn_training.log'),
+        logging.FileHandler('dkn_training.log'),
         logging.StreamHandler()
     ]
 )
 logger = logging.getLogger(__name__)
 
 
-def load_synthetic_dataset(dataset_path: str = "dataset/enhanced_synthetic_dataset.csv"):
+def load_synthetic_dataset(dataset_path: str = "mlmodels/dkn/dataset/enhanced_synthetic_dataset.csv"):
     """
     Загружает синтетический датасет для обучения DKN
     
@@ -269,11 +267,12 @@ def main():
         
         # 2. Подготавливаем данные
         logger.info("Шаг 2: Подготовка данных для DKN")
-        train_data, val_data, test_data = prepare_data_for_dkn(df)        # 3. Импортируем тренер (после настройки Django)
-        from .trainer import train_dkn_model
-        from .model import DKNConfig
-        from .data_processor import DKNDataset
-        from torch.utils.data import DataLoader# 4. Настраиваем конфигурацию
+        train_data, val_data, test_data = prepare_data_for_dkn(df)
+          # 3. Импортируем тренер (после настройки Django)
+        from mlmodels.dkn.trainer import train_dkn_model
+        from mlmodels.dkn.model import DKNConfig
+        from mlmodels.dkn.data_processor import DKNDataset
+        from torch.utils.data import DataLoader        # 4. Настраиваем конфигурацию
         logger.info("Шаг 3: Настройка конфигурации модели")
         config = DKNConfig()
         config.hidden_dim = 256
@@ -293,8 +292,7 @@ def main():
             config=config,
             num_skills=NUM_SKILLS,
             num_tasks=NUM_TASKS,
-            save_dir='../../checkpoints',
-            artifacts_dir='training',
+            save_dir='checkpoints',            artifacts_dir='mlmodels/dkn/training',
             num_epochs=5,  # Сокращаем для тестирования
             batch_size=16,
             collate_fn=custom_collate_fn

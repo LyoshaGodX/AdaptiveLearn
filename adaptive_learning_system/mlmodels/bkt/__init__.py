@@ -3,9 +3,12 @@ BKT (Bayesian Knowledge Tracing) модель для отслеживания з
 """
 
 from .base_model import BKTModel, BKTParameters, StudentSkillState
+from .trainer import BKTTrainer, TrainingData
 
 __all__ = [
     'BKTModel',
     'BKTParameters', 
-    'StudentSkillState'
+    'StudentSkillState',
+    'BKTTrainer',
+    'TrainingData'
 ]
