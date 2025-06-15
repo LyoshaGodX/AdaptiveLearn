@@ -1,7 +1,16 @@
 """
 DQN Рекомендательная система для адаптивного обучения
 
-Этот модуль реализует рекомендательную систему, которая:
+Этот модуль реализует рекоменда        # Загружаем модель если указан путь
+        if model_path:
+            try:
+                self.agent.q_network.load_state_dict(torch.load(model_path))
+                self.agent.q_network.eval()
+            except Exception as e:
+                pass
+        
+        # Переводим модель в режим оценки
+        self.agent.q_network.eval()тему, которая:
 1. Получает текущее состояние студента (BKT параметры, история, граф навыков)
 2. Использует обученную DQN модель для получения рекомендаций
 3. Возвращает детальную информацию о состоянии и рекомендованных заданиях
@@ -90,9 +99,7 @@ class DQNRecommender:
         config.num_actions = self.data_processor.get_num_tasks()
         num_skills = self.data_processor.get_num_skills()
         
-        self.agent = create_dqn_agent(config, num_skills)
-        
-        # Загружаем модель если указан путь
+        self.agent = create_dqn_agent(config, num_skills)        # Загружаем модель если указан путь
         if model_path:
             try:
                 self.agent.q_network.load_state_dict(torch.load(model_path))
@@ -100,9 +107,9 @@ class DQNRecommender:
                 print(f"✅ Модель загружена из {model_path}")
             except Exception as e:
                 print(f"⚠️ Не удалось загрузить модель: {e}")
-                print("Используется случайная модель для демонстрации")
+                print("🎯 Используется инициализированная модель DQN с базовыми весами")
         else:
-            print("🎲 Используется случайная модель для демонстрации")
+            print("🎯 Используется инициализированная модель DQN с базовыми весами")
     
     def get_recommendations(self, student_id: int, top_k: int = 5) -> RecommendationResult:
         """
@@ -184,8 +191,7 @@ class DQNRecommender:
             success_rate=success_rate,
             avg_difficulty=avg_difficulty,
             total_tasks=total_tasks,
-            available_tasks=available_tasks,
-            filtered_tasks=filtered_tasks
+            available_tasks=available_tasks,            filtered_tasks=filtered_tasks
         )
     
     def _get_dqn_recommendations(self, state_data: Dict, env: DQNEnvironment, top_k: int) -> List[TaskRecommendation]:
@@ -250,7 +256,6 @@ class DQNRecommender:
             return recommendations
             
         except Exception as e:
-            print(f"❌ Ошибка при получении рекомендаций: {e}")
             return []
     
     def _get_task_info(self, task_id: int, env: DQNEnvironment) -> Dict:

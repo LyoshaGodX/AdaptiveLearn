@@ -89,12 +89,20 @@ class DQNEnvironment:
         # Создаем обратный маппинг для быстрого поиска
         id_to_skill = {idx: skill_id for skill_id, idx in skill_to_id.items()}
         
+        # Получаем статистику попыток студента для фильтрации
+        task_attempts_stats = self._get_task_attempts_stats()
+        
         for task_id, required_skills in self.task_to_skills.items():
             if not required_skills:
                 continue
                 
             task_available = True
             all_skills_mastered = True
+            
+            # Проверяем, не решал ли студент это задание уже много раз правильно
+            if self._is_task_overlearned(task_id, task_attempts_stats):
+                task_available = False
+                continue
             
             # Проверяем каждый навык, который развивает это задание
             for skill_id in required_skills:
@@ -106,15 +114,16 @@ class DQNEnvironment:
                 skill_mastery = bkt_params[skill_idx, 0].item()
                 
                 # Проверяем, что все prerequisite навыки освоены (рекурсивно)
-                if not self._check_prerequisites_mastered(skill_id, bkt_params, skill_to_id, mastery_threshold=0.85):
+                if not self._check_prerequisites_mastered(skill_id, bkt_params, skill_to_id, mastery_threshold=0.7):
                     task_available = False
                     break
                 
                 # Проверяем, что хотя бы один навык не полностью освоен
-                if skill_mastery <= 0.9:
+                # Повышаем порог для исключения полностью освоенных навыков
+                if skill_mastery < 0.85:  # Если навык еще НЕ освоен
                     all_skills_mastered = False
                     
-            # Исключаем задания, если все развиваемые навыки уже освоены
+            # Исключаем задания, если ВСЕ развиваемые навыки уже освоены
             if all_skills_mastered:
                 task_available = False
                     
@@ -193,8 +202,7 @@ class DQNEnvironment:
         
         # Штраф за нарушение prerequisite
         prerequisite_penalty = -2.0 if prerequisite_violated else 0.0
-        
-        # Штраф за слишком легкие/сложные задания
+          # Штраф за слишком легкие/сложные задания
         difficulty_penalty = 0.0
         if difficulty_match < 0.3:
             difficulty_penalty = -0.3
@@ -211,6 +219,77 @@ class DQNEnvironment:
     def reset(self):
         """Сброс среды для новой сессии"""
         self.current_session_length = 0
+    
+    def _get_task_attempts_stats(self) -> Dict[int, Dict[str, int]]:
+        """
+        Получает статистику попыток студента по заданиям
+        
+        Returns:
+            Dict[task_id, {'total': int, 'correct': int, 'recent_correct': int}]
+        """
+        from mlmodels.models import TaskAttempt
+        from datetime import datetime, timedelta
+        
+        stats = {}
+        
+        # Получаем все попытки студента за последние 30 дней
+        cutoff_date = datetime.now() - timedelta(days=30)
+        
+        attempts = TaskAttempt.objects.filter(
+            student=self.student_profile,
+            started_at__gte=cutoff_date
+        ).order_by('-started_at')
+        
+        for attempt in attempts:
+            task_id = attempt.task.id
+            if task_id not in stats:
+                stats[task_id] = {'total': 0, 'correct': 0, 'recent_correct': 0}
+            
+            stats[task_id]['total'] += 1
+            if attempt.is_correct:
+                stats[task_id]['correct'] += 1
+                
+                # Считаем последовательные правильные попытки (последние 5)
+                recent_attempts = TaskAttempt.objects.filter(
+                    student=self.student_profile,
+                    task=attempt.task
+                ).order_by('-started_at')[:5]
+                
+                recent_correct_streak = 0
+                for recent_attempt in recent_attempts:
+                    if recent_attempt.is_correct:
+                        recent_correct_streak += 1
+                    else:
+                        break
+                
+                stats[task_id]['recent_correct'] = recent_correct_streak
+        
+        return stats
+    
+    def _is_task_overlearned(self, task_id: int, attempts_stats: Dict[int, Dict[str, int]]) -> bool:
+        """
+        Проверяет, не переизучено ли задание студентом
+        
+        Args:
+            task_id: ID задания
+            attempts_stats: статистика попыток
+            
+        Returns:
+            bool: True если задание переизучено
+        """
+        if task_id not in attempts_stats:
+            return False
+        
+        stats = attempts_stats[task_id]
+        
+        # Исключаем задания, которые студент решил правильно 3+ раза подряд
+        if stats['recent_correct'] >= 3:
+            return True
+              # Исключаем задания с очень высоким процентом успеха (>90%) и много попыток (>5)
+        if stats['total'] >= 5 and (stats['correct'] / stats['total']) > 0.9:
+            return True
+            
+        return False
 
 
 class DQNDataProcessor:
@@ -307,10 +386,13 @@ class DQNDataProcessor:
           # Получаем все записи StudentSkillMastery для студента
         masteries = StudentSkillMastery.objects.filter(student=student_profile)
         
+        # Создаем словарь для быстрого поиска
+        mastery_dict = {mastery.skill_id: mastery for mastery in masteries}
+        
         for skill_db_id, skill_idx in self.skill_to_id.items():
             try:
                 # Ищем запись для данного навыка
-                mastery = masteries.filter(skill_id=skill_db_id).first()
+                mastery = mastery_dict.get(skill_db_id)
                 
                 if mastery:
                     # Извлекаем только вероятность знания
@@ -326,6 +408,7 @@ class DQNDataProcessor:
                 bkt_params[skill_idx] = torch.tensor([0.1])
         
         return bkt_params
+    
     def _get_student_history(self, student_profile: StudentProfile) -> torch.Tensor:
         """
         Получает историю попыток студента

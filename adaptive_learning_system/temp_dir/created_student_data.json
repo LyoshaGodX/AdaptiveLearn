@@ -1,0 +1,102 @@
+{
+  "student_profile": {
+    "full_name": "Клементьев Алексей Александрович",
+    "email": "Alex0.oKlem@gmail.com",
+    "organization": "РГПУ им. Герцена",
+    "username": "alex_klementev",
+    "created_at": "2025-06-15T11:32:04.862158+00:00"
+  },
+  "analysis": {
+    "total_skills": 5,
+    "mastered_count": 5,
+    "partial_count": 0,
+    "unlearned_count": 0,
+    "mastered_skills": [
+      {
+        "skill_name": "Основы алгоритмов",
+        "current_level": 0.9999999111568775,
+        "target_level": 0.9782472333615738,
+        "attempts_count": 13,
+        "correct_attempts": 9,
+        "accuracy": 0.6923076923076923
+      },
+      {
+        "skill_name": "Сложность алгоритмов",
+        "current_level": 0.9999863481343798,
+        "target_level": 0.958554091418208,
+        "attempts_count": 12,
+        "correct_attempts": 9,
+        "accuracy": 0.75
+      },
+      {
+        "skill_name": "Переменные и типы данных",
+        "current_level": 0.9988908482524566,
+        "target_level": 0.7810733099810666,
+        "attempts_count": 5,
+        "correct_attempts": 4,
+        "accuracy": 0.8
+      },
+      {
+        "skill_name": "Введение в ООП",
+        "current_level": 0.9951853408835626,
+        "target_level": 0.4426184358943933,
+        "attempts_count": 9,
+        "correct_attempts": 5,
+        "accuracy": 0.5555555555555556
+      },
+      {
+        "skill_name": "Работа с вводом/выводом данных",
+        "current_level": 0.98293960725205,
+        "target_level": 0.5841413676981412,
+        "attempts_count": 9,
+        "correct_attempts": 5,
+        "accuracy": 0.5555555555555556
+      }
+    ],
+    "partial_skills": [],
+    "unlearned_skills": [],
+    "total_attempts": 48,
+    "total_correct": 32
+  },
+  "target_mastery": {
+    "11": 0.4426184358943933,
+    "29": 0.1,
+    "22": 0.1,
+    "21": 0.1,
+    "27": 0.1,
+    "18": 0.1,
+    "9": 0.1,
+    "28": 0.1,
+    "7": 0.1,
+    "6": 0.1,
+    "30": 0.1,
+    "15": 0.1,
+    "2": 0.1,
+    "12": 0.9782472333615738,
+    "26": 0.1,
+    "1": 0.7810733099810666,
+    "25": 0.1,
+    "17": 0.1,
+    "20": 0.1,
+    "16": 0.5841413676981412,
+    "8": 0.1,
+    "19": 0.1,
+    "14": 0.1,
+    "13": 0.958554091418208,
+    "24": 0.1,
+    "10": 0.1,
+    "3": 0.1,
+    "5": 0.1,
+    "23": 0.1,
+    "4": 0.1
+  },
+  "attempts_summary": {
+    "total_attempts": 48,
+    "correct_attempts": 32,
+    "success_rate": 0.6666666666666666,
+    "time_span": {
+      "start": "2025-06-08T11:32:04.886530+00:00",
+      "end": "2025-06-15T11:32:05.255879+00:00"
+    }
+  }
+}

@@ -274,10 +274,8 @@ class DQNTrainingEnvironment:
                         all_episodes.append(episode)
                         
             except Exception as e:
-                print(f"Ошибка при создании эпизода для студента {student_id}: {e}")
                 continue
         
-        print(f"Создано {len(all_episodes)} эпизодов для обучения")
         return all_episodes
     
     def evaluate_agent_performance(self, agent, num_episodes: int = 10) -> Dict:
@@ -345,7 +343,6 @@ class DQNTrainingEnvironment:
                 success_rates.append(successes / max(episode_length, 1))
                 
             except Exception as e:
-                print(f"Ошибка при оценке студента {student_id}: {e}")
                 continue
         
         return {

@@ -1,48 +1,48 @@
 {
   "student_profile": {
     "mastery_levels": {
-      "11": 0.9998534711369159,
+      "11": 0.9606989804324662,
       "29": 0.1,
-      "22": 0.1,
-      "21": 0.1,
+      "22": 0.7410836637707979,
+      "21": 0.975354648397298,
       "27": 0.1,
-      "18": 0.1,
-      "9": 0.1,
+      "18": 0.9429996493926024,
+      "9": 0.9426833551419034,
       "28": 0.1,
       "7": 0.1,
       "6": 0.1,
       "30": 0.1,
-      "15": 0.9420819575850066,
-      "2": 0.1,
-      "12": 0.9646537980613034,
+      "15": 0.9462044453121363,
+      "2": 0.9482937082569318,
+      "12": 0.9045523925235981,
       "26": 0.1,
-      "1": 0.41084775215594543,
+      "1": 0.99335811322487,
       "25": 0.1,
       "17": 0.1,
       "20": 0.1,
-      "16": 0.44449534550422265,
+      "16": 0.9953654108383606,
       "8": 0.1,
-      "19": 0.1,
-      "14": 0.1,
-      "13": 0.9196275633950842,
+      "19": 0.993132739078509,
+      "14": 0.9444554273837711,
+      "13": 0.4057095160323968,
       "24": 0.1,
       "10": 0.1,
-      "3": 0.1,
+      "3": 0.6565130550087461,
       "5": 0.1,
       "23": 0.1,
-      "4": 0.1
+      "4": 0.9996636927390102
     },
     "summary": {
       "total_skills": 30,
-      "mastered_count": 4,
-      "partial_count": 2,
-      "unlearned_count": 24,
-      "learning_steps": 6
+      "mastered_count": 12,
+      "partial_count": 3,
+      "unlearned_count": 15,
+      "learning_steps": 15
     },
     "depth_statistics": {
       "0": {
-        "mastered": 2,
-        "partial": 2,
+        "mastered": 4,
+        "partial": 0,
         "unlearned": 0
       },
       "16": {
@@ -52,13 +52,13 @@
       },
       "5": {
         "mastered": 0,
-        "partial": 0,
-        "unlearned": 2
+        "partial": 1,
+        "unlearned": 1
       },
       "4": {
-        "mastered": 0,
+        "mastered": 1,
         "partial": 0,
-        "unlearned": 1
+        "unlearned": 0
       },
       "14": {
         "mastered": 0,
@@ -66,9 +66,9 @@
         "unlearned": 1
       },
       "1": {
-        "mastered": 2,
-        "partial": 0,
-        "unlearned": 3
+        "mastered": 4,
+        "partial": 1,
+        "unlearned": 0
       },
       "15": {
         "mastered": 0,
@@ -106,14 +106,14 @@
         "unlearned": 2
       },
       "2": {
-        "mastered": 0,
-        "partial": 0,
-        "unlearned": 3
+        "mastered": 2,
+        "partial": 1,
+        "unlearned": 0
       },
       "3": {
-        "mastered": 0,
+        "mastered": 1,
         "partial": 0,
-        "unlearned": 1
+        "unlearned": 0
       },
       "7": {
         "mastered": 0,
@@ -130,75 +130,158 @@
   "learning_trajectory": [
     {
       "step": 1,
-      "skill_id": 12,
-      "skill_name": "Основы алгоритмов",
-      "mastery_level": 0.9646537980613034,
+      "skill_id": 16,
+      "skill_name": "Работа с вводом/выводом данных",
+      "mastery_level": 0.9953654108383606,
       "type": "full_mastery",
       "depth": 0
     },
     {
       "step": 2,
-      "skill_id": 16,
-      "skill_name": "Работа с вводом/выводом данных",
-      "mastery_level": 0.44449534550422265,
-      "type": "partial_mastery",
+      "skill_id": 11,
+      "skill_name": "Введение в ООП",
+      "mastery_level": 0.9606989804324662,
+      "type": "full_mastery",
       "depth": 0
     },
     {
       "step": 3,
-      "skill_id": 1,
-      "skill_name": "Переменные и типы данных",
-      "mastery_level": 0.41084775215594543,
-      "type": "partial_mastery",
+      "skill_id": 12,
+      "skill_name": "Основы алгоритмов",
+      "mastery_level": 0.9045523925235981,
+      "type": "full_mastery",
       "depth": 0
     },
     {
       "step": 4,
-      "skill_id": 11,
-      "skill_name": "Введение в ООП",
-      "mastery_level": 0.9998534711369159,
+      "skill_id": 1,
+      "skill_name": "Переменные и типы данных",
+      "mastery_level": 0.99335811322487,
       "type": "full_mastery",
       "depth": 0
     },
     {
       "step": 5,
-      "skill_id": 13,
-      "skill_name": "Сложность алгоритмов",
-      "mastery_level": 0.9196275633950842,
+      "skill_id": 2,
+      "skill_name": "Операторы и выражения",
+      "mastery_level": 0.9482937082569318,
       "type": "full_mastery",
       "depth": 1
     },
     {
       "step": 6,
-      "skill_id": 15,
-      "skill_name": "Объектно-ориентированное программирование",
-      "mastery_level": 0.9420819575850066,
+      "skill_id": 13,
+      "skill_name": "Сложность алгоритмов",
+      "mastery_level": 0.4057095160323968,
+      "type": "partial_mastery",
+      "depth": 1
+    },
+    {
+      "step": 7,
+      "skill_id": 18,
+      "skill_name": "Контейнеры данных (tuple, set)",
+      "mastery_level": 0.9429996493926024,
       "type": "full_mastery",
       "depth": 1
+    },
+    {
+      "step": 8,
+      "skill_id": 15,
+      "skill_name": "Объектно-ориентированное программирование",
+      "mastery_level": 0.9462044453121363,
+      "type": "full_mastery",
+      "depth": 1
+    },
+    {
+      "step": 9,
+      "skill_id": 9,
+      "skill_name": "Логические операторы",
+      "mastery_level": 0.9426833551419034,
+      "type": "full_mastery",
+      "depth": 1
+    },
+    {
+      "step": 10,
+      "skill_id": 4,
+      "skill_name": "Циклы",
+      "mastery_level": 0.9996636927390102,
+      "type": "full_mastery",
+      "depth": 2
+    },
+    {
+      "step": 11,
+      "skill_id": 19,
+      "skill_name": "Регулярные выражения",
+      "mastery_level": 0.993132739078509,
+      "type": "full_mastery",
+      "depth": 2
+    },
+    {
+      "step": 12,
+      "skill_id": 3,
+      "skill_name": "Условные операторы",
+      "mastery_level": 0.6565130550087461,
+      "type": "partial_mastery",
+      "depth": 2
+    },
+    {
+      "step": 13,
+      "skill_id": 14,
+      "skill_name": "Рекурсия",
+      "mastery_level": 0.9444554273837711,
+      "type": "full_mastery",
+      "depth": 3
+    },
+    {
+      "step": 14,
+      "skill_id": 21,
+      "skill_name": "Деревья (обход, поиск)",
+      "mastery_level": 0.975354648397298,
+      "type": "full_mastery",
+      "depth": 4
+    },
+    {
+      "step": 15,
+      "skill_id": 22,
+      "skill_name": "Графы (поиск в ширину и глубину)",
+      "mastery_level": 0.7410836637707979,
+      "type": "partial_mastery",
+      "depth": 5
     }
   ],
   "recommendations": [
     {
-      "skill_id": 1,
-      "skill_name": "Переменные и типы данных",
+      "skill_id": 13,
+      "skill_name": "Сложность алгоритмов",
       "skill_description": "",
-      "current_mastery": 0.41084775215594543,
-      "depth": 0,
-      "prerequisites_count": 0,
-      "unlocks_count": 3,
+      "current_mastery": 0.4057095160323968,
+      "depth": 1,
+      "prerequisites_count": 1,
+      "unlocks_count": 1,
       "tasks_count": 0,
-      "priority_score": 4.231084775215595
+      "priority_score": 3.1305709516032394
     },
     {
-      "skill_id": 16,
-      "skill_name": "Работа с вводом/выводом данных",
+      "skill_id": 3,
+      "skill_name": "Условные операторы",
       "skill_description": "",
-      "current_mastery": 0.44449534550422265,
-      "depth": 0,
-      "prerequisites_count": 0,
+      "current_mastery": 0.6565130550087461,
+      "depth": 2,
+      "prerequisites_count": 2,
       "unlocks_count": 0,
       "tasks_count": 0,
-      "priority_score": 3.034449534550422
+      "priority_score": 2.4556513055008744
+    },
+    {
+      "skill_id": 22,
+      "skill_name": "Графы (поиск в ширину и глубину)",
+      "skill_description": "",
+      "current_mastery": 0.7410836637707979,
+      "depth": 5,
+      "prerequisites_count": 2,
+      "unlocks_count": 0,
+      "tasks_count": 0,
+      "priority_score": 1.5641083663770798
     }
   ],
   "skills_info": {
