@@ -172,26 +172,25 @@ def main():
     print("🧪 ПРОСТОЙ ТЕСТ ВЫПОЛНЕНИЯ РЕКОМЕНДАЦИИ")
     print("=" * 80)
     
-    # Найдем студента с текущей рекомендацией
-    students_with_current_rec = StudentCurrentRecommendation.objects.values('student__user_id').distinct()
+    # Используем конкретного студента
+    student_id = 15  # ID пользователя (User)
     
-    if not students_with_current_rec:
-        print("⚠️ Студенты с текущими рекомендациями не найдены")
-        return False
-    
-    # Берем первого студента с текущей рекомендацией
-    student_id = students_with_current_rec[0]['student__user_id']
-    user = User.objects.get(id=student_id)
-    profile, _ = StudentProfile.objects.get_or_create(user=user)
-    
+    try:
+        user = User.objects.get(id=student_id)
+        profile, _ = StudentProfile.objects.get_or_create(user=user)
+    except User.DoesNotExist:
+        print(f"❌ Студент с ID {student_id} не найден")
+        return False    
     print(f"👤 Выбран студент: {user.username} (ID: {student_id})")
+    print(f"📝 Профиль студента ID: {profile.id}")
     
     # 1. Получаем текущую рекомендацию
     print("\n🔍 ПОЛУЧЕНИЕ ТЕКУЩЕЙ РЕКОМЕНДАЦИИ...")
     current_rec = get_current_recommendation(student_id)
     
     if not current_rec:
-        print("❌ У студента нет текущей рекомендации")
+        print(f"❌ У студента {user.username} (ID: {student_id}) нет текущей рекомендации")
+        print("💡 Возможно, нужно создать рекомендацию для этого студента")
         return False
     
     print(f"✅ Найдена текущая рекомендация #{current_rec['recommendation_id']}")

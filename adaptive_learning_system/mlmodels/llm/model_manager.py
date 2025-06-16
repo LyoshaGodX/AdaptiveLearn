@@ -3,12 +3,16 @@
 """
 
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers.utils.quantization_config import BitsAndBytesConfig
 from typing import Optional, Dict, Any
 import logging
 from pathlib import Path
 import os
 from .config import DEFAULT_MODEL
+
+# Настройка токена Hugging Face
+HF_TOKEN = "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"
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +98,8 @@ class LLMModelManager:
                 logger.info(f"Загрузка токенизатора {model_name}...")
                 self.tokenizer = AutoTokenizer.from_pretrained(
                     model_name,
-                    trust_remote_code=True
+                    trust_remote_code=True,
+                    token=HF_TOKEN  # Добавляем токен для доступа к закрытым моделям
                 )
                 _TOKENIZER_CACHE[model_name] = self.tokenizer
             
@@ -103,19 +108,23 @@ class LLMModelManager:
                 logger.info(f"Загрузка модели из кэша для {model_name}")
                 self.model = _MODEL_CACHE[cache_key]
             else:
-                logger.info(f"Загрузка модели {model_name} (это может занять время)...")                # Настройка параметров модели для максимальной производительности
+                logger.info(f"Загрузка модели {model_name} (это может занять время)...")
+                
+                # Настройка параметров модели для максимальной производительности
                 model_kwargs = {
                     'trust_remote_code': True,
                     'attn_implementation': 'eager',  # Phi-3 пока не поддерживает SDPA
                     'torch_dtype': torch.float16,  # Всегда используем fp16 для скорости
                     'low_cpu_mem_usage': True,  # Экономим память CPU
-                }                
+                }
+                
                 if use_quantization and self.device == 'cuda':
                     # Используем 8-битную квантизацию для лучшей совместимости
                     quantization_config = BitsAndBytesConfig(
                         load_in_8bit=True,
                         llm_int8_threshold=6.0,
-                        llm_int8_has_fp16_weight=False
+                        llm_int8_has_fp16_weight=False,
+                        llm_int8_enable_fp32_cpu_offload=True  # Разрешаем offload на CPU
                     )
                     model_kwargs['quantization_config'] = quantization_config
                     model_kwargs['device_map'] = 'auto'
@@ -133,6 +142,7 @@ class LLMModelManager:
                 # Загружаем модель
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name,
+                    token=HF_TOKEN,  # Добавляем токен для доступа к закрытым моделям
                     **model_kwargs
                 )
                 
@@ -153,7 +163,7 @@ class LLMModelManager:
     
     def generate_text(self,
                      prompt: str, 
-                     max_length: int = 150,  # Уменьшаем для быстрых тестов
+                     max_length: int = 400,  # Увеличиваем для более подробных ответов
                      temperature: float = 0.7,
                      do_sample: bool = True) -> str:
         """
@@ -170,9 +180,13 @@ class LLMModelManager:
         """
         if not self.is_loaded:
             raise RuntimeError("Модель не загружена. Вызовите load_model() сначала.")
-        
-        try:            # Токенизируем промпт
-            inputs = self.tokenizer(prompt, return_tensors="pt")
+            
+        try:
+            # Форматируем промпт с chat template, если доступен
+            formatted_prompt = self.format_prompt_with_chat_template(prompt)
+            
+            # Токенизируем промпт
+            inputs = self.tokenizer(formatted_prompt, return_tensors="pt")
             if self.device == 'cuda':
                 inputs = {k: v.to(self.device) for k, v in inputs.items()}
             
@@ -226,11 +240,22 @@ class LLMModelManager:
             generated_ids = outputs[0][input_length:]
             generated_text = self.tokenizer.decode(generated_ids, skip_special_tokens=True)
             
-            return generated_text.strip()
+            # Логируем для диагностики
+            logger.info(f"Сгенерировано токенов: {len(generated_ids)}")
+            logger.info(f"Исходный текст: '{generated_text}'")
+            
+            result = generated_text.strip()
+            logger.info(f"После очистки: '{result}' (длина: {len(result)})")
+            
+            return result
             
         except Exception as e:
-            logger.error(f"Ошибка генерации текста: {e}")
-            return ""
+            logger.error(f"Критическая ошибка генерации текста: {e}")
+            logger.error(f"Тип ошибки: {type(e).__name__}")
+            logger.error(f"Промпт: {prompt[:100]}...")
+            import traceback
+            logger.error(f"Полный стек ошибки:\n{traceback.format_exc()}")
+            raise e  # Перевыбрасываем исключение вместо возврата пустой строки
     
     def get_model_info(self) -> Dict[str, Any]:
         """Возвращает информацию о модели"""
@@ -276,3 +301,39 @@ class LLMModelManager:
             'cached_tokenizers': list(_TOKENIZER_CACHE.keys()),
             'cache_size': len(_MODEL_CACHE) + len(_TOKENIZER_CACHE)
         }
+    
+    def format_prompt_with_chat_template(self, prompt: str) -> str:
+        """
+        Форматирует промпт с использованием chat template, если доступен
+        
+        Args:
+            prompt: Исходный промпт
+            
+        Returns:
+            Отформатированный промпт
+        """
+        if not self.tokenizer:
+            return prompt
+            
+        # Проверяем, поддерживает ли токенизатор chat template
+        if hasattr(self.tokenizer, 'chat_template') and self.tokenizer.chat_template:
+            try:
+                # Форматируем как диалог
+                messages = [
+                    {"role": "user", "content": prompt}
+                ]
+                
+                formatted_prompt = self.tokenizer.apply_chat_template(
+                    messages,
+                    tokenize=False,
+                    add_generation_prompt=True
+                )
+                
+                logger.debug(f"Использован chat template: {formatted_prompt[:100]}...")
+                return formatted_prompt
+                
+            except Exception as e:
+                logger.warning(f"Ошибка применения chat template: {e}")
+                return prompt
+        
+        return prompt

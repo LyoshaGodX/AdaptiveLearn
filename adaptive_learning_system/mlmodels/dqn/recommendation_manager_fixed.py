@@ -430,51 +430,62 @@ class DQNRecommendationManagerFixed:
     
     def _generate_llm_explanation(self, recommendation: DQNRecommendation, llm_context: Dict[str, Any]) -> Optional[str]:
         """
-        Генерирует LLM объяснение для рекомендации
+        Генерирует алгоритмическое объяснение для рекомендации (без вызова LLM)
         
         Args:
             recommendation: Объект рекомендации
-            llm_context: Контекст для LLM
+            llm_context: Контекст для генерации объяснения
             
         Returns:
-            Сгенерированное объяснение или None
+            Алгоритмически сгенерированное объяснение
         """
-        if not self.llm_generator:
-            return None
-            
         try:
-            # Ленивая инициализация LLM модели при первом использовании
-            if not self.llm_generator.is_initialized:
-                print("🤖 Первое использование LLM. Загружаем модель...")
-                success = self.llm_generator.initialize(use_quantization=True)
-                if not success:
-                    print("❌ Не удалось инициализировать LLM")
-                    return None
-                print("✅ LLM успешно инициализирована")
-              # Подготавливаем данные для LLM
-            recommendation_data = {
-                'student_name': recommendation.student.user.first_name or 'Студент',
-                'task_title': recommendation.task.title,
-                'task_difficulty': recommendation.task.difficulty,
-                'task_type': recommendation.task.task_type,  # Добавляем тип задания
-                'target_skill_info': llm_context['target_skill_info'],
-                'prerequisite_skills_snapshot': llm_context['prerequisite_skills_snapshot'],
-                'dependent_skills_snapshot': llm_context['dependent_skills_snapshot'],  # Добавляем зависимые навыки
-                'student_progress_context': llm_context['student_progress_context']
-            }
+            # Импортируем PromptTemplates для генерации алгоритмического текста
+            from mlmodels.llm.prompt_templates import PromptTemplates
             
-            # Генерируем объяснение
-            explanation = self.llm_generator.generate_recommendation_explanation(recommendation_data)
+            # Подготавливаем данные из контекста
+            target_skill_info = llm_context.get('target_skill_info', [])
+            prerequisite_skills = llm_context.get('prerequisite_skills_snapshot', [])
+            dependent_skills = llm_context.get('dependent_skills_snapshot', [])
+            student_progress = llm_context.get('student_progress_context', {})
             
-            if explanation and len(explanation.strip()) > 10:
-                print(f"✅ LLM объяснение сгенерировано: {explanation[:50]}...")
-                return explanation.strip()
+            # Извлекаем информацию о целевом навыке
+            if target_skill_info:
+                target_skill = target_skill_info[0].get('skill_name', 'Неизвестный навык')
+                target_skill_mastery = target_skill_info[0].get('current_mastery_probability', 0.1)
             else:
-                print("⚠️ LLM вернула пустое объяснение")
-                return None
+                target_skill = 'Программирование'
+                target_skill_mastery = 0.1
+            
+            # Создаем экземпляр PromptTemplates
+            templates = PromptTemplates()
+            
+            # Генерируем полный промпт с помощью алгоритма
+            full_prompt = templates.recommendation_explanation_prompt(
+                student_name=recommendation.student.user.first_name or 'Студент',
+                task_title=recommendation.task.title,
+                task_difficulty=recommendation.task.difficulty,
+                task_type=recommendation.task.task_type,
+                target_skill=target_skill,
+                target_skill_mastery=target_skill_mastery,
+                prerequisite_skills=prerequisite_skills,
+                dependent_skills=dependent_skills,
+                student_progress=student_progress
+            )
+            
+            # Удаляем строку "Сократи данный комментарий:" из начала
+            if full_prompt.startswith("Сократи данный комментарий:\n\n"):
+                explanation = full_prompt[len("Сократи данный комментарий:\n\n"):]
+            else:
+                explanation = full_prompt
+            
+            print(f"✅ Алгоритмическое объяснение сгенерировано: {explanation[:50]}...")
+            return explanation.strip()
                 
         except Exception as e:
-            print(f"❌ Ошибка генерации LLM объяснения: {e}")
+            print(f"❌ Ошибка генерации алгоритмического объяснения: {e}")
+            import traceback
+            traceback.print_exc()
             return None
 
 # Глобальный экземпляр менеджера (исправленная версия)
