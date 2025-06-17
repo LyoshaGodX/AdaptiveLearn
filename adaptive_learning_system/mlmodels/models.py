@@ -204,13 +204,11 @@ class TaskAttempt(models.Model):
     llm_explanation = models.TextField(
         blank=True,
         verbose_name="LLM объяснение",
-        help_text="Объяснение рекомендации, которая привела к этой попытке, сгенерированное LLM"
-    )
+        help_text="Объяснение рекомендации, которая привела к этой попытке, сгенерированное LLM"    )
     
     def __str__(self):
         status = "✓" if self.is_correct else "✗"
-        return f"{status} {self.student.full_name} - {self.task.title}"    
-    @property
+        return f"{status} {self.student.full_name} - {self.task.title}"    @property
     def duration_minutes(self):
         """Время решения в минутах"""
         if self.time_spent:
@@ -228,8 +226,8 @@ class TaskAttempt(models.Model):
         # Автоматически применяем BKT при сохранении попытки
         self.update_skill_masteries()
         
-        # Автоматически создаем новую DQN рекомендацию после выполнения задания
-        self._create_new_dqn_recommendation()
+        # ВАЖНО: Генерация DQN рекомендации перенесена в асинхронный вызов 
+        # в student.views.create_recommendation_async() чтобы не блокировать UI
     
     def update_skill_masteries(self):
         """Обновляет вероятности освоения связанных навыков"""

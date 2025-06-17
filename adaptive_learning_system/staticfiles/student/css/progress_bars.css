@@ -1,0 +1,94 @@
+/* Простая и надежная система прогресс-баров */
+
+/* Базовые стили прогресс-баров */
+.progress-bar-new {
+    width: 100%;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    margin: 0.5rem 0;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar-new.thick {
+    height: 12px;
+    border-radius: 6px;
+}
+
+.progress-bar-new.thin {
+    height: 6px;
+    border-radius: 3px;
+}
+
+/* Заполнение прогресс-бара */
+.progress-fill-new {
+    height: 100%;
+    width: 0%;
+    background: #007bff;
+    border-radius: inherit;
+    transition: width 0.6s ease;
+    position: relative;
+}
+
+/* Цветовые схемы */
+.progress-fill-new.primary {
+    background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+}
+
+.progress-fill-new.success {
+    background: linear-gradient(90deg, #28a745 0%, #1e7e34 100%);
+}
+
+.progress-fill-new.warning {
+    background: linear-gradient(90deg, #ffc107 0%, #e0a800 100%);
+}
+
+.progress-fill-new.danger {
+    background: linear-gradient(90deg, #dc3545 0%, #c82333 100%);
+}
+
+/* Контейнеры для разных контекстов */
+.skill-progress-container {
+    margin: 0.75rem 0;
+}
+
+.skill-progress-container .progress-bar-new {
+    height: 10px;
+    background-color: #f8f9fa;
+}
+
+.course-progress-container {
+    margin: 1rem 0;
+}
+
+.course-progress-container .progress-bar-new {
+    height: 8px;
+    background-color: #f5f5f5;
+}
+
+.recommendation-progress-container {
+    margin: 1rem 0;
+}
+
+.recommendation-progress-container .progress-bar-new {
+    height: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .progress-bar-new.thick {
+        height: 10px;
+    }
+    
+    .skill-progress-container .progress-bar-new {
+        height: 8px;
+    }
+    
+    .recommendation-progress-container .progress-bar-new {
+        height: 10px;
+    }
+}

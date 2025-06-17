@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест простых прогресс-баров</title>
+    <style>
+        /* Простая и надежная система прогресс-баров */
+        .progress-bar-new {
+            width: 100%;
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            margin: 0.5rem 0;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-new.thick {
+            height: 12px;
+            border-radius: 6px;
+        }
+
+        /* Заполнение прогресс-бара */
+        .progress-fill-new {
+            height: 100%;
+            width: 0%;
+            background: #007bff;
+            border-radius: inherit;
+            transition: width 0.6s ease;
+            position: relative;
+        }
+
+        /* Цветовые схемы */
+        .progress-fill-new.primary {
+            background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+        }
+
+        .progress-fill-new.success {
+            background: linear-gradient(90deg, #28a745 0%, #1e7e34 100%);
+        }
+
+        .progress-fill-new.warning {
+            background: linear-gradient(90deg, #ffc107 0%, #e0a800 100%);
+        }
+
+        /* Контейнеры */
+        .skill-progress-container {
+            margin: 0.75rem 0;
+        }
+
+        .skill-progress-container .progress-bar-new {
+            height: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .course-progress-container {
+            margin: 1rem 0;
+        }
+
+        .recommendation-progress-container {
+            margin: 1rem 0;
+        }
+
+        .recommendation-progress-container .progress-bar-new {
+            height: 12px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .test-item {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .percentage {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Тест простых прогресс-баров</h1>
+        
+        <div class="test-item">
+            <h3>Навык (53%)</h3>
+            <div class="progress-info">
+                <span>Основы алгоритмов</span>
+                <span class="percentage">53%</span>
+            </div>
+            <div class="skill-progress-container">
+                <div class="progress-bar-new">
+                    <div class="progress-fill-new primary" style="width: 53%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>Курс (37.5%)</h3>
+            <div class="progress-info">
+                <span>Прогресс: 37.5%</span>
+                <span>6/20 навыков</span>
+            </div>
+            <div class="course-progress-container">
+                <div class="progress-bar-new">
+                    <div class="progress-fill-new success" style="width: 37.5%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>Развиваемый навык (15%)</h3>
+            <div class="progress-info">
+                <span>Логические операторы</span>
+                <span class="percentage">99.7%</span>
+            </div>
+            <div class="recommendation-progress-container">
+                <div class="progress-bar-new thick">
+                    <div class="progress-fill-new primary" style="width: 99.7%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>Разные значения</h3>
+            
+            <div style="margin-bottom: 1rem;">
+                <div class="progress-info">
+                    <span>0%</span>
+                    <span class="percentage">0%</span>
+                </div>
+                <div class="progress-bar-new">
+                    <div class="progress-fill-new primary" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <div class="progress-info">
+                    <span>25%</span>
+                    <span class="percentage">25%</span>
+                </div>
+                <div class="progress-bar-new">
+                    <div class="progress-fill-new warning" style="width: 25%"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <div class="progress-info">
+                    <span>100%</span>
+                    <span class="percentage">100%</span>
+                </div>
+                <div class="progress-bar-new">
+                    <div class="progress-fill-new success" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>Интерактивный тест</h3>
+            <div class="progress-info">
+                <span>Динамический</span>
+                <span class="percentage" id="dynamic-percent">0%</span>
+            </div>
+            <div class="progress-bar-new">
+                <div class="progress-fill-new primary" id="dynamic-fill" style="width: 0%"></div>
+            </div>
+            <div style="margin-top: 1rem;">
+                <button onclick="setWidth(10)">10%</button>
+                <button onclick="setWidth(37.5)">37.5%</button>
+                <button onclick="setWidth(53)">53%</button>
+                <button onclick="setWidth(99.7)">99.7%</button>
+                <button onclick="setWidth(100)">100%</button>
+                <button onclick="setWidth(0)">Сброс</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function setWidth(percent) {
+            const fill = document.getElementById('dynamic-fill');
+            const label = document.getElementById('dynamic-percent');
+            
+            fill.style.width = percent + '%';
+            label.textContent = percent + '%';
+        }
+    </script>
+</body>
+</html>

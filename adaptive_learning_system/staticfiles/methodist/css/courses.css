@@ -1,0 +1,457 @@
+/* Стили для страниц управления курсами */
+
+/* === ОБЩИЕ СТИЛИ === */
+.course-card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: relative; /* Добавляем для работы z-index */
+}
+
+.course-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    z-index: 1; /* Поднимаем карточку при наведении */
+}
+
+/* Стили для dropdown меню */
+.course-card .dropdown {
+    position: relative;
+}
+
+.course-card .dropdown-menu {
+    z-index: 1050; /* Высокий z-index для меню */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    border: none;
+    border-radius: 8px;
+}
+
+.course-card .dropdown-toggle::after {
+    display: none; /* Убираем стандартную стрелку Bootstrap */
+}
+
+/* Активное состояние dropdown */
+.course-card .dropdown.show {
+    z-index: 1051; /* Еще выше при открытом меню */
+}
+
+.course-card .dropdown.show .dropdown-menu {
+    z-index: 1052;
+}
+
+.course-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.skills-preview {
+    margin-top: auto;
+}
+
+.skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* === ФОРМА КУРСА === */
+.course-form .card-header {
+    border-bottom: none;
+}
+
+.course-form .card {
+    margin-bottom: 1.5rem;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* === НАВЫКИ И ЗАДАНИЯ - НОВЫЕ КОНТЕЙНЕРЫ === */
+.skills-container, .tasks-container {
+    min-height: 500px;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+}
+
+/* Доступные элементы */
+.skill-item, .task-item {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    background-color: white;
+    border: 1px solid #e9ecef;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.skill-item:hover, .task-item:hover {
+    border-color: #0d6efd;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15);
+}
+
+.skill-item .skill-info, .task-item .task-info {
+    flex: 1;
+}
+
+.skill-item .add-btn, .task-item .add-btn {
+    background: #28a745;
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.skill-item .add-btn:hover, .task-item .add-btn:hover {
+    background: #218838;
+}
+
+/* Выбранные элементы */
+.selected-skill-item, .selected-task-item {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    background-color: white;
+    border: 1px solid #28a745;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.selected-skill-item:hover, .selected-task-item:hover {
+    border-color: #dc3545;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.15);
+}
+
+.selected-skill-item .remove-btn, .selected-task-item .remove-btn {
+    background: #dc3545;
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.selected-skill-item .remove-btn:hover, .selected-task-item .remove-btn:hover {
+    background: #c82333;
+}
+
+/* Поисковые поля */
+.skills-search, .tasks-search {
+    margin-bottom: 1rem;
+}
+
+.skills-search input, .tasks-search input {
+    border-radius: 0.5rem;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.2s ease;
+}
+
+.skills-search input:focus, .tasks-search input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Фильтры заданий */
+.tasks-filters {
+    margin-bottom: 1rem;
+}
+
+.tasks-filters select {
+    border-radius: 0.5rem;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.2s ease;
+}
+
+.tasks-filters select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Пустые состояния */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 200px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Скрытые поля для отправки формы */
+#selected-skills-hidden, #selected-tasks-hidden {
+    display: none;
+}
+
+/* Счетчики элементов */
+#available-skills-count, #selected-skills-count,
+#available-tasks-count, #selected-tasks-count {
+    background: #6c757d;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    min-width: 2rem;
+    text-align: center;
+}
+
+/* Анимации для элементов */
+.skill-item, .task-item,
+.selected-skill-item, .selected-task-item {
+    animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Скрытые элементы */
+.hidden {
+    display: none !important;
+}
+
+/* Улучшенные скроллбары для новых контейнеров */
+.skills-container::-webkit-scrollbar,
+.tasks-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.skills-container::-webkit-scrollbar-track,
+.tasks-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.skills-container::-webkit-scrollbar-thumb,
+.tasks-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.skills-container::-webkit-scrollbar-thumb:hover,
+.tasks-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* === АНИМАЦИИ === */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.skill-item, .task-item {
+    animation: fadeIn 0.3s ease;
+}
+
+/* === СКРЫТЫЕ ЭЛЕМЕНТЫ === */
+.skill-item.hidden, .task-item.hidden {
+    display: none;
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 768px) {
+    .course-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .skills-container, .tasks-container {
+        min-height: 300px;
+        max-height: 300px;
+    }
+    
+    .empty-state {
+        min-height: 150px;
+    }
+    
+    .empty-state i {
+        font-size: 2rem;
+    }
+    
+    .skill-item, .task-item,
+    .selected-skill-item, .selected-task-item {
+        padding: 0.5rem;
+    }
+}
+
+/* === ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ === */
+.form-check-input:checked + .skill-badge {
+    background-color: #198754 !important;
+}
+
+.form-check-input:checked + .task-card {
+    border-color: #198754;
+    background-color: #f8fff9;
+}
+
+/* Улучшенные скроллбары */
+.skills-list::-webkit-scrollbar,
+.tasks-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.skills-list::-webkit-scrollbar-track,
+.tasks-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.skills-list::-webkit-scrollbar-thumb,
+.tasks-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.skills-list::-webkit-scrollbar-thumb:hover,
+.tasks-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Стили для пустых состояний */
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Улучшение фокуса для доступности */
+.skill-checkbox:focus-within,
+.task-checkbox:focus-within {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* Стили для выбранных элементов */
+.selected-skill-item,
+.selected-task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    background-color: white;
+}
+
+.selected-skill-item .remove-btn,
+.selected-task-item .remove-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.selected-skill-item .remove-btn:hover,
+.selected-task-item .remove-btn:hover {
+    color: #c82333;
+}
+
+/* Стили для информационных карточек */
+.info-card {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border-left: 4px solid transparent;
+}
+
+.info-card i {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+    width: 20px;
+    text-align: center;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #6c757d;
+    margin-right: 0.5rem;
+}
+
+.info-value {
+    font-weight: 600;
+    color: #495057;
+    margin-left: auto;
+}
+
+/* Стили для поля ID курса */
+#course_id {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+#course_id[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* Улучшение валидации формы */
+.form-control:invalid {
+    border-color: #dc3545;
+}
+
+.form-control:valid {
+    border-color: #28a745;
+}
+
+.form-control:invalid + .form-text {
+    color: #dc3545;
+}
+
+.form-control:valid + .form-text {
+    color: #28a745;
+}

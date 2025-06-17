@@ -1,0 +1,133 @@
+/* Стили для блока "Мои навыки" в профиле студента */
+
+/* Навыки - основные стили */
+.skills-summary {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.skills-summary span {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.mastered { background: #e8f5e8; color: #388e3c; }
+.in-progress { background: #fff3e0; color: #f57c00; }
+.weak { background: #ffebee; color: #d32f2f; }
+
+/* Сетка навыков */
+.skills-grid {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Карточки навыков */
+.skill-card {
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: white;
+}
+
+.skill-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.skill-card.mastered {
+    border-color: #4caf50;
+    background: linear-gradient(to right, #e8f5e8, white);
+}
+
+.skill-card.in-progress {
+    border-color: #ff9800;
+    background: linear-gradient(to right, #fff3e0, white);
+}
+
+.skill-card.weak {
+    border-color: #f44336;
+    background: linear-gradient(to right, #ffebee, white);
+}
+
+/* Заголовок карточки навыка */
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.skill-header h3 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+/* Процент освоения навыка */
+.skill-percentage {
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+/* Градиентные цвета для процентов освоения навыков в блоке "Мои навыки" */
+.skill-percentage.skill-mastery-0 { background: #dc3545; }      /* 0-9%: красный */
+.skill-percentage.skill-mastery-10 { background: #e74c3c; }     /* 10-19%: ярко-красный */
+.skill-percentage.skill-mastery-20 { background: #f39c12; }     /* 20-29%: оранжевый */
+.skill-percentage.skill-mastery-30 { background: #f1c40f; }     /* 30-39%: желтый */
+.skill-percentage.skill-mastery-40 { background: #f39c12; }     /* 40-49%: оранжево-желтый */
+.skill-percentage.skill-mastery-50 { background: #e67e22; }     /* 50-59%: темно-оранжевый */
+.skill-percentage.skill-mastery-60 { background: #27ae60; }     /* 60-69%: зеленовато-желтый */
+.skill-percentage.skill-mastery-70 { background: #2ecc71; }     /* 70-79%: светло-зеленый */
+.skill-percentage.skill-mastery-80 { background: #27ae60; }     /* 80-89%: зеленый */
+.skill-percentage.skill-mastery-90 { background: #16a085; }     /* 90-99%: темно-зеленый */
+.skill-percentage.skill-mastery-100 { background: #0d7377; }    /* 100%: темно-морской */
+
+/* Детали навыка */
+.skill-details {
+    margin-top: 1rem;
+}
+
+.skill-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.bkt-params {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+/* Адаптивность для навыков */
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+    
+    .skill-card {
+        padding: 1rem;
+    }
+    
+    .skill-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .skill-percentage {
+        align-self: flex-start;
+    }
+}

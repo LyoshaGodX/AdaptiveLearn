@@ -1,0 +1,1079 @@
+/* Стили для формы создания/редактирования задания */
+.task-form {
+    max-width: 100%;
+}
+
+.task-form .card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-form .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+}
+
+/* Стили для вариантов ответов */
+.answer-item {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6 !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.answer-item:hover {
+    background-color: #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.answer-item .form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.answer-item .remove-answer {
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.answer-item .remove-answer:hover {
+    opacity: 1;
+}
+
+/* Анимация для добавления/удаления ответов */
+.answer-item {
+    animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для обязательных полей */
+.form-label .text-danger {
+    font-weight: bold;
+}
+
+/* Стили для превью изображения */
+.img-thumbnail {
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+}
+
+/* Стили для множественного выбора */
+.form-select[multiple] {
+    min-height: 120px;
+}
+
+.form-select[multiple] option {
+    padding: 8px;
+    margin: 2px 0;
+}
+
+.form-select[multiple] option:checked {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Стили для textarea */
+.form-control[rows] {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Стили для блока навыков и курсов */
+.skills-container {
+    background-color: #f8f9fa;
+}
+
+.skill-item {
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.skill-item:hover {
+    background-color: #e9ecef;
+}
+
+.skill-item .form-check-input:checked + .form-check-label {
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+.course-item {
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.course-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-item.border-primary {
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.2);
+}
+
+.course-toggle {
+    transform: scale(1.2);
+}
+
+/* Стили для фильтров навыков */
+.filter-controls {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+#no-skills-found {
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* Стили для карточек навыков */
+.skill-card {
+    transition: all 0.2s ease-in-out;
+    min-height: 100px;
+    background-color: #f8f9fa;
+}
+
+.skill-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.skill-card .form-check-input:checked + .form-check-label {
+    color: #0d6efd;
+}
+
+.skill-card .form-check-input:checked + .form-check-label .skill-card {
+    background-color: #e7f3ff;
+    border-color: #0d6efd;
+}
+
+.skill-card-content {
+    padding: 0.5rem 0;
+}
+
+.skill-title {
+    font-size: 0.9rem;
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
+}
+
+.skill-meta {
+    margin-top: 0.5rem;
+}
+
+/* Группировка навыков по курсам */
+.skills-container h6 {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.skills-container h6:first-child {
+    margin-top: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .task-form .card-body {
+        padding: 1rem;
+    }
+    
+    .task-form .row > .col-md-6,
+    .task-form .row > .col-md-3 {
+        margin-bottom: 1rem;
+    }
+    
+    .answer-item .row {
+        align-items: stretch;
+    }
+    
+    .answer-item .col-md-2 {
+        margin-top: 0.5rem;
+    }
+    
+    .course-item {
+        margin-bottom: 1rem;
+    }
+    
+    .skills-container {
+        max-height: 250px;
+    }
+    
+    .skill-card {
+        min-height: 80px;
+    }
+    
+    .skill-title {
+        font-size: 0.85rem;
+    }
+}
+
+/* Стили для кнопок */
+.btn-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+.btn-outline-danger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+/* Стили для секций, которые показываются/скрываются */
+#answers-section,
+#correct-answer-section {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Стили для валидации */
+.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Стили для подсказок */
+.form-text {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+/* Улучшение видимости чекбоксов */
+.form-check-input {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.form-check-label {
+    margin-left: 0.5rem;
+    font-weight: 500;
+}
+
+/* Стили для предпросмотра задания */
+.preview-task {
+    background: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    border: 1px solid #dee2e6;
+}
+
+.preview-task .task-header {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.preview-task .task-title {
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.preview-task .task-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.preview-task .meta-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.preview-task .meta-badge.type {
+    background-color: #e7f3ff;
+    color: #0066cc;
+}
+
+.preview-task .meta-badge.difficulty {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.preview-task .meta-badge.difficulty.beginner {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.preview-task .meta-badge.difficulty.intermediate {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.preview-task .meta-badge.difficulty.advanced {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.preview-task .task-question {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.preview-task .task-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.preview-task .task-video {
+    margin: 1rem 0;
+}
+
+.preview-task .video-placeholder {
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    color: #6c757d;
+}
+
+.preview-task .answers-section {
+    margin-top: 1.5rem;
+}
+
+.preview-task .answers-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.preview-task .answer-option {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: #f8f9fa;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.preview-task .answer-option:hover {
+    border-color: #007bff;
+    background: #e7f3ff;
+}
+
+.preview-task .answer-option.correct {
+    border-color: #28a745;
+    background: #d4edda;
+}
+
+.preview-task .answer-option .answer-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #007bff;
+    color: white;
+    font-weight: 600;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.preview-task .answer-option.correct .answer-letter {
+    background: #28a745;
+}
+
+.preview-task .answer-text {
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.preview-task .task-skills {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.preview-task .skills-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.preview-task .skill-tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    margin: 0.25rem 0.25rem 0.25rem 0;
+    background: #e7f3ff;
+    color: #0066cc;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.preview-task .course-info {
+    background: #f8f9fa;
+    border-left: 4px solid #007bff;
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+    border-radius: 0 4px 4px 0;
+}
+
+.preview-task .course-info .course-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.preview-task .open-answer-section {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.preview-task .open-answer-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.preview-task .answer-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.75rem;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.preview-task .answer-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Стили для отладочной информации */
+.debug-info {
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+/* Стили для предпросмотра задания */
+.task-preview {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-preview-header {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.task-preview-title {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.task-preview-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.task-preview-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.task-preview-badge.type {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.task-preview-badge.difficulty {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.task-preview-question {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+    margin-bottom: 1.5rem;
+}
+
+.task-preview-question h6 {
+    color: #495057;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.task-preview-question-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #212529;
+    white-space: pre-wrap;
+}
+
+.task-preview-media {
+    margin: 1rem 0;
+}
+
+.task-preview-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-preview-video {
+    margin-top: 1rem;
+}
+
+.task-preview-answers {
+    margin-bottom: 1.5rem;
+}
+
+.task-preview-answers h6 {
+    color: #495057;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.task-preview-answer {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.task-preview-answer:hover {
+    background: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-preview-answer.correct {
+    border-color: #28a745;
+    background: #d4edda;
+}
+
+.task-preview-answer-input {
+    margin-right: 0.75rem;
+}
+
+.task-preview-answer-text {
+    flex: 1;
+    font-size: 1rem;
+    color: #212529;
+}
+
+.task-preview-correct-indicator {
+    color: #28a745;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-left: 0.5rem;
+}
+
+.task-preview-explanation {
+    background: #e8f5e8;
+    border: 1px solid #c3e6c3;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.task-preview-explanation h6 {
+    color: #155724;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.task-preview-explanation-text {
+    color: #155724;
+    margin-bottom: 0;
+    white-space: pre-wrap;
+}
+
+.task-preview-skills {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.task-preview-skills h6 {
+    color: #495057;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.task-preview-skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.task-preview-skill-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    background: #e7f3ff;
+    color: #0056b3;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.task-preview-course {
+    margin-top: 1rem;
+}
+
+.task-preview-course-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 25px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* Responsive стили для предпросмотра */
+@media (max-width: 768px) {
+    .task-preview {
+        padding: 1rem;
+    }
+    
+    .task-preview-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .task-preview-skill-tags {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Анимации для предпросмотра */
+.task-preview {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для Markdown редактора */
+.markdown-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.markdown-toolbar .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+}
+
+.markdown-toolbar .btn:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.markdown-toolbar .btn.active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.markdown-editor-container {
+    position: relative;
+    border: 1px solid #dee2e6;
+    border-radius: 0 0 0.375rem 0.375rem;
+}
+
+.markdown-textarea {
+    border: none;
+    border-radius: 0 0 0.375rem 0.375rem;
+    resize: vertical;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+}
+
+.markdown-textarea:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.markdown-preview {
+    padding: 0.75rem;
+    background: white;
+    border-radius: 0 0 0.375rem 0.375rem;
+    min-height: 150px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Стили для рендеренного Markdown контента */
+.markdown-preview h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.25rem;
+}
+
+.markdown-preview h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 0.25rem;
+}
+
+.markdown-preview h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.markdown-preview p {
+    margin-bottom: 0.75rem;
+}
+
+.markdown-preview ul, .markdown-preview ol {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+}
+
+.markdown-preview li {
+    margin-bottom: 0.25rem;
+}
+
+.markdown-preview blockquote {
+    border-left: 4px solid #007bff;
+    padding-left: 1rem;
+    margin: 0.75rem 0;
+    font-style: italic;
+    color: #6c757d;
+}
+
+.markdown-preview code {
+    background: #f8f9fa;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.85rem;
+    color: #e83e8c;
+}
+
+.markdown-preview pre {
+    background: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    overflow-x: auto;
+    margin-bottom: 0.75rem;
+}
+
+.markdown-preview pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+.markdown-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.75rem;
+}
+
+.markdown-preview th,
+.markdown-preview td {
+    border: 1px solid #dee2e6;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.markdown-preview th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+.markdown-preview a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.markdown-preview a:hover {
+    text-decoration: underline;
+}
+
+.markdown-preview strong {
+    font-weight: 600;
+}
+
+.markdown-preview em {
+    font-style: italic;
+}
+
+.markdown-preview del {
+    text-decoration: line-through;
+}
+
+.markdown-preview u {
+    text-decoration: underline;
+}
+
+/* Анимации для переключения режимов */
+.markdown-editor-container .markdown-textarea,
+.markdown-editor-container .markdown-preview {
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Стили для вариантов ответов с Markdown */
+.answer-item .markdown-toolbar {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+}
+
+.answer-item .markdown-toolbar .btn {
+    padding: 0.125rem 0.25rem;
+    font-size: 0.75rem;
+}
+
+.answer-item .markdown-editor-container {
+    margin-top: 0.25rem;
+}
+
+.answer-item .markdown-textarea {
+    font-size: 0.875rem;
+    min-height: 60px;
+}
+
+.answer-item .markdown-preview {
+    min-height: 60px;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* ========== СТИЛИ ДЛЯ МОДАЛЬНЫХ ОКОН MARKDOWN РЕДАКТОРА ========== */
+
+/* Модальные окна для Markdown инструментов */
+.modal-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-header .modal-title {
+    font-weight: 600;
+    color: #495057;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Стили для форм в модальных окнах */
+.modal .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.modal .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.modal .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.modal .form-text {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+.modal .form-check {
+    padding-left: 1.5em;
+}
+
+.modal .form-check-input {
+    margin-top: 0.25rem;
+}
+
+.modal .form-check-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Кнопки в модальных окнах */
+.modal .btn {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.modal .btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.modal .btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.modal .btn-secondary {
+    background: #6c757d;
+    border: 1px solid #6c757d;
+}
+
+.modal .btn-secondary:hover {
+    background: #545b62;
+    border-color: #545b62;
+}
+
+/* Специальные стили для полей ввода чисел */
+.modal input[type="number"] {
+    text-align: center;
+}
+
+/* Анимации для модальных окон */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+    transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 576px) {
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .modal .btn {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Стили для превью URL в полях ввода */
+.modal .form-control[type="url"] {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.8rem;
+}
+
+/* Иконки в модальных окнах */
+.modal .modal-title i {
+    color: #007bff;
+}
+
+.modal .btn i {
+    margin-right: 0.5rem;
+}
+
+/* Группы полей в модальных окнах */
+.modal .row .col-md-6:first-child {
+    padding-right: 0.75rem;
+}
+
+.modal .row .col-md-6:last-child {
+    padding-left: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .modal .row .col-md-6 {
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-bottom: 1rem;
+    }
+    
+    .modal .row .col-md-6:last-child {
+        margin-bottom: 0;
+    }
+}

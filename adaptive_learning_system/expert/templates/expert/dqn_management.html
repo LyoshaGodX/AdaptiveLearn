@@ -1,0 +1,205 @@
+{% extends 'expert/base.html' %}
+{% load static %}
+
+{% block title %}Управление DQN - AdaptiveLearn{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'expert/css/dqn_management.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <!-- Заголовок страницы -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 mb-1">Управление DQN модели</h1>
+            <p class="text-muted">Экспертная разметка рекомендаций для обучения с подкреплением</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-primary" id="viewDatasetBtn">
+                <i class="fas fa-database me-2"></i>
+                Просмотреть датасет
+            </button>
+            <div class="expert-badge">
+                <i class="fas fa-brain"></i>
+                DQN Модель
+            </div>
+        </div>
+    </div>
+
+    <!-- Статистика -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--dqn-primary);">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="stat-value">{{ total_recommendations }}</div>
+                <div class="stat-label">Всего рекомендаций</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--success-color);">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-value">{{ active_students }}</div>
+                <div class="stat-label">Активных студентов</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--warning-color);">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div class="stat-value">{{ feedback_count }}</div>
+                <div class="stat-label">Размечено</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--info-color);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-value">{{ unused_feedback_count }}</div>
+                <div class="stat-label">Не использовано</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Информационный блок -->
+    <div class="alert alert-info d-flex align-items-center mb-4">
+        <i class="fas fa-info-circle fa-2x me-3"></i>
+        <div>
+            <h5 class="mb-1">Как работает разметка</h5>
+            <p class="mb-0">Выберите студента из списка ниже, чтобы увидеть связки "рекомендация-попытка" и провести экспертную разметку для обучения DQN модели с подкреплением.</p>
+        </div>
+    </div>
+
+    <!-- Выбор студентов -->
+    <div class="mb-4">
+        <h3 class="section-title">
+            <i class="fas fa-users"></i>
+            Выберите студента для разметки
+        </h3>
+        <p class="text-muted mb-3">Студенты отсортированы по времени последней попытки решения задания</p>
+        
+        {% if students_with_attempts %}
+        <div class="students-grid">
+            {% for student in students_with_attempts %}
+            <div class="student-card" data-student-id="{{ student.id }}">
+                <div class="student-header">
+                    <div class="student-avatar">
+                        {{ student.user.first_name|first|default:student.user.username|first|upper }}
+                    </div>
+                    <div class="student-info">
+                        <h5>{{ student.full_name }}</h5>
+                        <div class="student-meta">
+                            {% if student.last_attempt_time %}
+                            Последняя попытка: {{ student.last_attempt_time|date:"d.m.Y H:i" }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="student-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">{{ student.attempts_count }}</div>
+                        <div class="stat-label">Попыток</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ student.recommendations_count }}</div>
+                        <div class="stat-label">Рекомендаций</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            {% with student.skill_masteries.count as mastery_count %}
+                                {{ mastery_count }}
+                            {% endwith %}
+                        </div>
+                        <div class="stat-label">Навыков</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">Нет активных студентов</h4>
+            <p class="text-muted">Студенты появятся здесь после того, как начнут решать задания</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Инструкции -->
+    <div class="analytics-card">
+        <h4><i class="fas fa-question-circle me-2"></i>Инструкции по разметке</h4>
+        <div class="row g-4 mt-2">
+            <div class="col-md-6">
+                <h6><i class="fas fa-thumbs-up text-success me-2"></i>Положительная обратная связь</h6>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success me-2"></i>Рекомендация привела к успешному решению</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Задание соответствует уровню студента</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Хорошо подобраны prerequisite навыки</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6><i class="fas fa-thumbs-down text-danger me-2"></i>Отрицательная обратная связь</h6>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-times text-danger me-2"></i>Задание слишком сложное/легкое</li>
+                    <li><i class="fas fa-times text-danger me-2"></i>Не учтены prerequisite навыки</li>
+                    <li><i class="fas fa-times text-danger me-2"></i>Неэффективная рекомендация</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mt-3 p-3 bg-light rounded">
+            <h6><i class="fas fa-star text-warning me-2"></i>Сила обратной связи</h6>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Низкая:</strong> Незначительные недочеты
+                </div>
+                <div class="col-md-4">
+                    <strong>Средняя:</strong> Заметные проблемы
+                </div>
+                <div class="col-md-4">
+                    <strong>Высокая:</strong> Серьезные ошибки
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSRF Token -->
+{% csrf_token %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'expert/js/dqn_management.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Анимация появления карточек студентов
+    const studentCards = document.querySelectorAll('.student-card');
+    studentCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Показываем приветственное сообщение
+    setTimeout(() => {
+        if (typeof ExpertUtils !== 'undefined') {
+            ExpertUtils.showNotification(
+                'Выберите студента для просмотра рекомендаций и разметки', 
+                'info'
+            );
+        }
+    }, 1500);
+});
+</script>
+{% endblock %}

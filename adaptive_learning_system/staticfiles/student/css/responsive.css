@@ -1,0 +1,349 @@
+/* Адаптивные стили для разных устройств */
+
+/* Стили для планшетов */
+@media (max-width: 768px) {    .learning-container {
+        padding: 1rem 0.5rem;
+    }
+    
+    .task-header {
+        padding: 2rem 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .task-title {
+        font-size: 1.5rem;
+    }
+    
+    .task-meta {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+    }
+    
+    .task-question,
+    .task-answers,
+    .submit-section {
+        padding: 1.5rem;
+    }
+    
+    .answer-option {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+    
+    .submit-btn, .new-task-btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        min-width: 200px;
+    }
+    
+    .result-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .result-content small {
+        margin-left: 0;
+    }    
+    .sidebar-content {
+        padding: 1.25rem;
+    }
+    
+    .materials-link {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Основная секция с заданием для планшетов */
+    .main-task-section .task-content {
+        min-height: 50vh;
+    }
+    
+    .main-task-section .task-question,
+    .main-task-section .task-answers,
+    .main-task-section .submit-section {
+        padding: 1.5rem;
+    }    
+    .main-task-section .answer-option {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Сетка ответов для планшетов */
+    .answers-grid.two-columns,
+    .answers-grid.three-columns {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Статистика для планшетов */
+    .student-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+/* Стили для мобильных устройств */
+@media (max-width: 576px) {
+    .learning-container {        padding: 0.5rem;
+    }
+    
+    .task-header {
+        padding: 1.5rem 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .task-title {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .task-badge {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .task-question {
+        padding: 1rem;
+    }
+    
+    .task-question h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .question-text {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    .task-answers {
+        padding: 1rem;
+    }
+    
+    .task-answers h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .answer-option {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .submit-section {
+        padding: 1rem;
+    }
+    
+    .submit-btn, .new-task-btn {
+        width: 100%;
+        max-width: 300px;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .sidebar-section {
+        margin-bottom: 1rem;
+    }
+    
+    .sidebar-header {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .sidebar-content {
+        padding: 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .skill-tag, .course-tag {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.75rem;
+    }
+    
+    .materials-link {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .attempt-item {
+        padding: 0.75rem 0;
+        font-size: 0.8rem;
+    }
+    
+    .attempt-icon {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+    }
+    
+    .attempt-time {
+        font-size: 0.75rem;
+    }
+    
+    /* Основная секция с заданием для мобильных */    .main-task-section .task-content {
+        min-height: 45vh;
+        margin: 0;
+    }
+    
+    /* Статистика для мобильных */
+    .student-stats {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .stat-item {
+        padding: 0.75rem;
+    }
+    
+    .stat-value {
+        font-size: 1.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+    }
+    
+    /* Результат ответа для мобильных */
+    .result-message {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .result-content {
+        gap: 0.5rem;
+    }
+    
+    .result-content i {
+        font-size: 1.25rem;
+    }
+    
+    .result-content span {
+        font-size: 1rem;
+    }
+    
+    /* Загрузка для мобильных */
+    .loading-content {
+        padding: 2rem 1rem;
+        margin: 0 1rem;
+    }
+    
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 1rem;
+    }
+    
+    .loading-text {
+        font-size: 1rem;
+    }
+}
+
+/* Стили для очень маленьких экранов */
+@media (max-width: 375px) {
+    .task-title {
+        font-size: 1.1rem;
+    }
+    
+    .question-text {
+        font-size: 0.95rem;
+    }
+    
+    .answer-option {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .submit-btn, .new-task-btn {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+        min-width: auto;
+    }
+    
+    .sidebar-content {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .skill-tag, .course-tag {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Стили для больших экранов */
+@media (min-width: 1200px) {
+    /* Контейнер остается 1200px как в профиле */
+    
+    .task-header {
+        padding: 3rem;
+    }
+    
+    .task-title {
+        font-size: 2.5rem;
+    }
+    
+    .task-question {
+        padding: 3rem;
+    }
+    
+    .question-text {
+        font-size: 1.3rem;
+    }
+    
+    .task-answers {
+        padding: 3rem;
+    }
+    
+    .answer-option {
+        padding: 2rem;
+        font-size: 1.2rem;
+    }
+    
+    .submit-section {
+        padding: 3rem;
+    }
+    
+    .submit-btn, .new-task-btn {
+        padding: 1.5rem 5rem;        font-size: 1.3rem;
+    }
+    
+    /* Сетка ответов для больших экранов */
+    .answers-grid.two-columns {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .answers-grid.three-columns {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* Стили для печати */
+@media print {
+    .task-header,
+    .submit-section,
+    .sidebar-section,
+    .additional-info-section {
+        break-inside: avoid;
+    }
+    
+    .task-content {
+        box-shadow: none;
+        border: 2px solid var(--border-color);
+    }
+    
+    .answer-option {
+        break-inside: avoid;
+    }
+    
+    .loading-overlay {
+        display: none !important;
+    }
+}
+

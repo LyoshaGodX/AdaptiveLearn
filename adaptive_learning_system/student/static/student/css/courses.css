@@ -1,0 +1,193 @@
+/* Стили для блока "Мои курсы" в профиле студента */
+
+/* Основная сетка курсов */
+.courses-grid {
+    padding: 2rem;
+}
+
+.course-card {
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.course-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок курса */
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.course-header h3 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Статусы курсов */
+.course-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-enrolled { 
+    background: #e3f2fd; 
+    color: #1976d2; 
+}
+
+.status-in_progress { 
+    background: #fff3e0; 
+    color: #f57c00; 
+}
+
+.status-completed { 
+    background: #e8f5e8; 
+    color: #388e3c; 
+}
+
+.status-suspended { 
+    background: #ffebee; 
+    color: #d32f2f; 
+}
+
+/* Прогресс курса */
+.course-progress {
+    margin-bottom: 1rem;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Прогресс курса */
+.course-progress {
+    margin-bottom: 1rem;
+}
+.course-skills {
+    margin-top: 1rem;
+}
+
+.course-skills h4 {
+    margin: 0 0 0.75rem 0;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill-tag {
+    background: var(--bg-light);
+    border: 1px solid var(--border-light);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.skill-tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для процентов освоения навыков в курсах */
+.skill-mastery {
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+/* Градиентные цвета для процентов освоения навыков */
+.skill-mastery-0 { background: #dc3545; }      /* 0-9%: красный */
+.skill-mastery-10 { background: #e74c3c; }     /* 10-19%: ярко-красный */
+.skill-mastery-20 { background: #f39c12; }     /* 20-29%: оранжевый */
+.skill-mastery-30 { background: #f1c40f; }     /* 30-39%: желтый */
+.skill-mastery-40 { background: #f39c12; }     /* 40-49%: оранжево-желтый */
+.skill-mastery-50 { background: #e67e22; }     /* 50-59%: темно-оранжевый */
+.skill-mastery-60 { background: #27ae60; }     /* 60-69%: зеленовато-желтый */
+.skill-mastery-70 { background: #2ecc71; }     /* 70-79%: светло-зеленый */
+.skill-mastery-80 { background: #27ae60; }     /* 80-89%: зеленый */
+.skill-mastery-90 { background: #16a085; }     /* 90-99%: темно-зеленый */
+.skill-mastery-100 { background: #0d7377; }    /* 100%: темно-морской */
+
+/* Альтернативные цвета с лучшим градиентом */
+.skill-mastery-alt-0 { background: #e74c3c; }   /* 0-9% */
+.skill-mastery-alt-10 { background: #ec7063; }  /* 10-19% */
+.skill-mastery-alt-20 { background: #f1948a; }  /* 20-29% */
+.skill-mastery-alt-30 { background: #f7dc6f; }  /* 30-39% */
+.skill-mastery-alt-40 { background: #f4d03f; }  /* 40-49% */
+.skill-mastery-alt-50 { background: #f1c40f; }  /* 50-59% */
+.skill-mastery-alt-60 { background: #f39c12; }  /* 60-69% */
+.skill-mastery-alt-70 { background: #52c41a; }  /* 70-79% */
+.skill-mastery-alt-80 { background: #389e0d; }  /* 80-89% */
+.skill-mastery-alt-90 { background: #237804; }  /* 90-99% */
+.skill-mastery-alt-100 { background: #135200; } /* 100% */
+
+/* Пустое состояние для курсов */
+.courses-grid .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+}
+
+.courses-grid .empty-state p {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+}
+
+/* Адаптивность для курсов */
+@media (max-width: 768px) {
+    .courses-grid {
+        padding: 1rem;
+    }
+    
+    .course-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .course-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .course-status {
+        align-self: flex-start;
+    }
+    
+    .skills-list {
+        gap: 0.25rem;
+    }
+    
+    .skill-tag {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+    }
+}

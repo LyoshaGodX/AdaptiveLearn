@@ -1,0 +1,296 @@
+{% extends 'expert/base.html' %}
+{% load static %}
+
+{% block title %}{{ student.full_name }} - Управление DQN - AdaptiveLearn{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'expert/css/dqn_management.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <!-- Заголовок с информацией о студенте -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-3">
+            <a href="{% url 'expert_dqn' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Назад к списку
+            </a>
+            <div class="student-avatar" style="width: 48px; height: 48px;">
+                {{ student.user.first_name|first|default:student.user.username|first|upper }}
+            </div>
+            <div>
+                <h1 class="h3 mb-1">{{ student.full_name }}</h1>
+                <p class="text-muted mb-0">Скользящее окно: {{ total_pairs }} связок рекомендация-попытка</p>
+            </div>
+        </div>
+        <div class="expert-badge">
+            <i class="fas fa-user-graduate"></i>
+            Студент
+        </div>
+    </div>
+
+    {% if recommendation_pairs %}
+    <!-- Связки рекомендация-попытка -->
+    <div class="recommendation-pairs">
+        {% for pair in recommendation_pairs %}
+        <div class="recommendation-pair {% if pair.has_feedback %}has-feedback{% endif %}" 
+             data-recommendation-id="{{ pair.recommendation.id }}">
+            
+            <!-- Заголовок пары -->
+            <div class="pair-header">
+                <div>
+                    <div class="pair-title">
+                        Рекомендация → Попытка #{{ forloop.counter }}
+                    </div>
+                    <div class="pair-meta">
+                        Создано: {{ pair.recommendation.created_at|date:"d.m.Y H:i" }} | 
+                        Выполнено: {{ pair.attempt.completed_at|date:"d.m.Y H:i" }}
+                    </div>
+                </div>
+                <div class="feedback-status {% if pair.has_feedback %}completed{% else %}pending{% endif %}">
+                    {% if pair.has_feedback %}
+                        <i class="fas fa-check-circle"></i>
+                        Размечено
+                    {% else %}
+                        <i class="fas fa-clock"></i>
+                        Ожидает разметки
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Секция рекомендации -->
+            <div class="recommendation-section">
+                <h4 class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Рекомендация DQN
+                </h4>
+                
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="q-value-display">
+                        <i class="fas fa-calculator"></i>
+                        Q-value: {{ pair.recommendation.q_value|floatformat:4 }}
+                    </div>
+                    <div class="text-muted">
+                        Уверенность: {{ pair.recommendation.confidence|floatformat:2 }}
+                    </div>
+                </div>
+
+                <!-- Навыки -->
+                <div class="skills-grid">
+                    <!-- Prerequisite навыки -->
+                    <div class="skills-group">
+                        <h6><i class="fas fa-arrow-right me-2"></i>Навыки-предпосылки</h6>
+                        {% if pair.prerequisite_skills %}
+                            {% for skill_info in pair.prerequisite_skills %}
+                            <div class="skill-item">
+                                <span class="skill-name">{{ skill_info.skill.name }}</span>
+                                {% with mastery=skill_info.mastery_level %}
+                                <span class="mastery-level {% if mastery >= 0.8 %}mastery-high{% elif mastery >= 0.5 %}mastery-medium{% else %}mastery-low{% endif %}">
+                                    {{ mastery|floatformat:2 }}
+                                </span>
+                                {% endwith %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-muted">Нет данных о prerequisite навыках</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Зависимые навыки -->
+                    <div class="skills-group">
+                        <h6><i class="fas fa-arrow-left me-2"></i>Зависимые навыки</h6>
+                        {% if pair.dependent_skills %}
+                            {% for skill_info in pair.dependent_skills %}
+                            <div class="skill-item">
+                                <span class="skill-name">{{ skill_info.skill.name }}</span>
+                                {% with mastery=skill_info.mastery_level %}
+                                <span class="mastery-level {% if mastery >= 0.8 %}mastery-high{% elif mastery >= 0.5 %}mastery-medium{% else %}mastery-low{% endif %}">
+                                    {{ mastery|floatformat:2 }}
+                                </span>
+                                {% endwith %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-muted">Нет данных о зависимых навыках</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Секция попытки -->
+            <div class="attempt-section">
+                <h4 class="section-title">
+                    <i class="fas fa-play-circle"></i>
+                    Попытка решения
+                </h4>
+                
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="attempt-result {% if pair.attempt.is_correct %}correct{% else %}incorrect{% endif %}">
+                        <i class="fas fa-{% if pair.attempt.is_correct %}check{% else %}times{% endif %}"></i>
+                        {% if pair.attempt.is_correct %}Правильно{% else %}Неправильно{% endif %}
+                    </div>
+                    {% if pair.attempt.time_spent %}
+                    <div class="text-muted">
+                        Время: {{ pair.attempt.duration_minutes }} мин
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Детали задания -->
+                <div class="task-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Название</div>
+                        <div class="detail-value">{{ pair.attempt.task.title }}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Тип</div>
+                        <div class="detail-value">
+                            <i class="{% if pair.attempt.task.task_type == 'single' %}fas fa-dot-circle{% elif pair.attempt.task.task_type == 'multiple' %}fas fa-check-square{% else %}fas fa-question-circle{% endif %} me-2"></i>
+                            {{ pair.attempt.task.get_task_type_display }}
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Сложность</div>
+                        <div class="detail-value">
+                            <span class="difficulty-badge difficulty-{{ pair.attempt.task.difficulty }}">
+                                {{ pair.attempt.task.get_difficulty_display }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    {% if pair.target_skill %}
+                    <div class="detail-item">
+                        <div class="detail-label">Целевой навык</div>
+                        <div class="detail-value">{{ pair.target_skill.name }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Контролы обратной связи -->
+            {% if not pair.has_feedback %}
+            <div class="feedback-controls">
+                <h5><i class="fas fa-tags me-2"></i>Экспертная разметка</h5>
+                
+                <!-- Кнопки типа обратной связи -->
+                <div class="feedback-buttons">
+                    <button class="feedback-type-btn positive" data-type="positive">
+                        <i class="fas fa-thumbs-up fa-2x mb-2"></i>
+                        <div>Поощрение</div>
+                        <small>Хорошая рекомендация</small>
+                    </button>
+                    <button class="feedback-type-btn negative" data-type="negative">
+                        <i class="fas fa-thumbs-down fa-2x mb-2"></i>
+                        <div>Наказание</div>
+                        <small>Плохая рекомендация</small>
+                    </button>
+                </div>
+
+                <!-- Селектор силы -->
+                <div class="strength-selector" style="display: none;">
+                    <label><strong>Выберите силу обратной связи:</strong></label>
+                    <div class="strength-options">
+                        <button class="strength-btn" data-strength="low">
+                            <i class="fas fa-minus me-1"></i>
+                            Мягкая
+                        </button>
+                        <button class="strength-btn" data-strength="medium">
+                            <i class="fas fa-equals me-1"></i>
+                            Средняя
+                        </button>
+                        <button class="strength-btn" data-strength="high">
+                            <i class="fas fa-plus me-1"></i>
+                            Сильная
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Поле комментария -->
+                <textarea class="comment-input" placeholder="Добавьте комментарий к разметке (необязательно)..."></textarea>
+
+                <!-- Кнопка сохранения -->
+                <button class="save-feedback-btn" disabled>
+                    <i class="fas fa-save me-2"></i>
+                    Сохранить разметку
+                </button>
+            </div>
+            {% else %}
+            <!-- Показываем существующую разметку -->
+            <div class="feedback-controls has-feedback">
+                <div class="existing-feedback">
+                    <div class="existing-feedback-header">
+                        <i class="fas fa-check-circle"></i>
+                        Разметка сохранена
+                    </div>
+                    <div class="existing-feedback-details">
+                        <strong>Тип:</strong> 
+                        {% if pair.existing_feedback.feedback_type == 'positive' %}
+                            <span class="text-success">Положительная</span>
+                        {% else %}
+                            <span class="text-danger">Отрицательная</span>
+                        {% endif %}
+                        <br>
+                        <strong>Сила:</strong> {{ pair.existing_feedback.get_strength_display }}<br>
+                        <strong>Награда:</strong> 
+                        <span class="{% if pair.existing_feedback.reward_value > 0 %}text-success{% else %}text-danger{% endif %}">
+                            {% if pair.existing_feedback.reward_value > 0 %}+{% endif %}{{ pair.existing_feedback.reward_value }}
+                        </span><br>
+                        {% if pair.existing_feedback.comment %}
+                        <strong>Комментарий:</strong> {{ pair.existing_feedback.comment }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- Нет данных -->
+    <div class="text-center py-5">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h4 class="text-muted">Нет связок рекомендация-попытка</h4>
+        <p class="text-muted">Для этого студента пока нет данных для разметки</p>
+        <a href="{% url 'expert_dqn' %}" class="btn btn-primary">
+            <i class="fas fa-arrow-left me-2"></i>
+            Выбрать другого студента
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- CSRF Token -->
+{% csrf_token %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'expert/js/dqn_management.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Показываем информационное сообщение
+    if (typeof ExpertUtils !== 'undefined') {
+        const totalPairs = {{ total_pairs }};
+        if (totalPairs > 0) {
+            ExpertUtils.showNotification(
+                `Загружено ${totalPairs} связок для разметки`, 
+                'info'
+            );
+        }
+    }
+    
+    // Добавляем плавную прокрутку к неразмеченным парам при загрузке
+    const firstUnmarked = document.querySelector('.recommendation-pair:not(.has-feedback)');
+    if (firstUnmarked) {
+        setTimeout(() => {
+            firstUnmarked.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }, 1000);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест финальных прогресс-баров</title>
+    <link rel="stylesheet" href="student/static/student/css/progress_bars.css">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --success-color: #4CAF50;
+            --text-dark: #333;
+            --text-muted: #666;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .test-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        
+        .test-title {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .percentage-display {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Тест финальных прогресс-баров</h1>
+        
+        <!-- Прогресс-бары для навыков -->
+        <div class="test-section">
+            <h2 class="test-title">🧠 Прогресс-бары навыков</h2>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div class="progress-info">
+                    <span>Основы алгоритмов</span>
+                    <span class="percentage-display">53%</span>
+                </div>
+                <div class="skill-progress-container">
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new primary" style="width: 53%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div class="progress-info">
+                    <span>Структуры данных</span>
+                    <span class="percentage-display">25%</span>
+                </div>
+                <div class="skill-progress-container">
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new primary" style="width: 25%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div class="progress-info">
+                    <span>Математическая логика</span>
+                    <span class="percentage-display">87%</span>
+                </div>
+                <div class="skill-progress-container">
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new primary" style="width: 87%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Прогресс-бары для курсов -->
+        <div class="test-section">
+            <h2 class="test-title">📖 Прогресс-бары курсов</h2>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div class="progress-info">
+                    <span>Прогресс: 72%</span>
+                    <span>8/12 навыков</span>
+                </div>
+                <div class="course-progress-container">
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new success" style="width: 72%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div class="progress-info">
+                    <span>Прогресс: 45%</span>
+                    <span>3/8 навыков</span>
+                </div>
+                <div class="course-progress-container">
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new success" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Прогресс-бар развиваемого навыка -->
+        <div class="test-section">
+            <h2 class="test-title">🎯 Развиваемый навык</h2>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div class="progress-info">
+                    <span>Логарифмы</span>
+                    <span class="percentage-display">15%</span>
+                </div>
+                <div class="recommendation-progress-container">
+                    <div class="progress-bar-new thick">
+                        <div class="progress-fill-new primary" style="width: 15%"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <span>2/8 попыток</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Различные значения для проверки -->
+        <div class="test-section">
+            <h2 class="test-title">📊 Тест различных значений</h2>
+            
+            <div style="display: grid; gap: 1rem;">
+                <div>
+                    <div class="progress-info">
+                        <span>0% (Не начато)</span>
+                        <span class="percentage-display">0%</span>
+                    </div>
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new primary" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="progress-info">
+                        <span>33% (Начальный уровень)</span>
+                        <span class="percentage-display">33%</span>
+                    </div>
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new warning" style="width: 33%"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="progress-info">
+                        <span>66% (Хороший прогресс)</span>
+                        <span class="percentage-display">66%</span>
+                    </div>
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new primary" style="width: 66%"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="progress-info">
+                        <span>100% (Освоено)</span>
+                        <span class="percentage-display">100%</span>
+                    </div>
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new success" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Интерактивный тест -->
+        <div class="test-section">
+            <h2 class="test-title">🎮 Интерактивный тест</h2>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div class="progress-info">
+                    <span>Динамический навык</span>
+                    <span class="percentage-display" id="dynamic-percentage">0%</span>
+                </div>
+                <div class="skill-progress-container">
+                    <div class="progress-bar-new">
+                        <div class="progress-fill-new primary" id="dynamic-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button onclick="updateProgress(10)" style="padding: 0.5rem 1rem; border: none; background: #2196F3; color: white; border-radius: 4px; cursor: pointer;">10%</button>
+                    <button onclick="updateProgress(25)" style="padding: 0.5rem 1rem; border: none; background: #2196F3; color: white; border-radius: 4px; cursor: pointer;">25%</button>
+                    <button onclick="updateProgress(50)" style="padding: 0.5rem 1rem; border: none; background: #2196F3; color: white; border-radius: 4px; cursor: pointer;">50%</button>
+                    <button onclick="updateProgress(75)" style="padding: 0.5rem 1rem; border: none; background: #2196F3; color: white; border-radius: 4px; cursor: pointer;">75%</button>
+                    <button onclick="updateProgress(100)" style="padding: 0.5rem 1rem; border: none; background: #4CAF50; color: white; border-radius: 4px; cursor: pointer;">100%</button>
+                    <button onclick="updateProgress(0)" style="padding: 0.5rem 1rem; border: none; background: #666; color: white; border-radius: 4px; cursor: pointer;">Сброс</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateProgress(percentage) {
+            const fillElement = document.getElementById('dynamic-fill');
+            const percentageElement = document.getElementById('dynamic-percentage');
+            
+            fillElement.style.width = percentage + '%';
+            percentageElement.textContent = percentage + '%';
+            
+            // Анимация
+            fillElement.style.transition = 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        }
+        
+        // Добавляем плавную анимацию для всех прогресс-баров при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressFills = document.querySelectorAll('.progress-fill-new');
+            progressFills.forEach((fill, index) => {
+                const currentWidth = fill.style.width;
+                fill.style.width = '0%';
+                
+                setTimeout(() => {
+                    fill.style.width = currentWidth;
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

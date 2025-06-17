@@ -1,0 +1,242 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% load student_filters %}
+{% load markdown_filters %}
+
+{% block title %}Обучение - {{ current_task.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'student/css/base.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/task.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/answers.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/sidebar.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/responsive.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/markdown.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="learning-container">
+    <!-- Заголовок задачи -->
+    <div class="task-header">
+        <h1 class="task-title">{{ current_task.title }}</h1>
+        <div class="task-meta">
+            <span class="task-badge type">
+                <i class="fas fa-list-ul"></i>
+                {{ current_task.get_task_type_display }}
+            </span>
+            <span class="task-badge difficulty">
+                <i class="fas fa-signal"></i>
+                {{ current_task.get_difficulty_display }}
+            </span>
+            {% if task_courses.first %}
+            <span class="task-badge">
+                <i class="fas fa-book"></i>
+                {{ task_courses.first.name }}
+            </span>
+            {% endif %}
+            {% if task_skills.first %}
+            <span class="task-badge">
+                <i class="fas fa-brain"></i>
+                {{ task_skills.first.name }}
+            </span>
+            {% endif %}
+            <span class="task-badge">
+                <i class="fas fa-clock"></i>
+                <span id="task-timer">00:00</span>
+            </span>        </div>
+    </div>
+
+    <!-- Основной контент задачи (полная ширина) -->
+    <div class="main-task-section">
+        <div class="task-content">            <!-- Вопрос -->
+            <div class="task-question">
+                <h3><i class="fas fa-question-circle text-primary me-2"></i>Задание</h3>
+                <div class="question-text markdown-content">
+                    {{ current_task.question_text|markdown }}
+                </div>
+            </div>
+
+            <!-- Форма ответов -->
+            <form id="task-answer-form" class="task-answers">
+                {% csrf_token %}
+                <input type="hidden" id="task-type" value="{{ current_task.task_type }}">
+                <input type="hidden" id="task-started-at" value="{{ task_started_at }}">
+                
+                <h4><i class="fas fa-list me-2"></i>Варианты ответов</h4>
+                
+                {% for answer in task_answers %}
+                <div class="answer-option" data-answer-id="{{ answer.id }}">
+                    {% if current_task.task_type == 'multiple' %}
+                        <input type="checkbox" name="answer" value="{{ answer.id }}" class="answer-input" id="answer_{{ answer.id }}">
+                    {% else %}
+                        <input type="radio" name="answer" value="{{ answer.id }}" class="answer-input" id="answer_{{ answer.id }}">
+                    {% endif %}                    <label for="answer_{{ answer.id }}" class="answer-text markdown-content">
+                        {{ answer.text|markdown_inline }}
+                    </label>
+                </div>
+                {% endfor %}
+
+                <!-- Кнопка отправки -->
+                <div class="submit-section">
+                    <button type="submit" id="submit-answer-btn" class="submit-btn" disabled>
+                        Выберите ответ
+                    </button>
+                </div>            </form>
+        </div>
+    </div>
+
+    <!-- Блоки дополнительной информации в основном контейнере -->    <!-- Рекомендация -->
+    {% if current_recommendation %}
+    <div class="sidebar-section">
+        <div class="sidebar-header">
+            <i class="fas fa-lightbulb me-2"></i>Обоснование рекомендации
+        </div>
+        <div class="sidebar-content">
+            <div class="recommendation-info">
+                {% if current_recommendation.llm_explanation %}
+                    {{ current_recommendation.llm_explanation|linebreaks }}
+                {% else %}
+                    Это задание рекомендовано для развития навыка "{{ task_skills.first.name }}" на основе анализа вашего текущего прогресса.
+                {% endif %}
+                
+                <!-- Отладочная информация (временно) -->
+                {% if debug %}
+                <small class="text-muted mt-2" style="font-size: 0.8rem;">
+                    Рекомендация ID: {{ current_recommendation.recommendation.id }}
+                </small>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Отладка: показываем, если рекомендации нет -->
+    {% if debug %}
+    <div class="sidebar-section">
+        <div class="sidebar-header">
+            <i class="fas fa-exclamation-triangle me-2"></i>Отладка
+        </div>
+        <div class="sidebar-content">
+            <small class="text-muted">Рекомендация не найдена</small>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}<!-- Навыки и курсы -->
+    <div class="sidebar-section">
+        <div class="sidebar-header">
+            <i class="fas fa-tags me-2"></i>Связанные темы
+        </div>        <div class="sidebar-content">
+            {% if task_skills %}
+            <div class="mb-2">
+                <strong>Развиваемый навык:</strong>
+                <div class="skills-list mt-1">
+                    {% for skill in task_skills %}
+                    <span class="skill-tag primary">{{ skill.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}            {% if prerequisite_skills %}
+            <div class="mb-2">
+                <strong>Для решения задания необходимо владеть:</strong>
+                <div class="skills-list mt-1">
+                    {% for skill in prerequisite_skills %}
+                    <span class="skill-tag prerequisite">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if dependent_skills %}
+            <div class="mb-2">
+                <strong>После решения задания вы станете ближе к:</strong>
+                <div class="skills-list mt-1">
+                    {% for skill in dependent_skills %}
+                    <span class="skill-tag target">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Отладочная информация (временно) -->
+            {% if debug %}
+            <div class="mt-2">
+                <small class="text-muted" style="font-size: 0.8rem;">
+                    Prerequisite: {{ prerequisite_skills|length }} | Dependent: {{ dependent_skills|length }}
+                    {% if current_recommendation %}
+                    | Rec: {{ current_recommendation.recommendation.id }}
+                    {% endif %}
+                </small>
+            </div>
+            {% endif %}
+
+            {% if task_courses %}
+            <div class="mb-2">
+                <strong>Курсы:</strong>
+                <div class="courses-list mt-1">
+                    {% for course in task_courses %}
+                    <span class="course-tag">{{ course.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Ссылка на теоретические материалы -->
+            <div class="mt-2">
+                <a href="#" class="materials-link" onclick="alert('Раздел в разработке'); return false;">
+                    <i class="fas fa-book-open"></i>
+                    Теория по навыку 
+                    {% if task_skills.first %}
+                        <span class="skill-name">{{ task_skills.first.name }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </div><!-- История попыток -->
+    {% if previous_attempts %}
+    <div class="sidebar-section">
+        <div class="sidebar-header">
+            <i class="fas fa-history me-2"></i>Предыдущие попытки заданий по навыку 
+            {% if task_skills.first %}
+                <span class="skill-highlight">{{ task_skills.first.name }}</span>
+            {% endif %}
+        </div>
+        <div class="sidebar-content">
+            <div class="attempts-history">
+                {% for attempt in previous_attempts %}
+                <div class="attempt-item">
+                    <div class="attempt-result">
+                        <div class="attempt-icon {% if attempt.is_correct %}correct{% else %}incorrect{% endif %}">
+                            {% if attempt.is_correct %}✓{% else %}✗{% endif %}
+                        </div>
+                        <span>
+                            {% if attempt.is_correct %}Правильно{% else %}Неправильно{% endif %}
+                        </span>
+                    </div>
+                    <div class="attempt-time">
+                        {{ attempt.completed_at|date:"d.m H:i" }}
+                        {% if attempt.time_spent %}
+                            <br><small>{{ attempt.time_spent }}с</small>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Экран загрузки (будет создан динамически) -->
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'student/js/learning.js' %}"></script>
+<script>
+// Простая инициализация без обработки Markdown (теперь обрабатывается на стороне сервера)
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Страница обучения загружена');
+    
+    // Можно добавить другую инициализацию, если потребуется
+    // Например, прокрутка к определенному элементу, аналитика и т.д.
+});
+</script>
+{% endblock %}

@@ -86,9 +86,7 @@ class DQNRecommendationManagerFixed:
         self.buffer_size = buffer_size
         # Автоматически ищем последнюю обученную модель
         latest_model_path = find_latest_dqn_model()
-        self.recommender = DQNRecommender(model_path=latest_model_path)
-        
-        # Инициализируем LLM для генерации объяснений
+        self.recommender = DQNRecommender(model_path=latest_model_path)        # Инициализируем LLM для генерации объяснений
         self.llm_generator = None
         if LLM_AVAILABLE:
             try:

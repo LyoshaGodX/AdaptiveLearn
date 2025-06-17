@@ -6,14 +6,31 @@ from django.urls import reverse
 
 def home_redirect(request):
     """
-    Перенаправляет пользователя на соответствующую домашнюю страницу в зависимости от его статуса аутентификации.
-    Если пользователь авторизован, перенаправляет на страницу студента.
+    Перенаправляет пользователя на соответствующую домашнюю страницу в зависимости от его роли.
     Если пользователь не авторизован, перенаправляет на страницу входа.
     """
-    if request.user.is_authenticated:
-        return redirect('student_home')
-    else:
+    if not request.user.is_authenticated:
         return redirect('login')
+    
+    user = request.user
+    username = user.username.lower()
+    
+    # Проверяем роль пользователя по группам (приоритет)
+    if user.groups.filter(name='methodist').exists() or user.is_superuser:
+        return redirect('methodist_skills')
+    elif user.groups.filter(name='expert').exists():
+        return redirect('expert_home')
+    elif user.groups.filter(name='student').exists():
+        return redirect('student_home')
+    
+    # Fallback: проверяем роль по имени пользователя (для совместимости)
+    if 'methodist' in username or user.is_superuser:
+        return redirect('methodist_skills')
+    elif 'expert' in username:
+        return redirect('expert_home')
+    else:
+        # По умолчанию для пользователей без группы или со студенческим именем
+        return redirect('student_home')
 
 
 class RoleBasedLoginView(LoginView):
@@ -24,7 +41,15 @@ class RoleBasedLoginView(LoginView):
         user = self.request.user
         username = user.username.lower()
         
-        # Проверяем роль по имени пользователя (как это делают декораторы)
+        # Проверяем роль пользователя по группам (приоритет)
+        if user.groups.filter(name='methodist').exists() or user.is_superuser:
+            return reverse('methodist_skills')
+        elif user.groups.filter(name='expert').exists():
+            return reverse('expert_home')
+        elif user.groups.filter(name='student').exists():
+            return reverse('student_home')
+        
+        # Fallback: проверяем роль по имени пользователя (для совместимости)
         if 'methodist' in username or user.is_superuser:
             return reverse('methodist_skills')
         elif 'expert' in username:

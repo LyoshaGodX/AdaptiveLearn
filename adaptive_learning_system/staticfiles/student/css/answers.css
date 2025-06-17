@@ -1,0 +1,242 @@
+/* Стили для вариантов ответов и форм */
+
+/* Форма ответов */
+.task-answers {
+    padding: 1.5rem;
+}
+
+.task-answers h4 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.answer-option {
+    position: relative;
+    margin-bottom: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    background: white;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    font-size: 0.95rem;
+}
+
+.answer-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: transparent;
+    transition: var(--transition);
+}
+
+.answer-option:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.answer-option:hover::before {
+    background: var(--primary-color);
+}
+
+.answer-option.selected {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.answer-option.selected::before {
+    background: var(--primary-color);
+}
+
+.answer-option.correct {
+    border-color: var(--success-color);
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.05) 0%, rgba(34, 197, 94, 0.05) 100%);
+    animation: correctPulse 0.6s ease-out;
+}
+
+.answer-option.correct::before {
+    background: var(--success-color);
+}
+
+.answer-option.incorrect {
+    border-color: var(--error-color);
+    background: linear-gradient(135deg, rgba(248, 113, 113, 0.05) 0%, rgba(239, 68, 68, 0.05) 100%);
+    animation: incorrectShake 0.6s ease-out;
+}
+
+.answer-option.incorrect::before {
+    background: var(--error-color);
+}
+
+.answer-input {
+    margin-right: 0.75rem;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+.answer-text {
+    flex: 1;
+    line-height: 1.4;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+/* Секция отправки */
+.submit-section {
+    padding: 1.5rem;
+    border-top: 2px solid var(--border-color);
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.submit-btn, .new-task-btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::before, .new-task-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.submit-btn:hover::before, .new-task-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:hover:not(:disabled), .new-task-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.new-task-btn {
+    background: linear-gradient(135deg, var(--success-color) 0%, #20c997 100%);
+    box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+}
+
+.new-task-btn:hover:not(:disabled) {
+    box-shadow: 0 8px 25px rgba(74, 222, 128, 0.4);
+}
+
+/* Стили для текстовых ответов */
+.text-answer {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: var(--transition);
+    resize: vertical;
+    min-height: 100px;
+}
+
+.text-answer:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Стили для числовых ответов */
+.numeric-answer {
+    width: 200px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-family: 'Fira Code', monospace;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.numeric-answer:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Группировка ответов */
+.answers-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.answers-grid.two-columns {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.answers-grid.three-columns {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Подсказки и валидация */
+.answer-hint {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.answer-validation {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.answer-validation.error {
+    background: rgba(248, 113, 113, 0.1);
+    color: var(--error-color);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.answer-validation.success {
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест прогресс-баров</title>
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --success-color: #4CAF50;
+            --text-dark: #333;
+            --text-muted: #666;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-item {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        
+        /* Стили прогресс-баров */
+        .progress-bar {
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color) 0%, var(--primary-color) 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        /* Специфичные стили для карточки навыка */
+        .target-skill-card .progress-bar {
+            height: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .target-skill-card .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color) 0%, var(--primary-color) 100%);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+        
+        .skill-level {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Тест прогресс-баров</h1>
+        
+        <div class="test-item">
+            <h3>Стандартный прогресс-бар (25%)</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%"></div>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>Прогресс-бар (50%)</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 50%"></div>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>Прогресс-бар (75%)</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>Прогресс-бар (100%)</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+            </div>
+        </div>
+        
+        <div class="test-item target-skill-card">
+            <h3>Прогресс-бар развиваемого навыка (35%)</h3>
+            <div class="skill-header">
+                <span class="skill-level">35%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 35%"></div>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>Мини-тест с JavaScript анимацией</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="animated-progress" style="width: 0%"></div>
+            </div>
+            <button onclick="animateProgress()">Анимировать до 60%</button>
+        </div>
+    </div>
+    
+    <script>
+        function animateProgress() {
+            const progressFill = document.getElementById('animated-progress');
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 60) {
+                    clearInterval(interval);
+                } else {
+                    width += 2;
+                    progressFill.style.width = width + '%';
+                }
+            }, 50);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+/* Стили для основного задания */
+
+/* Заголовок задачи */
+.task-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.task-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
+.task-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 2;
+    align-items: center;
+}
+
+.task-badge {
+    padding: 0.5rem 1.25rem;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.task-badge:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.task-badge.type {
+    background: rgba(40, 167, 69, 0.3);
+}
+
+.task-badge.difficulty {
+    background: rgba(255, 193, 7, 0.3);
+}
+
+/* Основная секция с заданием */
+.task-content {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    min-height: 60vh;
+    /* Убираем ограничение ширины - используем полную ширину контейнера */
+}
+
+.task-content:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* Вопрос */
+.task-question {
+    padding: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.task-question h3 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.question-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    font-weight: 400;
+}
+
+/* Markdown стили */
+.question-text img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.question-text video {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    margin: 1.5rem 0;
+}
+
+.question-text code {
+    background: #f1f3f4;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+    color: #d73a49;
+}
+
+.question-text pre {
+    background: #f6f8fa;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    border-left: 4px solid var(--primary-color);
+    margin: 1.5rem 0;
+}
+
+.question-text h1, 
+.question-text h2, 
+.question-text h3 {
+    color: var(--primary-color);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.question-text blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+.question-text ul, 
+.question-text ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.question-text li {
+    margin: 0.5rem 0;
+}
+
+/* Результат ответа */
+.result-message {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-left: 6px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.03;
+    pointer-events: none;
+}
+
+.result-message.correct {
+    border-left-color: var(--success-color);
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.08) 0%, white 20%);
+}
+
+.result-message.correct::before {
+    background: linear-gradient(45deg, var(--success-color), transparent);
+}
+
+.result-message.incorrect {
+    border-left-color: var(--error-color);
+    background: linear-gradient(135deg, rgba(248, 113, 113, 0.08) 0%, white 20%);
+}
+
+.result-message.incorrect::before {
+    background: linear-gradient(45deg, var(--error-color), transparent);
+}
+
+.result-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
+
+.result-content i {
+    font-size: 2rem;
+    animation: bounceIn 0.6s ease-out 0.2s both;
+}
+
+.result-message.correct i {
+    color: var(--success-color);
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+}
+
+.result-message.incorrect i {
+    color: var(--error-color);
+    text-shadow: 0 0 10px rgba(248, 113, 113, 0.3);
+}
+
+.result-content span {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    animation: slideInUp 0.5s ease-out 0.3s both;
+}
+
+.result-content small {
+    color: var(--text-light);
+    font-weight: 500;
+    margin-left: auto;
+    font-size: 0.95rem;
+    animation: fadeIn 0.4s ease-out 0.5s both;
+}
+
+/* Состояние загрузки ответа */
+.answer-loading {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border-color);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+.loading-text {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Анимации для результата */
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideInUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Анимация вращения */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Стили для кнопок состояния */
+.waiting-recommendation-btn {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite ease-in-out;
+    display: block;
+    margin: 1rem auto;
+    text-align: center;
+    width: fit-content;
+    box-shadow: var(--shadow-sm);
+}
+
+.new-task-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 0.875rem 2rem;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 1rem auto;
+    text-align: center;
+    width: fit-content;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.new-task-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.new-task-btn:active {
+    transform: translateY(0);
+}
+
+/* Анимации */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Спиннер */
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+}

@@ -1,0 +1,252 @@
+/* Стили для дополнительной информации (сайдбар) */
+
+.sidebar-section {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.sidebar-section:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.sidebar-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 1rem 1.25rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.sidebar-content {
+    padding: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Навыки и курсы */
+.skills-list, .courses-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.skill-tag, .course-tag {
+    padding: 0.3rem 0.8rem;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.skill-tag {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: var(--primary-color);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.course-tag {
+    background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+    color: var(--success-color);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.skill-tag:hover, .course-tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Разные типы тегов навыков */
+.skill-tag.primary {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    font-weight: 600;
+}
+
+.skill-tag.prerequisite {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffcc80 100%);
+    color: #f57c00;
+    border: 1px solid rgba(245, 124, 0, 0.3);
+}
+
+.skill-tag.target {
+    background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 100%);
+    color: #7b1fa2;
+    border: 1px solid rgba(123, 31, 162, 0.3);
+}
+
+/* Информация о рекомендации */
+.recommendation-info {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.recommendation-info strong {
+    color: var(--text-primary);
+}
+
+/* Ссылка на материалы */
+.materials-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.2rem;
+    background: linear-gradient(135deg, var(--warning-color) 0%, #ff9800 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+    font-size: 0.9rem;
+}
+
+.materials-link:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+}
+
+.materials-link i {
+    font-size: 1.1rem;
+}
+
+/* Выделение названия навыка в ссылке */
+.materials-link .skill-name {
+    font-weight: 700;
+}
+
+/* История попыток */
+.attempts-history {
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--bg-secondary);
+}
+
+.attempts-history::-webkit-scrollbar {
+    width: 6px;
+}
+
+.attempts-history::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+}
+
+.attempts-history::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.attempt-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+    /* Убираем анимацию hover */
+}
+
+.attempt-item:last-child {
+    border-bottom: none;
+}
+
+.attempt-result {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.attempt-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: white;
+    font-weight: 700;
+}
+
+.attempt-icon.correct {
+    background: var(--success-color);
+    box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
+}
+
+.attempt-icon.incorrect {
+    background: var(--error-color);
+    box-shadow: 0 2px 8px rgba(248, 113, 113, 0.3);
+}
+
+.attempt-time {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    text-align: right;
+    font-weight: 500;
+}
+
+/* Статистика студента */
+.student-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Прогресс бар */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* Выделение навыка в заголовках */
+.skill-highlight {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}

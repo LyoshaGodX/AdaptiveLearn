@@ -1,119 +1,290 @@
 {% extends 'student/base.html' %}
-{% block title %}Профиль студента{% endblock %}
+{% load student_filters %}
+{% load static %}
+
+{% block title %}Профиль студента - {{ profile.full_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'student/css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/courses.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/skills.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/recommendations.css' %}">
+<link rel="stylesheet" href="{% static 'student/css/progress_bars.css' %}">
+<style>
+.progress-bar-new { width: 100%; height: 8px; background-color: #e9ecef !important; border-radius: 4px; overflow: hidden; position: relative; margin: 0.5rem 0; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
+.progress-bar-new.thick { height: 12px !important; border-radius: 6px; }
+.progress-fill-new { height: 100%; width: 0%; background: #007bff !important; border-radius: inherit; transition: width 0.6s ease; position: relative; }
+.progress-fill-new.primary { background: linear-gradient(90deg, #007bff 0%, #0056b3 100%) !important; }
+.progress-fill-new.success { background: linear-gradient(90deg, #28a745 0%, #1e7e34 100%) !important; }
+.skill-progress-container .progress-bar-new { height: 10px !important; background-color: #f8f9fa !important; }
+.course-progress-container .progress-bar-new { height: 8px !important; background-color: #f5f5f5 !important; }
+.recommendation-progress-container .progress-bar-new { height: 12px !important; background-color: #f8f9fa !important; border: 1px solid #dee2e6; }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="row">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <h4>Профиль студента</h4>
+<div class="profile-container">
+    <!-- Заголовок профиля -->
+    <div class="profile-header">
+        <div class="profile-info">
+            {% if profile.profile_photo %}
+                <img src="{{ profile.profile_photo.url }}" alt="Аватар" class="profile-avatar">
+            {% else %}
+                <div class="profile-avatar-placeholder">
+                    {{ profile.full_name|first|upper }}
+                </div>
+            {% endif %}
+            <div class="profile-details">
+                <h1 class="profile-name">{{ profile.full_name }}</h1>
+                <p class="profile-email">{{ profile.email }}</p>
+                <p class="profile-join-date">Присоединился: {{ profile.created_at|date:"d.m.Y" }}</p>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4 text-center">
-                        {% if profile.profile_photo %}
-                            <img src="{{ profile.profile_photo.url }}" alt="Фото профиля" 
-                                 class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
-                        {% else %}
-                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                                 style="width: 150px; height: 150px;">
-                                <i class="fas fa-user fa-3x text-muted"></i>
-                            </div>
-                        {% endif %}
-                        <div>
-                            <a href="{% url 'student_profile_edit' %}" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-edit"></i> Редактировать профиль
-                            </a>
+        </div>
+    </div>
+
+    <!-- Статистика -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-content">
+                <h3>{{ total_attempts }}</h3>
+                <p>Выполнено заданий</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-content">
+                <h3>{{ accuracy }}%</h3>
+                <p>Точность решения</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-content">
+                <h3>{{ learning_streak }}</h3>
+                <p>Дней подряд</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-content">
+                <h3>{{ level }}</h3>
+                <p>Уровень</p>
+            </div>
+        </div>
+    </div>    <!-- Текущая рекомендация -->
+    {% if current_recommendation %}
+    <div class="section-card">
+        <div class="section-header">
+            <h2>🎯 Рекомендованное задание</h2>
+        </div>
+        <div class="recommendation-content">
+            <!-- Карточка развиваемого навыка - переместили наверх -->
+            {% if target_skill_info %}
+            <div class="target-skill-card">
+                <div class="skill-header">
+                    <h4>🎯 Развиваемый навык</h4>
+                    <span class="skill-level">{{ target_skill_info.mastery_percentage }}%</span>
+                </div>                <div class="skill-info">
+                    <h5>{{ target_skill_info.skill.name }}</h5>
+                    <div class="progress-stats">
+                        <span>{{ target_skill_info.correct_attempts }}/{{ target_skill_info.attempts_count }} попыток</span>
+                    </div>
+                    {% if target_skill_info.skill.description %}
+                    <p class="skill-description">{{ target_skill_info.skill.description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="recommendation-main">
+                <div class="recommendation-task">
+                    <h3>{{ current_recommendation.task.title }}</h3>
+                    <div class="task-badges">
+                        <span class="task-difficulty">{{ current_recommendation.task.get_difficulty_display }}</span>
+                        <span class="task-type">{{ current_recommendation.task.get_task_type_display }}</span>
+                    </div>
+                </div>
+
+                <div class="recommendation-metrics">
+                    <div class="metric-card">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Уверенность</span>
+                            <span class="metric-value">{{ current_recommendation.confidence_percentage }}%</span>
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <h5>{{ profile.full_name }}</h5>
-                        <table class="table table-borderless">
-                            <tr>
-                                <td class="fw-bold">Email:</td>
-                                <td>{{ profile.email }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Имя пользователя:</td>
-                                <td>{{ profile.user.username }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Организация:</td>
-                                <td>{{ profile.organization|default:"Не указана" }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Дата регистрации:</td>
-                                <td>{{ profile.created_at|date:"d.m.Y H:i" }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Последнее обновление:</td>
-                                <td>{{ profile.updated_at|date:"d.m.Y H:i" }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Статус:</td>
-                                <td>
-                                    {% if profile.is_active %}
-                                        <span class="badge bg-success">Активный</span>
-                                    {% else %}
-                                        <span class="badge bg-danger">Неактивный</span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        </table>
+                    <div class="metric-card">
+                        <div class="metric-icon">🎯</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Q-value</span>
+                            <span class="metric-value">{{ current_recommendation.q_value|floatformat:3 }}</span>
+                        </div>
                     </div>
+                </div>
+
+                {% if current_recommendation.llm_explanation %}
+                <div class="recommendation-explanation">
+                    <h4>💡 Объяснение рекомендации</h4>
+                    <p>{{ current_recommendation.llm_explanation }}</p>
+                </div>
+                {% endif %}
+
+                <div class="recommendation-actions">
+                    <a href="#" class="btn btn-primary btn-large">🚀 Решить задание</a>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="col-md-4">
-        <!-- Статистика курсов -->
-        <div class="card mb-3">
-            <div class="card-header">
-                <h6>Статистика обучения</h6>
+    {% endif %}
+
+    <!-- Курсы и их прогресс -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2>📖 Мои курсы ({{ total_courses }})</h2>
+        </div>
+        <div class="courses-grid">
+            {% for course_data in course_progress_data %}
+            <div class="course-card">
+                <div class="course-header">
+                    <h3>{{ course_data.enrollment.course.name }}</h3>
+                    <span class="course-status status-{{ course_data.enrollment.status }}">
+                        {{ course_data.enrollment.get_status_display }}
+                    </span>
+                </div>                <div class="course-progress">
+                    <div class="progress-info">
+                        <span>Прогресс: <span class="skill-percentage {{ course_data.avg_mastery_css_class }}">{{ course_data.avg_mastery_percentage }}%</span></span>
+                        <span>{{ course_data.mastered_skills }}/{{ course_data.total_skills }} навыков</span>
+                    </div>
+                </div><div class="course-skills">
+                    <h4>Навыки курса:</h4>
+                    <div class="skills-list">                        {% for skill_info in course_data.skills_with_mastery %}
+                        <div class="skill-tag">
+                            {{ skill_info.skill.name }}
+                            <span class="skill-mastery {{ skill_info.mastery_css_class }}">{{ skill_info.mastery_percentage }}%</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                {% with enrollments=profile.course_enrollments.all %}
-                <div class="mb-2">
-                    <strong>Всего курсов:</strong> {{ enrollments.count }}
-                </div>
-                <div class="mb-2">
-                    <strong>Активных:</strong> {{ enrollments|length }}
-                </div>
-                <div class="mb-2">
-                    <strong>Завершенных:</strong> 
-                    {{ enrollments|default:0 }}
-                </div>
-                {% endwith %}
+            {% empty %}
+            <div class="empty-state">
+                <p>Вы пока не записаны ни на один курс</p>
+                <a href="#" class="btn btn-primary">Найти курсы</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Навыки и их освоение -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2>🧠 Мои навыки ({{ total_skills }})</h2>
+            <div class="skills-summary">
+                <span class="mastered">Освоено: {{ mastered_skills_count }}</span>
+                <span class="in-progress">В изучении: {{ in_progress_skills_count }}</span>
+                <span class="weak">Требует внимания: {{ weak_skills_count }}</span>
             </div>
         </div>
-        
-        <!-- Последние курсы -->
-        <div class="card">
-            <div class="card-header">
-                <h6>Последние курсы</h6>
+        <div class="skills-grid">
+            {% for skill_mastery in skill_masteries %}            <div class="skill-card {% if skill_mastery.current_mastery_prob >= 0.8 %}mastered{% elif skill_mastery.current_mastery_prob >= 0.3 %}in-progress{% else %}weak{% endif %}">                <div class="skill-header">
+                    <h3>{{ skill_mastery.skill.name }}</h3>
+                    <span class="skill-percentage {{ skill_mastery.mastery_css_class }}">{{ skill_mastery.mastery_percentage }}%</span>
+                </div>
+                <div class="skill-details">
+                    <div class="skill-stats">
+                        <span>Попыток: {{ skill_mastery.attempts_count }}</span>
+                        <span>Правильных: {{ skill_mastery.correct_attempts }}</span>
+                    </div>                    
+                </div>
             </div>
-            <div class="card-body">
-                {% for enrollment in profile.course_enrollments.all|slice:":3" %}
-                <div class="mb-2">
-                    <div class="d-flex justify-content-between">
-                        <span class="text-truncate">{{ enrollment.course.name }}</span>
-                        <small class="text-muted">{{ enrollment.progress_percentage }}%</small>
-                    </div>
-                    <div class="progress" style="height: 5px;">
-                        <div class="progress-bar" style="width: {{ enrollment.progress_percentage }}%"></div>
+            {% empty %}
+            <div class="empty-state">
+                <p>Навыки пока не отслеживаются</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Последние попытки решения заданий -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2>📝 Последние 20 решений</h2>
+        </div>
+        <div class="attempts-list">
+            {% for attempt in recent_attempts %}
+            <div class="attempt-item {% if attempt.is_correct %}correct{% else %}incorrect{% endif %}">
+                <div class="attempt-task">
+                    <h4>{{ attempt.task.title }}</h4>
+                    <div class="task-skills">
+                        {% for skill in attempt.task.skills.all %}
+                            <span class="task-skill">{{ skill.name }}</span>
+                        {% endfor %}
                     </div>
                 </div>
-                {% empty %}
-                <p class="text-muted">Курсы не найдены</p>
-                {% endfor %}
-                
-                <div class="mt-3">
-                    <a href="{% url 'student_courses' %}" class="btn btn-sm btn-outline-primary w-100">
-                        Все курсы
-                    </a>
+                <div class="attempt-result">
+                    <span class="result-icon">{% if attempt.is_correct %}✅{% else %}❌{% endif %}</span>
+                    <div class="attempt-details">
+                        <span class="attempt-time">{{ attempt.completed_at|date:"d.m H:i" }}</span>
+                        <span class="time-spent">{{ attempt.time_spent }}с</span>
+                    </div>
                 </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <p>Решений пока нет</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>    <!-- Профиль обучения -->
+    {% if learning_profile %}
+    <div class="section-card">
+        <div class="section-header">
+            <h2>⚙️ Профиль обучения</h2>
+        </div>
+        <div class="learning-profile-grid">
+            <div class="profile-metric">
+                <h4>Скорость обучения</h4>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: {{ learning_profile.learning_speed|floatformat:0 }}%"></div>
+                </div>
+                <span>{{ learning_profile.learning_speed|floatformat:2 }}</span>
+            </div>
+            <div class="profile-metric">
+                <h4>Настойчивость</h4>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: {{ learning_profile.persistence_level|floatformat:0 }}%"></div>
+                </div>
+                <span>{{ learning_profile.persistence_level|floatformat:2 }}</span>
+            </div>
+            <div class="profile-metric">
+                <h4>Предпочтения сложности</h4>
+                <span class="difficulty-preference">{{ learning_profile.get_difficulty_preference_display }}</span>
+            </div>
+            <div class="profile-metric">
+                <h4>Среднее время на задание</h4>
+                <span>{{ learning_profile.average_time_per_task|floatformat:1 }} мин</span>
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'student/js/profile.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const progressFills = document.querySelectorAll('.progress-fill-new');
+    progressFills.forEach(function(fill) {
+        const widthStyle = fill.style.width;
+        if (widthStyle) {
+            fill.style.width = '0%';
+            setTimeout(function() {
+                fill.style.width = widthStyle;
+            }, 100);
+        }
+    });
+});
+</script>
 {% endblock %}

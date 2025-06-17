@@ -1,0 +1,255 @@
+/* Стили для страницы списка заданий */
+
+.task-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    position: relative !important; /* Добавляем для работы z-index */
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: #007bff;
+    z-index: 10 !important; /* Поднимаем карточку при наведении */
+}
+
+/* Стили для dropdown меню в карточках заданий */
+.task-card .dropdown {
+    position: relative !important;
+}
+
+.task-card .dropdown-menu {
+    z-index: 1050 !important; /* Высокий z-index для меню */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    border: none !important;
+    border-radius: 8px;
+    position: absolute !important;
+}
+
+.task-card .dropdown-toggle::after {
+    display: none !important; /* Убираем стандартную стрелку Bootstrap */
+}
+
+/* Активное состояние dropdown */
+.task-card .dropdown.show {
+    z-index: 1051 !important; /* Еще выше при открытом меню */
+}
+
+.task-card .dropdown.show .dropdown-menu {
+    z-index: 1052 !important;
+}
+
+/* Дополнительные правила для карточки с открытым dropdown */
+.task-card:has(.dropdown.show) {
+    z-index: 1053 !important;
+}
+
+/* Альтернативный способ для старых браузеров */
+.task-card.dropdown-open {
+    z-index: 1053 !important;
+}
+
+.task-card .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.75rem 1rem;
+}
+
+.task-card .card-header h6 {
+    font-weight: 600;
+    color: #495057;
+}
+
+.task-card .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.task-card .badge.bg-info {
+    background-color: #17a2b8 !important;
+}
+
+.task-card .badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.task-card .badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.task-card .badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+/* Стили для фильтров */
+.filter-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-card .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.filter-card .form-control,
+.filter-card .form-select {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    transition: all 0.2s ease;
+}
+
+.filter-card .form-control:focus,
+.filter-card .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.card-body .row {
+    align-items: end;
+}
+
+/* Стили для статистики */
+.stats-card {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+.stats-card:hover {
+    transform: scale(1.02);
+}
+
+.stats-card .card-body {
+    padding: 1.5rem;
+}
+
+.stats-card h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.stats-card h6 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+/* Пустое состояние */
+.empty-state {
+    padding: 3rem 1rem;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h5 {
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.empty-state p {
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+/* Кнопки действий */
+.btn-create {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-create:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    color: white;
+}
+
+/* Dropdown меню для действий */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(2px);
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: #f8d7da;
+    color: #721c24 !important;
+}
+
+.dropdown-item i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.task-card {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.task-card:nth-child(2) { animation-delay: 0.1s; }
+.task-card:nth-child(3) { animation-delay: 0.2s; }
+.task-card:nth-child(4) { animation-delay: 0.3s; }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .task-card {
+        margin-bottom: 1rem;
+    }
+    
+    .filter-card .row > div {
+        margin-bottom: 1rem;
+    }
+    
+    .filter-card .row > div:last-child {
+        margin-bottom: 0;
+    }
+    
+    .stats-card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+    }
+}
